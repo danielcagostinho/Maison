@@ -65,7 +65,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        margin: 16,
+        marginVertical: 6,
+        marginHorizontal: 16,
         color: 'black',
     },
     facebookButton : {
@@ -75,7 +76,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        margin: 16,
+        marginVertical: 6,
+        marginHorizontal: 16,
         color: 'white',
     },
     googleButton : {
@@ -85,7 +87,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        margin: 16,
+        marginVertical: 6,
+        marginHorizontal: 16,
         color: 'white',
     },
     emailButton : {
@@ -95,7 +98,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        margin: 16,
+        marginVertical: 6,
+        marginHorizontal: 16,
         color: 'white',
     },
     buttonText : {
