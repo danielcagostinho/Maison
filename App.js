@@ -1,31 +1,31 @@
 import React from 'react';
+import { createStackNavigator } from 'react-navigation-stack';
+import { createAppContainer } from 'react-navigation';
+import HousematesIndexScreen from './src/screens/HousematesIndexScreen';
+import NewTransactionScreen from './src/screens/NewTransactionScreen';
+import TransactionsIndexScreen from './src/screens/TransactionsIndexScreen';
+import ShowTransactionScreen from './src/screens/ShowTransactionScreen';
+import NewHousemateScreen from './src/screens/NewHousemateScreen';
+import UserHomeScreen from './src/screens/UserHomeScreen';
+import { Provider } from './src/context/MaisonContext';
 
-import { StyleSheet, Text, View, Image} from 'react-native';
-import { AppLoading } from 'expo';
-import { useFonts } from '@use-expo/font';
+const navigator = createStackNavigator({
+  HousematesIndex: HousematesIndexScreen,
+  NewTransaction: NewTransactionScreen,
+  TransactionsIndex: TransactionsIndexScreen,
+  ShowTransaction: ShowTransactionScreen,
+  NewHousemate: NewHousemateScreen,
+  UserHome: UserHomeScreen,
 
-import HomePage from './containers/HomePage/HomePage';
-import SignInPage from './containers/SignInPage/SignInPage';
-
-export default app => {
-  let [fontsLoaded] = useFonts({
-    'Product-Sans': require('./assets/fonts/Product-Sans-Regular.ttf'),
-    'Product-Sans-Bold': require('./assets/fonts/Product-Sans-Bold.ttf'),
-  });
-
-  if (!fontsLoaded) {
-    return <AppLoading />;
-  } else {
-    return (
-      <View style={styles.app}>
-        <SignInPage/>
-        {/* <HomePage/> */}
-      </View>
-    );
+},{
+  initialRouteName: 'HousematesIndex',
+  defaultNavigationOptions : {
+    title: 'Maison'
   }
-}
-
-const styles = StyleSheet.create( {
-  app : {
-  },
 });
+
+const App = createAppContainer(navigator);
+
+export default () => {
+  return <Provider><App/></Provider>
+}

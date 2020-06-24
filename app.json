@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "rn-complete-guide",
-    "slug": "rn-complete-guide",
+    "name": "maison",
+    "slug": "maison",
     "platforms": [
       "ios",
       "android",
@@ -23,6 +23,7 @@
     ],
     "ios": {
       "supportsTablet": true
-    }
+    },
+    "description": ""
   }
 }
