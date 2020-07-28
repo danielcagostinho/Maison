@@ -17,7 +17,12 @@ import ProfileScreen from './src/screens/ProfileScreen';
 import RecurringScreen from './src/screens/RecurringScreen';
 import UserTransactionsIndexScreen from './src/screens/UserTransactionsIndexScreen';
 import SettleUpScreen from './src/screens/SettleUpScreen';
+import { Image } from 'react-native';
 
+import HomeTabIcon from '../maison-app/assets/imgs/nav/home-nav.png';
+import ActivityTabIcon from '../maison-app/assets/imgs/nav/activity-nav.png';
+import RecurringTabIcon from '../maison-app/assets/imgs/nav/recurring-nav.png';
+import ProfileTabIcon from '../maison-app/assets/imgs/nav/profile-nav.png';
 
 
 const homeFlow = createStackNavigator({
@@ -28,21 +33,62 @@ const homeFlow = createStackNavigator({
   ShowTransaction: ShowTransactionScreen,
   SettleUp: SettleUpScreen,
 })
+
 const switchNavigator = createSwitchNavigator({
   mainFlow: createBottomTabNavigator({
-      Home: homeFlow,
-      Activity: ActivityScreen,
-      Recurring: RecurringScreen,
-      Profile: ProfileScreen
+      Home:  {
+        screen: homeFlow,
+        navigationOptions: {
+          title: "Home",
+          tabBarIcon: <Image source={HomeTabIcon} style={{height: 28, width: 28}}/>,
+          tabBarOptions: {
+            activeTintColor: "#4900A7",
+            inactiveTintColor: "#9D8CCB"
+          }
+        }
+      },
+      Activity:  {
+        screen: ActivityScreen,
+        navigationOptions: {
+          title: "Activity",
+          tabBarIcon: <Image source={ActivityTabIcon} style={{height: 28, width: 28}}/>,
+          tabBarOptions: {
+            activeTintColor: "#4900A7",
+            inactiveTintColor: "#9D8CCB"
+          }
+        }
+      },
+      Recurring:  {
+        screen: RecurringScreen,
+        navigationOptions: {
+          title: "Recurring",
+          tabBarIcon: <Image source={RecurringTabIcon} style={{height: 28, width: 28}}/>,
+          tabBarOptions: {
+            activeTintColor: "#4900A7",
+            inactiveTintColor: "#9D8CCB"
+          }
+        }
+      },
+      Profile:  {
+        screen: ProfileScreen,
+        navigationOptions: {
+          title: "Profile",
+          tabBarIcon: <Image source={ProfileTabIcon} style={{height: 28, width: 28}}/>,
+          tabBarOptions: {
+            activeTintColor: "#4900A7",
+            inactiveTintColor: "#9D8CCB"
+          }
+        }
+      },
+     
     }),
     HousematesIndex: HousematesIndexScreen,
     NewHousemate: NewHousemateScreen,
-
   },{
       initialRouteName: 'HousematesIndex',
       defaultNavigationOptions : {
-        title: 'Maison'
-      }
+        title: 'Maison',
+      },
 });
 
 const App = createAppContainer(switchNavigator);

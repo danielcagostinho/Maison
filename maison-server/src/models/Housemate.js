@@ -7,7 +7,11 @@ const nameSchema = new mongoose.Schema({
 });
 
 const housemateSchema = new mongoose.Schema({
-    name: nameSchema
+    name: nameSchema,
+    avatar: {
+      data: Buffer,
+      contentType: String
+    }
 });
 
 mongoose.model('Housemate', housemateSchema);

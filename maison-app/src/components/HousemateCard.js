@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
+import { Text, View, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { withNavigation } from "react-navigation";
 
 const HousemateCard = ({ housemate, top, last, navigation }) => {
@@ -31,7 +31,7 @@ const HousemateCard = ({ housemate, top, last, navigation }) => {
         });
       }}
     >
-      <View style={styles.displayPic}></View>
+      <Image source={{ uri: housemate.avatar }} style={styles.displayPic}/>
       <View style={styles.textContainer}>
         <Text style={styles.name}>{housemate.name}</Text>
         <Text>
