@@ -5,7 +5,17 @@ import { Context as HousemateContext } from "../context/HousemateContext";
 import { Context as TransactionContext } from "../context/TransactionContext";
 
 import HousemateCard from "../components/HousemateCard";
-import { View, Text, Button, StyleSheet, FlatList, Image } from "react-native";
+import {
+  View,
+  Text,
+  Button,
+  StyleSheet,
+  FlatList,
+  Image,
+  TouchableOpacity,
+} from "react-native";
+
+import NewBillIcon from "../../assets/imgs/newbill.png";
 
 const UserHomeScreen = ({ navigation }) => {
   let { state, getHousemates, getCurrentUser } = useContext(HousemateContext);
@@ -19,7 +29,7 @@ const UserHomeScreen = ({ navigation }) => {
   });
 
   const displayPic = require("../../assets/imgs/profile-pics/adobe-people-21.png");
-
+  const illustration = require("../../assets/imgs/homepage.png");
   const houseName = state.currentUser.displayName;
   let amounts = [];
   let owedAmount = 0;
@@ -62,33 +72,52 @@ const UserHomeScreen = ({ navigation }) => {
             <Text style={styles.houseName}>{houseName}</Text>
           </View>
           <View style={styles.newBillButtonContainer}>
-            <Button
+            {/* <Button
               onPress={() => navigation.navigate("NewTransaction")}
               title="New Bill"
-            />
+            /> */}
+            <TouchableOpacity onPress={() => navigation.navigate("NewTransaction")}>
+              <Image
+                source={NewBillIcon}
+                style={{
+                  height: 29,
+                  width: 24,
+                  alignSelf: "flex-end",
+                }}
+              />
+            </TouchableOpacity>
             {/* <Button
               onPress={() => navigation.navigate("TransactionsIndex")}
               title="View Bills"
             /> */}
           </View>
         </View>
-        <View style={styles.statusContainer}>
-          {housemateDebts ? (
-            <>
-              <Text style={styles.statusText}>
-                {owedAmount < 0 ? "You're owed" : "You owe"}
+        <View>
+          <View style={styles.row}>
+            <View style={styles.statusContainer}>
+              {housemateDebts ? (
+                <>
+                  <Text style={styles.statusText}>
+                    {owedAmount < 0 ? "You're owed" : "You owe"}
+                  </Text>
+                  <Text style={styles.statusText}>
+                    ${Math.abs(owedAmount).toFixed(2)}
+                  </Text>
+                </>
+              ) : null}
+              <Text style={{ color: "rgba(255,255,255,0.6)", fontSize: 16 }}>
+                Now all you gotta do is wait...
               </Text>
-              <Text style={styles.statusText}>
-                ${Math.abs(owedAmount).toFixed(2)}
-              </Text>
-            </>
-          ) : null}
+            </View>
+
+            <View>
+              <Image
+                source={illustration}
+                style={{ width: 126, height: 150, paddingTop: 60 }}
+              />
+            </View>
+          </View>
         </View>
-        <Text
-          style={{ color: "rgba(255,255,255,0.6)", margin: 16, fontSize: 16 }}
-        >
-          Now all you gotta do is wait...
-        </Text>
       </View>
       <View style={styles.listTitleContainer}>
         <Text style={styles.listTitle}>Housemates</Text>
@@ -152,10 +181,12 @@ const styles = StyleSheet.create({
   houseName: {
     color: "rgba(255,255,255,0.6)",
     fontSize: 30,
-    lineHeight: 30,
     marginLeft: 12,
     fontWeight: "bold",
     marginVertical: 16,
+    // borderWidth: 1,
+    // borderColor: "red",
+    textAlignVertical: "auto",
   },
   row: {
     justifyContent: "space-between",

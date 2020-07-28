@@ -1,8 +1,5 @@
 import createDataContext from "./createDataContext";
 import maisonApi from "../api/maison";
-import * as ImagePicker from 'expo-image-picker';
-
-import UserPermissions from '../utilities/UserPermissions';
 
 const housemateReducer = (state, action) => {
   switch (action.type) {
