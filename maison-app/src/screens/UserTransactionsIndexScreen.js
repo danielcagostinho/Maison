@@ -7,6 +7,7 @@ import { Context as HousemateContext } from "../context/HousemateContext";
 import Transaction from "../components/Transaction";
 import {
   View,
+  Image,
   StyleSheet,
   FlatList,
   TouchableOpacity,
@@ -24,6 +25,7 @@ const UserTransactionsIndexScreen = ({ navigation }) => {
     state: { currentUser },
   } = useContext(HousemateContext);
   const [localHousemateDebts, setLocalHousemateDebts] = useState([]);
+  const otherUser = navigation.getParam("otherUser");
   const otherUserId = navigation.getParam("otherUserId");
   const otherUserName = navigation.getParam("otherUserName");
   const otherUserDebt = navigation.getParam("otherUserDebt");
@@ -34,7 +36,6 @@ const UserTransactionsIndexScreen = ({ navigation }) => {
     setLocalHousemateDebts(housemateDebts)
     
   }, []);
-  
   return (
     <View style={{flex: 1,backgroundColor: '#FFF'}}>
       <View style={{backgroundColor: '#F8F5FB', padding: 16}}>
@@ -44,15 +45,10 @@ const UserTransactionsIndexScreen = ({ navigation }) => {
           <StyledText style={styles.debtStatus}>{otherUserDebt < 0 ? `you owe ${otherUserName}` : `${otherUserName} owes you` }</StyledText>
         </View>
         {/* display picture below */}
-        <View
-          style={{
-            height: 68,
-            width: 68,
-            borderRadius: 50,
-            borderColor: "red",
-            borderWidth: 1,
-          }}
-        ></View>
+        <Image
+          source={{uri: otherUser.avatarURL}}
+          style={styles.profile}
+        />  
       </View>
 
       <StyledButton
@@ -101,6 +97,12 @@ const UserTransactionsIndexScreen = ({ navigation }) => {
   );
 };
 
+UserTransactionsIndexScreen.navigationOptions = () => {
+  return {
+    header: () => false,
+  };
+};
+
 const styles = StyleSheet.create({
   listTitle: {
     fontSize: 15,
@@ -117,7 +119,12 @@ const styles = StyleSheet.create({
     letterSpacing: -0.41,
     fontSize: 24,
     color: 'rgba(0,0,0,0.5)'
-  }
+  },
+  profile: {
+    width: 68, 
+    height: 68,
+    borderRadius: 45
+  } 
 });
 
 export default withNavigation(UserTransactionsIndexScreen);

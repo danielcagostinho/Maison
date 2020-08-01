@@ -30,15 +30,16 @@ const HousemateCard = ({ housemate, top, last, navigation }) => {
         navigation.navigate("UserTransactionsIndex", {
           otherUserId: housemate._id,
           otherUserName: housemate.name,
-          otherUserDebt: debtAmount
+          otherUserDebt: debtAmount,
+          otherUser: housemate
         });
       }}
     >
-      <Image source={{ uri: housemate.avatar }} style={styles.displayPic}/>
+      <Image source={{ uri: housemate.avatarURL }} style={styles.displayPic}/>
       <View style={styles.textContainer}>
         <StyledText style={styles.name}>{housemate.name}</StyledText>
         <StyledText style={styles.debtStatus}>
-          {housemate.amount > 0 ? "you owe" : housemate.amount == 0 ? "we're good" : "owes you"}
+          {housemate.amount > 0 ? "is owed" : housemate.amount == 0 ? "we're good" : "owes you"}
         </StyledText>
       </View>
       {amountDisplay}
@@ -80,8 +81,6 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     borderRadius: 50,
-    borderColor: "red",
-    borderWidth: 1,
     marginTop: 16,
     marginBottom: 8,
   },

@@ -3,42 +3,48 @@ import Moment from "moment";
 
 import { Context as HousemateContext } from "../context/HousemateContext";
 
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Image } from "react-native";
 import StyledText from './StyledText';
 
 const Transaction = ({ transaction, title, onPress }) => {
-  const { state } = useContext(HousemateContext);
+  const { state: {housemates, currentUser} } = useContext(HousemateContext);
   const titleStyles = [
     styles.title,
     title === "Pending" ? { fontFamily: "ProductSansBold" } : { fontFamily: "ProductSansRegular" },
   ];
-  Moment.locale("en");
+  
 
-  const isOwner = state.currentUser.id === transaction.ownerId;
+ 
+  Moment.locale("en");
+  const isOwner = currentUser.id === transaction.ownerId;
+  console.log(transaction.ownerId)
+  console.log(`Housemate`)
+  console.log(housemates.find(housemate => housemate._id === transaction.ownerId));
+  let avatarURL = housemates.find(housemate => housemate._id === transaction.ownerId).avatarURL;
   let amount = 0;
   if (isOwner) {
     for (let i = 0; i < transaction.debtors.length; i++) {
       let debtor = transaction.debtors[i];
-      if (debtor.housemateId == state.currentUser.id) {
+      if (debtor.housemateId == currentUser.id) {
         amount = Number(debtor.share).toFixed(2);
       }
     }
   } else {
     for (let i = 0; i < transaction.debtors.length; i++) {
       let debtor = transaction.debtors[i];
-      if (debtor.housemateId == state.currentUser.id) {
+      if (debtor.housemateId == currentUser.id) {
         amount =
           Number(transaction.amount).toFixed(2) -
           Number(debtor.share).toFixed(2);
       }
     }
-    //amount = transaction.amount - transaction.debtors.find((debtor) => debtor.housemateId === state.currentUser.id).share;
+    //amount = transaction.amount - transaction.debtors.find((debtor) => debtor.housemateId === currentUser.id).share;
   }
 
   return (
     <View style={styles.row}>
       <View style={{ flexDirection: "row" }}>
-        <View style={styles.displayPic}></View>
+        <Image source={{uri: avatarURL}} style={styles.displayPic}/>
         <View
           style={{
             flexDirection: "column",
@@ -102,8 +108,6 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 50,
-    borderColor: "blue",
-    borderWidth: 1,
   },
   textContainer: {
     height: 60,

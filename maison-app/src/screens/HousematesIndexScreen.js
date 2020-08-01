@@ -53,7 +53,7 @@ const HousematesIndexScreen = ({ navigation }) => {
               <Button
                 title="Select User"
                 onPress={() => {
-                  setCurrentUser(item._id, item.name.displayName);
+                  setCurrentUser(item._id, item.name.displayName, item.avatarURL);
                   navigation.navigate("UserHome");
                 }}
               />

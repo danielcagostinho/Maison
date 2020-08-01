@@ -26,10 +26,8 @@ const UserHomeScreen = ({ navigation }) => {
   const housemates = state.housemates.filter((housemate) => {
     return housemate._id !== state.currentUser.id;
   });
-
-  const displayPic = require("../../assets/imgs/profile-pics/adobe-people-21.png");
   const illustration = require("../../assets/imgs/homepage.png");
-  const houseName = state.currentUser.displayName;
+  const houseName = "Oxley St.";
   let amounts = [];
   let owedAmount = 0;
   if (housemateDebts) {
@@ -58,6 +56,7 @@ const UserHomeScreen = ({ navigation }) => {
           getHousemates();
         }}
       />
+     
       <View style={styles.topSection}>
         <View style={styles.row}>
           <View
@@ -67,7 +66,9 @@ const UserHomeScreen = ({ navigation }) => {
               alignItems: "center",
             }}
           >
-            <Image source={displayPic} style={styles.displayPic} />
+            <Image source={{uri: state.currentUser.avatarURL}} style={styles.displayPic} />
+            
+
             <StyledText style={styles.houseName}>{houseName}</StyledText>
           </View>
           <View style={styles.newBillButtonContainer}>
@@ -81,10 +82,6 @@ const UserHomeScreen = ({ navigation }) => {
                 }}
               />
             </TouchableOpacity>
-            {/* <Button
-              onPress={() => navigation.navigate("TransactionsIndex")}
-              title="View Bills"
-            /> */}
           </View>
         </View>
         <View>
@@ -139,6 +136,7 @@ const UserHomeScreen = ({ navigation }) => {
                   _id: item._id,
                   amount: debt,
                   name: item.name.displayName,
+                  avatarURL: item.avatarURL,
                 }}
               />
             );
@@ -203,8 +201,6 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 50,
-    borderColor: "white",
-    borderWidth: 1,
   },
   statusContainer: {
     // borderColor: 'green',

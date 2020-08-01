@@ -7,7 +7,8 @@ const nameSchema = new mongoose.Schema({
 });
 
 const housemateSchema = new mongoose.Schema({
-    name: nameSchema
+    name: nameSchema,
+    avatarURL: String
 });
 
 mongoose.model('Housemate', housemateSchema);

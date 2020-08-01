@@ -10,11 +10,12 @@ router.get("/housemates", async (req, res) => {
 });
 
 router.post("/housemates", async (req, res) => {
-  console.log("You made a POST request to /housemates")
-  const { firstName, lastName, displayName } = req.body;
+  console.log("You made a POST request to /housemates");
+  const { firstName, lastName, displayName, avatarURL } = req.body;
   try {
     const newHousemate = new Housemate({
       name: { firstName, lastName, displayName },
+      avatarURL,
     });
     await newHousemate.save();
   } catch (err) {

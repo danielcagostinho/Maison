@@ -13,6 +13,7 @@ const housemateReducer = (state, action) => {
         currentUser: {
           displayName: action.payload.displayName,
           id: action.payload.id,
+          avatarURL: action.payload.avatarURL
         },
       };
     default:
@@ -20,12 +21,12 @@ const housemateReducer = (state, action) => {
   }
 };
 
-const addHousemate = (dispatch) => async ({ firstName, lastName }) => {
+const addHousemate = (dispatch) => async ({ firstName, lastName, avatarURL }) => {
   const displayName = firstName.concat(" " + lastName.substring(0, 1) + ".");
-  await maisonApi.post("/housemates", { firstName, lastName, displayName });
+  await maisonApi.post("/housemates", { firstName, lastName, displayName, avatarURL });
   dispatch({
     type: "ADD_HOUSEMATE",
-    payload: { firstName, lastName, displayName },
+    payload: { firstName, lastName, displayName, avatarURL },
   });
 };
 
@@ -34,8 +35,8 @@ const getHousemates = (dispatch) => async () => {
   dispatch({ type: "GET_HOUSEMATES", payload: response.data });
 };
 
-const setCurrentUser = (dispatch) => async (id, displayName) => {
-  dispatch({ type: "SET_USER", payload: { id, displayName } });
+const setCurrentUser = (dispatch) => async (id, displayName, avatarURL) => {
+  dispatch({ type: "SET_USER", payload: { id, displayName, avatarURL } });
 };
 
 export const { Context, Provider } = createDataContext(
