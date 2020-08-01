@@ -33,6 +33,7 @@ const homeFlow = createStackNavigator({
   UserTransactionsIndex: UserTransactionsIndexScreen,
   ShowTransaction: ShowTransactionScreen,
   SettleUp: SettleUpScreen,
+  
 });
 
 const switchNavigator = createSwitchNavigator(

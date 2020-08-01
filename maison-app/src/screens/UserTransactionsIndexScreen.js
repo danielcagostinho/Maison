@@ -1,6 +1,5 @@
-import React, { useContext, useState, useEffect } from "react";
-import { withNavigation, NavigationEvents } from "react-navigation";
-
+import React, { useContext, useEffect } from "react";
+import { withNavigation } from "react-navigation";
 import { Context as TransactionContext } from "../context/TransactionContext";
 import { Context as HousemateContext } from "../context/HousemateContext";
 
@@ -12,9 +11,8 @@ import {
   FlatList,
   TouchableOpacity,
 } from "react-native";
-import StyledText from '../components/StyledText';
-import StyledButton from '../components/StyledButton';
-
+import StyledText from "../components/StyledText";
+import StyledButton from "../components/StyledButton";
 
 const UserTransactionsIndexScreen = ({ navigation }) => {
   const {
@@ -26,38 +24,43 @@ const UserTransactionsIndexScreen = ({ navigation }) => {
   } = useContext(HousemateContext);
   //const [localHousemateDebts, setLocalHousemateDebts] = useState([]);
   const otherUser = navigation.getParam("otherUser");
-  const otherUserId = navigation.getParam("otherUserId");
-  const otherUserName = navigation.getParam("otherUserName");
   const otherUserDebt = navigation.getParam("otherUserDebt");
   const titleStyles = [styles.listTitle];
 
   useEffect(() => {
-    getTransactions(currentUser.id, otherUserId);
+    getTransactions(currentUser.id, otherUser._id);
     //setLocalHousemateDebts(housemateDebts)
-    
   }, []);
   return (
-    <View style={{flex: 1,backgroundColor: '#FFF'}}>
-      <View style={{backgroundColor: '#F8F5FB', padding: 16}}>
-      <View style={{ flexDirection: "row", justifyContent: "space-between", marginVertical: 16 }}>
-        <View>
-          <StyledText style={styles.amount}>${otherUserDebt}</StyledText>
-          <StyledText style={styles.debtStatus}>{otherUserDebt < 0 ? `you owe ${otherUserName}` : `${otherUserName} owes you` }</StyledText>
+    <View style={{ flex: 1, backgroundColor: "#FFF" }}>
+      <View style={{ backgroundColor: "#F8F5FB", padding: 16 }}>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            marginVertical: 16,
+          }}
+        >
+          <View>
+            <StyledText style={styles.amount}>${otherUserDebt}</StyledText>
+            <StyledText style={styles.debtStatus}>
+              {otherUserDebt < 0
+                ? `you owe ${otherUser.name.displayName}`
+                : `${otherUser.name.displayName} owes you`}
+            </StyledText>
+          </View>
+          {/* display picture below */}
+          <Image source={{ uri: otherUser.avatarURL }} style={styles.profile} />
         </View>
-        {/* display picture below */}
-        <Image
-          source={{uri: otherUser.avatarURL}}
-          style={styles.profile}
-        />  
-      </View>
 
-      <StyledButton
-        title="Settle up"
-        buttonAction={() => navigation.navigate("SettleUp",{ otherUserId: otherUserId })}
-      />
+        <StyledButton
+          variant="light"
+          title="Settle up"
+          buttonAction={() => navigation.navigate("SettleUp", { otherUser, otherUserDebt })}
+        />
       </View>
       {transactions ? (
-        <View style={{backgroundColor: 'white'}}>
+        <View style={{ backgroundColor: "white" }}>
           <StyledText style={titleStyles}>Pending</StyledText>
           <FlatList
             data={transactions.filter((transaction) => !transaction.isPaid)}
@@ -111,20 +114,20 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
   },
   amount: {
-    fontFamily: 'ProductSansBold',
+    fontFamily: "ProductSansBold",
     fontSize: 34,
     letterSpacing: -0.24,
   },
   debtStatus: {
     letterSpacing: -0.41,
     fontSize: 24,
-    color: 'rgba(0,0,0,0.5)'
+    color: "rgba(0,0,0,0.5)",
   },
   profile: {
-    width: 68, 
+    width: 68,
     height: 68,
-    borderRadius: 45
-  } 
+    borderRadius: 45,
+  },
 });
 
 export default withNavigation(UserTransactionsIndexScreen);

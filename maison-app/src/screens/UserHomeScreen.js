@@ -135,7 +135,7 @@ const UserHomeScreen = ({ navigation }) => {
                 housemate={{
                   _id: item._id,
                   amount: debt,
-                  name: item.name.displayName,
+                  name: item.name,
                   avatarURL: item.avatarURL,
                 }}
               />

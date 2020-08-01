@@ -1,37 +1,65 @@
-import React from 'react';
-import { View, TouchableOpacity, StyleSheet } from 'react-native'; 
-import StyledText from './StyledText';
+import React from "react";
+import { View, TouchableOpacity, StyleSheet } from "react-native";
+import StyledText from "./StyledText";
 
-const StyledButton = ({buttonAction, title}) => {
-  return ( 
-    <TouchableOpacity
-      onPress={buttonAction}
-    >
-      <View style={styles.button}>
-        <StyledText style={styles.text}>{title}</StyledText>
+const StyledButton = ({ buttonAction, title, variant, size }) => {
+  return (
+    <TouchableOpacity onPress={buttonAction}>
+      <View
+        style={[
+          styles.button,
+          size == "lg" ? styles.lg : styles.md,
+          variant == "light" ? styles.lightVariant : styles.darkVariant,
+        ]}
+      >
+        <StyledText
+          style={[
+            styles.text,
+            variant == "light"
+              ? styles.lightVariantText
+              : styles.darkVariantText,
+          ]}
+        >
+          {title}
+        </StyledText>
       </View>
     </TouchableOpacity>
-   );
-}
+  );
+};
 
 const styles = StyleSheet.create({
-  button: {
-    alignSelf: 'center',
-    width: '100%',
+  lg: {
+    height: 50,
+  },
+  md: {
     height: 40,
-    backgroundColor: '#DFD8F1',
-    color: 'white',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 12
+  },
+  button: {
+    alignSelf: "center",
+    width: "100%",
+    color: "white",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 12,
   },
   text: {
-    color: '#4900A7',
-    fontFamily: 'ProductSansBold',
+    fontFamily: "ProductSansBold",
     letterSpacing: -0.41,
-    fontSize: 17
-  }
+    fontSize: 17,
+  },
+  lightVariant: {
+    backgroundColor: "#DFD8F1",
+  },
+  lightVariantText: {
+    color: "#4900A7",
+  },
+  darkVariant: {
+    backgroundColor: "#4900A7",
+  },
+  darkVariantText: {
+    color: "#FFF",
+  },
 });
- 
+
 export default StyledButton;

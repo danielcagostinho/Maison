@@ -28,16 +28,14 @@ const HousemateCard = ({ housemate, top, last, navigation }) => {
       style={cardStyles}
       onPress={() => {
         navigation.navigate("UserTransactionsIndex", {
-          otherUserId: housemate._id,
-          otherUserName: housemate.name,
-          otherUserDebt: debtAmount,
-          otherUser: housemate
+          otherUser: housemate,
+          otherUserDebt: housemate.amount
         });
       }}
     >
       <Image source={{ uri: housemate.avatarURL }} style={styles.displayPic}/>
       <View style={styles.textContainer}>
-        <StyledText style={styles.name}>{housemate.name}</StyledText>
+        <StyledText style={styles.name}>{housemate.name.displayName}</StyledText>
         <StyledText style={styles.debtStatus}>
           {housemate.amount > 0 ? "is owed" : housemate.amount == 0 ? "we're good" : "owes you"}
         </StyledText>
