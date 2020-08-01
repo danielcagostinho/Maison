@@ -11,7 +11,7 @@ import StyledButton from "../components/StyledButton";
 
 const SettleUpScreen = ({ navigation }) => {
   const [dataLoaded, setDataLoaded] = useState(false);
-
+  const illustration = require('../../assets/imgs/settleup.png')
   const {
     state: { housemateDebts, transactions },
     getTransactions,
@@ -83,6 +83,12 @@ const SettleUpScreen = ({ navigation }) => {
         </View>
         {dataLoaded ? (
           <>
+            <View>
+              <Image
+                source={illustration}
+                style={styles.illustration}
+              />
+            </View>
             <FlatList
               data={transactions.filter(
                 (transaction) => transaction.ownerId == otherUser._id
@@ -227,6 +233,13 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontFamily: "ProductSansBold",
   },
+  illustration: {
+    position: 'absolute',
+    alignSelf: 'flex-end',
+    height: 600,
+    width: 250,
+    zIndex: 2,
+  }
 });
 
 export default withNavigation(SettleUpScreen);

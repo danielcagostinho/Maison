@@ -54,6 +54,7 @@ const UserTransactionsIndexScreen = ({ navigation }) => {
         </View>
 
         <StyledButton
+        size="md"
           variant="light"
           title="Settle up"
           buttonAction={() => navigation.navigate("SettleUp", { otherUser, otherUserDebt })}

@@ -1,9 +1,12 @@
-import React, { useContext } from "react";
-import { withNavigation, NavigationEvents } from "react-navigation";
+// React Imports
+import React, { useContext, useEffect } from "react";
+import { withNavigation } from "react-navigation";
 
+// Context Imports
 import { Context as HousemateContext } from "../context/HousemateContext";
 import { Context as TransactionContext } from "../context/TransactionContext";
 
+// Component Imports
 import HousemateCard from "../components/HousemateCard";
 import {
   View,
@@ -12,9 +15,8 @@ import {
   Image,
   TouchableOpacity,
 } from "react-native";
-
 import NewBillIcon from "../../assets/imgs/newbill.png";
-import StyledText from '../components/StyledText';
+import StyledText from "../components/StyledText";
 
 const UserHomeScreen = ({ navigation }) => {
   let { state, getHousemates } = useContext(HousemateContext);
@@ -26,8 +28,7 @@ const UserHomeScreen = ({ navigation }) => {
   const housemates = state.housemates.filter((housemate) => {
     return housemate._id !== state.currentUser.id;
   });
-  const illustration = require("../../assets/imgs/homepage.png");
-  const houseName = "Oxley St.";
+
   let amounts = [];
   let owedAmount = 0;
   if (housemateDebts) {
@@ -48,15 +49,17 @@ const UserHomeScreen = ({ navigation }) => {
     }
   }
 
+  // UseEffect Hook
+  useEffect(() => {
+    getTransactions(state.currentUser.id, null);
+    getHousemates();
+  }, []);
+
+  const illustration = require("../../assets/imgs/homepage.png");
+  const houseName = "Oxley St.";
+
   return (
-    <View style={{flex: 1, backgroundColor: '#FFFFFF'}} >
-      <NavigationEvents
-        onWillFocus={() => {
-          getTransactions(state.currentUser.id, null);
-          getHousemates();
-        }}
-      />
-     
+    <View style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
       <View style={styles.topSection}>
         <View style={styles.row}>
           <View
@@ -66,13 +69,17 @@ const UserHomeScreen = ({ navigation }) => {
               alignItems: "center",
             }}
           >
-            <Image source={{uri: state.currentUser.avatarURL}} style={styles.displayPic} />
-            
+            <Image
+              source={{ uri: state.currentUser.avatarURL }}
+              style={styles.displayPic}
+            />
 
             <StyledText style={styles.houseName}>{houseName}</StyledText>
           </View>
           <View style={styles.newBillButtonContainer}>
-            <TouchableOpacity onPress={() => navigation.navigate("NewTransaction")}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("NewTransaction")}
+            >
               <Image
                 source={NewBillIcon}
                 style={{
@@ -85,64 +92,64 @@ const UserHomeScreen = ({ navigation }) => {
           </View>
         </View>
         <View>
-          <View style={styles.row}>
-            <View style={styles.statusContainer}>
-              {housemateDebts ? (
-                <>
-                  <StyledText style={styles.statusText}>
-                    {owedAmount < 0 ? "You're owed" : "You owe"}
-                  </StyledText>
-                  <StyledText style={styles.statusText}>
-                    ${Math.abs(owedAmount).toFixed(2)}
-                  </StyledText>
-                </>
-              ) : null}
-              <StyledText style={{ color: "rgba(255,255,255,0.6)", fontSize: 16 }}>
-                Now all you gotta do is wait...
-              </StyledText>
-            </View>
-
-            <View>
-              <Image
-                source={illustration}
-                style={{ width: 126, height: 150, paddingTop: 60 }}
-              />
-            </View>
+          {/* <View style={styles.row}> */}
+          <View style={styles.statusContainer}>
+            {housemateDebts ? (
+              <>
+                <StyledText style={styles.statusText}>
+                  {owedAmount < 0 ? "You're owed" : "You owe"}
+                </StyledText>
+                <StyledText style={styles.statusText}>
+                  ${Math.abs(owedAmount).toFixed(2)}
+                </StyledText>
+              </>
+            ) : null}
           </View>
+          <StyledText
+            style={{ color: "rgba(255,255,255,0.6)", fontSize: 14, margin: 16 }}
+          >
+            Now all you gotta do is wait...
+          </StyledText>
+          <Image source={illustration} style={styles.illustration} />
+          {/* </View> */}
         </View>
       </View>
-      <View style={styles.listTitleContainer}>
-        <StyledText style={styles.listTitle}>Housemates</StyledText>
-      </View>
-      {housemateDebts ? (
-        <FlatList
-          style={styles.list}
-          data={housemates}
-          keyExtractor={(housemate) => housemate._id}
-          numColumns={2}
-          renderItem={({ item, index }) => {
-            let debt = 0;
-            for (let i = 0; i < amounts.length; i++) {
-              if (amounts[i].housemateId == item._id) {
-                debt = amounts[i].amount;
-              }
-            }
+      <View style={{ width: "100%", backgroundColor: "white" }}>
+        <View>
+          <View style={styles.listTitleContainer}>
+            <StyledText style={styles.listTitle}>Housemates</StyledText>
+          </View>
+          {housemateDebts ? (
+            <FlatList
+              style={styles.list}
+              data={housemates}
+              keyExtractor={(housemate) => housemate._id}
+              numColumns={2}
+              renderItem={({ item, index }) => {
+                let debt = 0;
+                for (let i = 0; i < amounts.length; i++) {
+                  if (amounts[i].housemateId == item._id) {
+                    debt = amounts[i].amount;
+                  }
+                }
 
-            return (
-              <HousemateCard
-                top={index < 2}
-                last={index == housemates.length - 1}
-                housemate={{
-                  _id: item._id,
-                  amount: debt,
-                  name: item.name,
-                  avatarURL: item.avatarURL,
-                }}
-              />
-            );
-          }}
-        />
-      ) : null}
+                return (
+                  <HousemateCard
+                    top={index < 2}
+                    last={index == housemates.length - 1}
+                    housemate={{
+                      _id: item._id,
+                      amount: debt,
+                      name: item.name,
+                      avatarURL: item.avatarURL,
+                    }}
+                  />
+                );
+              }}
+            />
+          ) : null}
+        </View>
+      </View>
     </View>
   );
 };
@@ -169,8 +176,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     flexDirection: "row",
     alignItems: "center",
-    // borderWidth: 1,
-    // borderColor: 'yellow'
   },
   list: {
     marginHorizontal: 8,
@@ -195,7 +200,7 @@ const styles = StyleSheet.create({
   statusText: {
     color: "white",
     fontSize: 24,
-    fontFamily: "ProductSansBold"
+    fontFamily: "ProductSansBold",
   },
   displayPic: {
     width: 40,
@@ -203,9 +208,18 @@ const styles = StyleSheet.create({
     borderRadius: 50,
   },
   statusContainer: {
-    // borderColor: 'green',
-    // borderWidth: 1,
     margin: 16,
+    display: "flex",
+    justifyContent: "space-around",
+  },
+  illustration: {
+    width: 126,
+    height: 200,
+    position: "absolute",
+    alignSelf: "flex-end",
+    zIndex: 2,
+    right: 16,
+    overflow: "hidden",
   },
 });
 
