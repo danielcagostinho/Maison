@@ -19,9 +19,9 @@ const HousemateCard = ({ housemate, top, last, navigation }) => {
   } else {
     amountStyle = [...amountStyle, styles.owesYou];
   }
-
+  const debtAmount = Math.abs(housemate.amount).toFixed(2);
   const amountDisplay = (
-    <StyledText style={amountStyle}>{housemate.amount == 0 ? "Settled Up": "$" + Math.abs(housemate.amount).toFixed(2)}</StyledText>
+    <StyledText style={amountStyle}>{housemate.amount == 0 ? "Settled Up": "$" + debtAmount}</StyledText>
   );
   return (
     <TouchableOpacity
@@ -29,6 +29,8 @@ const HousemateCard = ({ housemate, top, last, navigation }) => {
       onPress={() => {
         navigation.navigate("UserTransactionsIndex", {
           otherUserId: housemate._id,
+          otherUserName: housemate.name,
+          otherUserDebt: debtAmount
         });
       }}
     >

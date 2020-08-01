@@ -6,13 +6,15 @@ const transactionReducer = (state, action) => {
     case "ADD_TRANSACTION":
       return { ...state, transactions: action.payload };
     case "GET_TRANSACTIONS":
+      // console.log("housemateDebts dipatch call")
+      // console.log(action.payload.housemateDebts)
       return {
         ...state,
         transactions: action.payload.transactions,
         housemateDebts: action.payload.housemateDebts,
       };
     case "CLEAR_TRANSACTIONS":
-      return { transactions: [] };
+      return {...state, transactions: [] };
     default:
       return state;
   }
@@ -31,6 +33,7 @@ const getTransactions = (dispatch) => async (currentId, housemateId) => {
   const housemateDebts = await maisonApi.get("/updatedebts", {
     params: { currentId },
   });
+  //console.log(housemateDebts.data)
   dispatch({
     type: "GET_TRANSACTIONS",
     payload: {

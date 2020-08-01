@@ -17,7 +17,7 @@ const StyledButton = ({buttonAction, title}) => {
 const styles = StyleSheet.create({
   button: {
     alignSelf: 'center',
-    width: '90%',
+    width: '100%',
     height: 40,
     backgroundColor: '#DFD8F1',
     color: 'white',

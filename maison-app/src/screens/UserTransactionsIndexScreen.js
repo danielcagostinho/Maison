@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { withNavigation, NavigationEvents } from "react-navigation";
 
 import { Context as TransactionContext } from "../context/TransactionContext";
@@ -17,29 +17,33 @@ import StyledButton from '../components/StyledButton';
 
 const UserTransactionsIndexScreen = ({ navigation }) => {
   const {
-    state: { transactions },
+    state: { transactions, housemateDebts },
     getTransactions,
   } = useContext(TransactionContext);
   const {
     state: { currentUser },
   } = useContext(HousemateContext);
+  const [localHousemateDebts, setLocalHousemateDebts] = useState([]);
   const otherUserId = navigation.getParam("otherUserId");
+  const otherUserName = navigation.getParam("otherUserName");
+  const otherUserDebt = navigation.getParam("otherUserDebt");
   const titleStyles = [styles.listTitle];
-  console.log(transactions)
+
+  useEffect(() => {
+    getTransactions(currentUser.id, otherUserId);
+    setLocalHousemateDebts(housemateDebts)
+    
+  }, []);
+  
   return (
     <View>
-      <NavigationEvents
-        onWillFocus={() => {
-          getTransactions(currentUser.id, otherUserId);
-          console.log(transactions)
-        }}
-      />
-      <View style={{backgroundColor: '#F8F5FB'}}>
-      <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+      <View style={{backgroundColor: '#F8F5FB', padding: 16}}>
+      <View style={{ flexDirection: "row", justifyContent: "space-between", marginVertical: 16 }}>
         <View>
-          <StyledText>Debt Amount</StyledText>
-          <StyledText>you owe User</StyledText>
+          <StyledText style={styles.amount}>${otherUserDebt}</StyledText>
+          <StyledText style={styles.debtStatus}>{otherUserDebt < 0 ? `you owe ${otherUserName}` : `${otherUserName} owes you` }</StyledText>
         </View>
+        {/* display picture below */}
         <View
           style={{
             height: 68,
@@ -104,6 +108,16 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     marginHorizontal: 16,
   },
+  amount: {
+    fontFamily: 'ProductSansBold',
+    fontSize: 34,
+    letterSpacing: -0.24,
+  },
+  debtStatus: {
+    letterSpacing: -0.41,
+    fontSize: 24,
+    color: 'rgba(0,0,0,0.5)'
+  }
 });
 
 export default withNavigation(UserTransactionsIndexScreen);

@@ -52,11 +52,11 @@ const Transaction = ({ transaction, title, onPress }) => {
           </StyledText>
         </View>
       </View>
-      <View style={{ flexDirection: "column" }}>
+      <View style={{ flexDirection: "column", alignItems: 'center' }}>
         <StyledText style={isOwner ? styles.ownerStyle : styles.debtorStyle}>
           ${Number(amount).toFixed(2)}
         </StyledText>
-        <StyledText>{isOwner ? "Owes You" : "You Owe"}</StyledText>
+        <StyledText style={isOwner ? styles.ownerStyleText : styles.debtorStyleText}>{isOwner ? "Owes You" : "You Owe"}</StyledText>
       </View>
     </View>
   );
@@ -73,6 +73,14 @@ const styles = StyleSheet.create({
   },
   debtorStyle: {
     fontSize: 17,
+    color: "red",
+  },
+  ownerStyleText: {
+    fontSize: 13,
+    color: "green",
+  },
+  debtorStyleText: {
+    fontSize: 13,
     color: "red",
   },
   date: {
