@@ -36,7 +36,7 @@ const UserTransactionsIndexScreen = ({ navigation }) => {
   }, []);
   
   return (
-    <View>
+    <View style={{flex: 1,backgroundColor: '#FFF'}}>
       <View style={{backgroundColor: '#F8F5FB', padding: 16}}>
       <View style={{ flexDirection: "row", justifyContent: "space-between", marginVertical: 16 }}>
         <View>
@@ -61,7 +61,7 @@ const UserTransactionsIndexScreen = ({ navigation }) => {
       />
       </View>
       {transactions ? (
-        <>
+        <View style={{backgroundColor: 'white'}}>
           <StyledText style={titleStyles}>Pending</StyledText>
           <FlatList
             data={transactions.filter((transaction) => !transaction.isPaid)}
@@ -95,7 +95,7 @@ const UserTransactionsIndexScreen = ({ navigation }) => {
               );
             }}
           />
-        </>
+        </View>
       ) : null}
     </View>
   );

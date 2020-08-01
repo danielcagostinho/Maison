@@ -51,7 +51,7 @@ const UserHomeScreen = ({ navigation }) => {
   }
 
   return (
-    <View>
+    <View style={{flex: 1, backgroundColor: '#FFFFFF'}} >
       <NavigationEvents
         onWillFocus={() => {
           getTransactions(state.currentUser.id, null);
