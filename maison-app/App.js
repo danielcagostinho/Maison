@@ -122,7 +122,6 @@ export default () => {
         ProductSansItalic: require("./assets/fonts/ProductSansItalic.ttf"),
         ProductSansBoldItalic: require("./assets/fonts/ProductSansBoldItalic.ttf"),
       });
-      console.log("[useEffect]");
       setFontLoaded(true);
     };
     loading();

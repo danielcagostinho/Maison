@@ -82,7 +82,7 @@ router.post("/transactions", async (req, res) => {
       ownerId,
     });
     await transaction.save((err, t) => t._id);
-
+    
     // for (let i = 0; i < debtors.length; i++) {
     //   let currentDebtor = debtors[i];
     //   let damage;

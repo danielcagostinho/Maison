@@ -8,11 +8,11 @@ import Transaction from "../components/Transaction";
 import {
   View,
   StyleSheet,
-  Button,
   FlatList,
   TouchableOpacity,
 } from "react-native";
 import StyledText from '../components/StyledText';
+import StyledButton from '../components/StyledButton';
 
 
 const UserTransactionsIndexScreen = ({ navigation }) => {
@@ -25,17 +25,16 @@ const UserTransactionsIndexScreen = ({ navigation }) => {
   } = useContext(HousemateContext);
   const otherUserId = navigation.getParam("otherUserId");
   const titleStyles = [styles.listTitle];
-
+  console.log(transactions)
   return (
     <View>
       <NavigationEvents
         onWillFocus={() => {
-          console.log("OnWillFocus");
-          console.log("UserTransactionsIndexScreen");
-          console.log(transactions);
           getTransactions(currentUser.id, otherUserId);
+          console.log(transactions)
         }}
       />
+      <View style={{backgroundColor: '#F8F5FB'}}>
       <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
         <View>
           <StyledText>Debt Amount</StyledText>
@@ -52,10 +51,11 @@ const UserTransactionsIndexScreen = ({ navigation }) => {
         ></View>
       </View>
 
-      <Button
+      <StyledButton
         title="Settle up"
-        onPress={() => navigation.navigate("SettleUp",{ otherUserId: otherUserId })}
+        buttonAction={() => navigation.navigate("SettleUp",{ otherUserId: otherUserId })}
       />
+      </View>
       {transactions ? (
         <>
           <StyledText style={titleStyles}>Pending</StyledText>

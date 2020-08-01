@@ -21,7 +21,6 @@ const ShowTransactionScreen = ({ navigation }) => {
       transaction = t;
     }
   }
-  console.log(`Transaction: ${transaction}`);
 
   let transactionOwner;
   for (let i = 0; i < housemates.length; i++) {
