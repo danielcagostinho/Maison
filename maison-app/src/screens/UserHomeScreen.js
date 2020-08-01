@@ -7,7 +7,6 @@ import { Context as TransactionContext } from "../context/TransactionContext";
 import HousemateCard from "../components/HousemateCard";
 import {
   View,
-  Text,
   Button,
   StyleSheet,
   FlatList,
@@ -16,6 +15,7 @@ import {
 } from "react-native";
 
 import NewBillIcon from "../../assets/imgs/newbill.png";
+import StyledText from '../components/StyledText';
 
 const UserHomeScreen = ({ navigation }) => {
   let { state, getHousemates, getCurrentUser } = useContext(HousemateContext);
@@ -69,7 +69,7 @@ const UserHomeScreen = ({ navigation }) => {
             }}
           >
             <Image source={displayPic} style={styles.displayPic} />
-            <Text style={styles.houseName}>{houseName}</Text>
+            <StyledText style={styles.houseName}>{houseName}</StyledText>
           </View>
           <View style={styles.newBillButtonContainer}>
             {/* <Button
@@ -97,17 +97,17 @@ const UserHomeScreen = ({ navigation }) => {
             <View style={styles.statusContainer}>
               {housemateDebts ? (
                 <>
-                  <Text style={styles.statusText}>
+                  <StyledText style={styles.statusText}>
                     {owedAmount < 0 ? "You're owed" : "You owe"}
-                  </Text>
-                  <Text style={styles.statusText}>
+                  </StyledText>
+                  <StyledText style={styles.statusText}>
                     ${Math.abs(owedAmount).toFixed(2)}
-                  </Text>
+                  </StyledText>
                 </>
               ) : null}
-              <Text style={{ color: "rgba(255,255,255,0.6)", fontSize: 16 }}>
+              <StyledText style={{ color: "rgba(255,255,255,0.6)", fontSize: 16 }}>
                 Now all you gotta do is wait...
-              </Text>
+              </StyledText>
             </View>
 
             <View>
@@ -120,7 +120,7 @@ const UserHomeScreen = ({ navigation }) => {
         </View>
       </View>
       <View style={styles.listTitleContainer}>
-        <Text style={styles.listTitle}>Housemates</Text>
+        <StyledText style={styles.listTitle}>Housemates</StyledText>
       </View>
       {housemateDebts ? (
         <FlatList
