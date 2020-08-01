@@ -1,13 +1,16 @@
 import React, { useContext } from "react";
-import { View, Text, StyleSheet } from "react-native";
 import Moment from "moment";
+
 import { Context as HousemateContext } from "../context/HousemateContext";
+
+import { View, StyleSheet } from "react-native";
+import StyledText from './StyledText';
 
 const Transaction = ({ transaction, title, onPress }) => {
   const { state } = useContext(HousemateContext);
   const titleStyles = [
     styles.title,
-    title === "Pending" ? { fontWeight: "bold" } : { fontWeight: "normal" },
+    title === "Pending" ? { fontFamily: "ProductSansBold" } : { fontFamily: "ProductSansRegular" },
   ];
   Moment.locale("en");
 
@@ -43,17 +46,17 @@ const Transaction = ({ transaction, title, onPress }) => {
             justifyContent: "space-between",
           }}
         >
-          <Text style={titleStyles}>{transaction.title}</Text>
-          <Text style={styles.date}>
+          <StyledText style={titleStyles}>{transaction.title}</StyledText>
+          <StyledText style={styles.date}>
             {Moment(transaction.timestamp).format("MMMM D, YYYY")}
-          </Text>
+          </StyledText>
         </View>
       </View>
       <View style={{ flexDirection: "column" }}>
-        <Text style={isOwner ? styles.ownerStyle : styles.debtorStyle}>
+        <StyledText style={isOwner ? styles.ownerStyle : styles.debtorStyle}>
           ${Number(amount).toFixed(2)}
-        </Text>
-        <Text>{isOwner ? "Owes You" : "You Owe"}</Text>
+        </StyledText>
+        <StyledText>{isOwner ? "Owes You" : "You Owe"}</StyledText>
       </View>
     </View>
   );

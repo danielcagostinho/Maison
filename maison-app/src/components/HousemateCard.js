@@ -1,5 +1,6 @@
 import React from "react";
-import { Text, View, StyleSheet, TouchableOpacity, Image } from "react-native";
+import { View, StyleSheet, TouchableOpacity, Image } from "react-native";
+import StyledText from './StyledText';
 import { withNavigation } from "react-navigation";
 
 const HousemateCard = ({ housemate, top, last, navigation }) => {
@@ -20,7 +21,7 @@ const HousemateCard = ({ housemate, top, last, navigation }) => {
   }
 
   const amountDisplay = (
-    <Text style={amountStyle}>{housemate.amount == 0 ? "Settled Up": "$" + Math.abs(housemate.amount).toFixed(2)}</Text>
+    <StyledText style={amountStyle}>{housemate.amount == 0 ? "Settled Up": "$" + Math.abs(housemate.amount).toFixed(2)}</StyledText>
   );
   return (
     <TouchableOpacity
@@ -33,10 +34,10 @@ const HousemateCard = ({ housemate, top, last, navigation }) => {
     >
       <Image source={{ uri: housemate.avatar }} style={styles.displayPic}/>
       <View style={styles.textContainer}>
-        <Text style={styles.name}>{housemate.name}</Text>
-        <Text>
+        <StyledText style={styles.name}>{housemate.name}</StyledText>
+        <StyledText style={styles.debtStatus}>
           {housemate.amount > 0 ? "you owe" : housemate.amount == 0 ? "we're good" : "owes you"}
-        </Text>
+        </StyledText>
       </View>
       {amountDisplay}
     </TouchableOpacity>
@@ -84,6 +85,7 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: 15,
+    letterSpacing: -0.41,
     textAlign: "center",
   },
   status: {
@@ -96,7 +98,8 @@ const styles = StyleSheet.create({
   },
   amountTextStyle: {
     fontSize: 17,
-    fontWeight: "bold",
+    fontFamily: "ProductSansBold",
+    letterSpacing: -0.41,
     margin: 16,
   },
   isOwed: {
@@ -108,6 +111,10 @@ const styles = StyleSheet.create({
   good: {
     color: "rgba(0,0,0,0.5)",
   },
+  debtStatus: {
+    color: "rgba(0,0,0,0.5)",
+    letterSpacing: -0.41,
+  }
 });
 
 export default withNavigation(HousemateCard);

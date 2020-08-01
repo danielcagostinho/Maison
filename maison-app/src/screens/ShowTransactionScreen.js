@@ -3,9 +3,8 @@ import React, { useContext } from "react";
 import { Context as TransactionContext } from "../context/TransactionContext";
 import { Context as HousemateContext } from "../context/HousemateContext";
 
-import { Text, View, StyleSheet, Button } from "react-native";
-import { FlatList } from "react-native-gesture-handler";
-
+import { View, StyleSheet, Button, FlatList } from "react-native";
+import StyledText from '../components/StyledText';
 const ShowTransactionScreen = ({ navigation }) => {
   const {
     state: { transactions },
@@ -35,12 +34,12 @@ const ShowTransactionScreen = ({ navigation }) => {
 
   return (
     <View>
-      <Text>{transaction.title}</Text>
-      <Text>{transaction.isPaid ? "PAID" : "NOT PAID"}</Text>
-      <Text>{transaction.amount}</Text>
-      <Text>{transaction._id}</Text>
-      <Text>Owner: {transactionOwnerName}</Text>
-      <Text>Debtors</Text>
+      <StyledText>{transaction.title}</StyledText>
+      <StyledText>{transaction.isPaid ? "PAID" : "NOT PAID"}</StyledText>
+      <StyledText>{transaction.amount}</StyledText>
+      <StyledText>{transaction._id}</StyledText>
+      <StyledText>Owner: {transactionOwnerName}</StyledText>
+      <StyledText>Debtors</StyledText>
       <FlatList
         data={transaction.debtors}
         keyExtractor={(debtor) => debtor._id}
@@ -48,7 +47,7 @@ const ShowTransactionScreen = ({ navigation }) => {
           const debtorName = housemates.find(
             (housemate) => housemate._id === item.housemateId
           );
-          return <Text>{debtorName.name.displayName}</Text>;
+          return <StyledText>{debtorName.name.displayName}</StyledText>;
         }}
       />
       {!transaction.isPaid ? (

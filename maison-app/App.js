@@ -19,7 +19,7 @@ import ProfileScreen from "./src/screens/ProfileScreen";
 import RecurringScreen from "./src/screens/RecurringScreen";
 import UserTransactionsIndexScreen from "./src/screens/UserTransactionsIndexScreen";
 import SettleUpScreen from "./src/screens/SettleUpScreen";
-import { Image, Text, View } from "react-native";
+import { Image } from "react-native";
 
 import HomeTabIcon from "../maison-app/assets/imgs/nav/home-nav.png";
 import ActivityTabIcon from "../maison-app/assets/imgs/nav/activity-nav.png";
@@ -129,9 +129,6 @@ export default () => {
   }, []);
 
   return (
-    // <View>
-    //   {fontLoaded ? <Text style={{margin: 20, fontFamily: "ProductSansRegular"}}>Loaded</Text> : <Text style={{margin: 20}}>NOT Loadded</Text>}
-    // </View>
     <HousemateProvider>
       <TransactionProvider>
         {fontLoaded ? <App /> : null} 

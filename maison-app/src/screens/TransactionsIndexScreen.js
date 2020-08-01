@@ -6,13 +6,13 @@ import { Context as HousemateContext } from "../context/HousemateContext";
 
 import Transaction from "../components/Transaction";
 import {
-  Text,
   View,
   StyleSheet,
   Button,
   FlatList,
   TouchableOpacity,
 } from "react-native";
+import StyledText from '../components/StyledText';
 
 const TransactionsIndexScreen = ({ navigation }) => {
   const { state, getTransactions } = useContext(
@@ -31,7 +31,7 @@ const TransactionsIndexScreen = ({ navigation }) => {
         onPress={() => navigation.navigate("NewTransaction")}
         title="Add new transaction"
       />
-      <Text style={titleStyles}>Pending</Text>
+      <StyledText style={titleStyles}>Pending</StyledText>
       <FlatList
         data={state.filter((transaction) => !transaction.isPaid)}
         keyExtractor={(item) => item._id}
@@ -47,7 +47,7 @@ const TransactionsIndexScreen = ({ navigation }) => {
           );
         }}
       />
-      <Text style={titleStyles}>Past Transactions</Text>
+      <StyledText style={titleStyles}>Past Transactions</StyledText>
       <FlatList
         data={state.filter((transaction) => transaction.isPaid)}
         keyExtractor={(item) => item._id}
@@ -70,7 +70,7 @@ const TransactionsIndexScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   listTitle: {
     fontSize: 15,
-    fontWeight: "bold",
+    fontFamily: "ProductSansBold",
     marginVertical: 10,
     marginHorizontal: 16,
   },

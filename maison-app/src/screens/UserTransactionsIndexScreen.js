@@ -6,13 +6,14 @@ import { Context as HousemateContext } from "../context/HousemateContext";
 
 import Transaction from "../components/Transaction";
 import {
-  Text,
   View,
   StyleSheet,
   Button,
   FlatList,
   TouchableOpacity,
 } from "react-native";
+import StyledText from '../components/StyledText';
+
 
 const UserTransactionsIndexScreen = ({ navigation }) => {
   const {
@@ -37,8 +38,8 @@ const UserTransactionsIndexScreen = ({ navigation }) => {
       />
       <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
         <View>
-          <Text>Debt Amount</Text>
-          <Text>you owe User</Text>
+          <StyledText>Debt Amount</StyledText>
+          <StyledText>you owe User</StyledText>
         </View>
         <View
           style={{
@@ -57,7 +58,7 @@ const UserTransactionsIndexScreen = ({ navigation }) => {
       />
       {transactions ? (
         <>
-          <Text style={titleStyles}>Pending</Text>
+          <StyledText style={titleStyles}>Pending</StyledText>
           <FlatList
             data={transactions.filter((transaction) => !transaction.isPaid)}
             keyExtractor={(item) => item._id}
@@ -74,7 +75,7 @@ const UserTransactionsIndexScreen = ({ navigation }) => {
             }}
           />
 
-          <Text style={titleStyles}>Past Transactions</Text>
+          <StyledText style={titleStyles}>Past Transactions</StyledText>
           <FlatList
             data={transactions.filter((transaction) => transaction.isPaid)}
             keyExtractor={(item) => item._id}
@@ -99,7 +100,7 @@ const UserTransactionsIndexScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   listTitle: {
     fontSize: 15,
-    fontWeight: "bold",
+    fontFamily: "ProductSansBold",
     marginVertical: 10,
     marginHorizontal: 16,
   },

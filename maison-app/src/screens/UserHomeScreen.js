@@ -7,7 +7,6 @@ import { Context as TransactionContext } from "../context/TransactionContext";
 import HousemateCard from "../components/HousemateCard";
 import {
   View,
-  Button,
   StyleSheet,
   FlatList,
   Image,
@@ -18,7 +17,7 @@ import NewBillIcon from "../../assets/imgs/newbill.png";
 import StyledText from '../components/StyledText';
 
 const UserHomeScreen = ({ navigation }) => {
-  let { state, getHousemates, getCurrentUser } = useContext(HousemateContext);
+  let { state, getHousemates } = useContext(HousemateContext);
   let {
     state: { housemateDebts },
     getTransactions,
@@ -72,10 +71,6 @@ const UserHomeScreen = ({ navigation }) => {
             <StyledText style={styles.houseName}>{houseName}</StyledText>
           </View>
           <View style={styles.newBillButtonContainer}>
-            {/* <Button
-              onPress={() => navigation.navigate("NewTransaction")}
-              title="New Bill"
-            /> */}
             <TouchableOpacity onPress={() => navigation.navigate("NewTransaction")}>
               <Image
                 source={NewBillIcon}
@@ -147,22 +142,6 @@ const UserHomeScreen = ({ navigation }) => {
                 }}
               />
             );
-            //   return (
-            //     <View style={{ borderColor: "red", borderWidth: 1 }}>
-            //       <Text style={{ width: "50%", height: 100 }}>
-            //         {item.name.displayName}
-            //       </Text>
-            //       <Text style={{ width: "50%", height: 100 }}>{debt}</Text>
-            //       <Button
-            //         title="Show Transactions"
-            //         onPress={() =>
-            //           navigation.navigate("UserTransactionsIndex", {
-            //             otherUserId: item._id,
-            //           })
-            //         }
-            //       />
-            //     </View>
-            //   );
           }}
         />
       ) : null}
@@ -182,7 +161,7 @@ const styles = StyleSheet.create({
     color: "rgba(255,255,255,0.6)",
     fontSize: 30,
     marginLeft: 12,
-    fontWeight: "bold",
+    fontFamily: "ProductSansBold",
     marginVertical: 16,
     // borderWidth: 1,
     // borderColor: "red",
@@ -202,7 +181,7 @@ const styles = StyleSheet.create({
     fontSize: 17,
     alignSelf: "center",
     margin: 16,
-    fontWeight: "bold",
+    fontFamily: "ProductSansBold",
   },
   listTitleContainer: {},
   newBillButton: {
@@ -218,7 +197,7 @@ const styles = StyleSheet.create({
   statusText: {
     color: "white",
     fontSize: 24,
-    fontWeight: "bold",
+    fontFamily: "ProductSansBold"
   },
   displayPic: {
     width: 40,

@@ -3,7 +3,8 @@ import { withNavigation, NavigationEvents } from "react-navigation";
 
 import { Context as HousemateContext } from "../context/HousemateContext";
 
-import { Text, View, FlatList, Button } from "react-native";
+import { View, FlatList, Button } from "react-native";
+import StyledText from '../components/StyledText';
 
 const HousematesIndexScreen = ({ navigation }) => {
   let { state, getHousemates, setCurrentUser } = useContext(HousemateContext);
@@ -16,16 +17,15 @@ const HousematesIndexScreen = ({ navigation }) => {
           navigation.navigate("NewHousemate");
         }}
       />
-      <Text
+      <StyledText
         style={{
-          fontWeight: "bold",
           fontSize: 18,
           textAlign: "center",
           margin: 20,
         }}
       >
         Select a housemate:
-      </Text>
+      </StyledText>
       <FlatList
         contentContainerStyle={{ paddingBottom: 100 }}
         data={state.housemates}
@@ -47,9 +47,9 @@ const HousematesIndexScreen = ({ navigation }) => {
                 justifyContent: "space-around",
               }}
             >
-              <Text style={{ textAlign: "center" }}>
+              <StyledText style={{ textAlign: "center" }}>
                 {item.name.displayName}
-              </Text>
+              </StyledText>
               <Button
                 title="Select User"
                 onPress={() => {

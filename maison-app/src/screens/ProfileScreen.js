@@ -1,9 +1,10 @@
 import React from 'react';
-import {View, Text } from 'react-native';
+import {View } from 'react-native';
+import StyledText from '../components/StyledText';
 const ProfileScreen = () => {
     return ( 
         <View>
-            <Text>Hello from ProfileScreen</Text>
+            <StyledText>Hello from ProfileScreen</StyledText>
         </View>
      );
 }

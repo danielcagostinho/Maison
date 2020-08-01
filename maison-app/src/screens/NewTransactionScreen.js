@@ -4,7 +4,8 @@ import { Context as HousemateContext } from "../context/HousemateContext";
 import { Context as TransactionContext } from "../context/TransactionContext";
 
 import { FlatList } from "react-native-gesture-handler";
-import { Text, View, StyleSheet, Button, TextInput } from "react-native";
+import { View, StyleSheet, Button, TextInput } from "react-native";
+import StyledText from '../components/StyledText';
 import CheckBox from "@react-native-community/checkbox";
 
 const NewTransactionScreen = (props) => {
@@ -112,7 +113,7 @@ const NewTransactionScreen = (props) => {
 
   return (
     <View>
-      <Text style={styles.textStyle}>What is this for?</Text>
+      <StyledText style={styles.textStyle}>What is this for?</StyledText>
       <TextInput
         style={styles.inputStyle}
         placeholder="Dinner, groceries, rent, etc."
@@ -123,7 +124,7 @@ const NewTransactionScreen = (props) => {
           setTransaction(newTransaction);
         }}
       />
-      <Text style={styles.textStyle}>How much was lunch?</Text>
+      <StyledText style={styles.textStyle}>How much was lunch?</StyledText>
       <TextInput
         style={styles.inputStyle}
         value={transaction.amount}
@@ -134,7 +135,7 @@ const NewTransactionScreen = (props) => {
           setTransaction(newTransaction);
         }}
       />
-      <Text style={styles.textStyle}>Splitting amount with:</Text>
+      <StyledText style={styles.textStyle}>Splitting amount with:</StyledText>
       <FlatList
         style={styles.list}
         data={housemates}
@@ -144,7 +145,7 @@ const NewTransactionScreen = (props) => {
           return (
             // <HousemateCard isNew={true} last={(index == housemates.length-1)} housemate={item}/>
             <View style={styles.card}>
-              <Text style={styles.label}>{item.name.displayName}</Text>
+              <StyledText style={styles.label}>{item.name.displayName}</StyledText>
               <CheckBox
                 value={item.isSelected}
                 disabled={item._id === state.currentUser.id}

@@ -5,7 +5,8 @@ import { withNavigation } from "react-navigation";
 import { Context as TransactionContext } from "../context/TransactionContext";
 import { Context as HousemateContext } from "../context/HousemateContext";
 
-import { View, Text, FlatList } from "react-native";
+import { View, FlatList } from "react-native";
+import StyledText from '../components/StyledText';
 
 const SettleUpScreen = ({ navigation }) => {
   const {
@@ -58,8 +59,8 @@ const SettleUpScreen = ({ navigation }) => {
   }, []);
   return (
     <View>
-      <Text>Time to Settle Up with {currentUser.displayName}</Text>
-      <Text>You Owe</Text>
+      <StyledText>Time to Settle Up with {currentUser.displayName}</StyledText>
+      <StyledText>You Owe</StyledText>
       <FlatList
         data={transactions.filter(
           (transaction) => transaction.ownerId == otherUserId
@@ -67,23 +68,23 @@ const SettleUpScreen = ({ navigation }) => {
         keyExtractor={(debt) => debt._id}
         renderItem={({ item }) => {
           return (
-            <Text>
+            <StyledText>
               {item.title} - {item.amount}
-            </Text>
+            </StyledText>
           );
         }}
       />
-      <Text>They Owe</Text>
+      <StyledText>They Owe</StyledText>
       <FlatList
         data={transactions.filter(
           (transaction) => transaction.ownerId == currentUser.id
         )}
         keyExtractor={(debt) => debt._id}
         renderItem={({ item }) => {
-          return <Text>{item.title}</Text>;
+          return <StyledText>{item.title}</StyledText>;
         }}
       />
-      <Text>Total ${netDebt}</Text>
+      <StyledText>Total ${netDebt}</StyledText>
     </View>
   );
 };

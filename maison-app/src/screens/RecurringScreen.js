@@ -1,9 +1,11 @@
 import React from 'react';
-import {View, Text } from 'react-native';
+import {View,  } from 'react-native';
+import StyledText from '../components/StyledText';
+
 const RecurringScreen = () => {
     return ( 
         <View>
-            <Text>Hello from RecurringScreen</Text>
+            <StyledText>Hello from RecurringScreen</StyledText>
         </View>
      );
 }
