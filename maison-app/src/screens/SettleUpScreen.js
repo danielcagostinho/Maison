@@ -11,7 +11,7 @@ import StyledButton from "../components/StyledButton";
 
 const SettleUpScreen = ({ navigation }) => {
   const [dataLoaded, setDataLoaded] = useState(false);
-  const illustration = require('../../assets/imgs/settleup.png')
+  const illustration = require("../../assets/imgs/settleup.png");
   const {
     state: { housemateDebts, transactions },
     getTransactions,
@@ -24,7 +24,6 @@ const SettleUpScreen = ({ navigation }) => {
 
   // Find housemateDebt
   let housemateDebt;
-  let netDebt = 0;
   if (dataLoaded) {
     for (let i = 0; i < housemateDebts.length; i++) {
       if (housemateDebts[i].housemateId == otherUser._id) {
@@ -55,8 +54,8 @@ const SettleUpScreen = ({ navigation }) => {
   }, []);
   return (
     <>
-      <View style={{ backgroundColor: "#F8F5FB", flex: 1, padding: 16 }}>
-        <View style={{paddingVertical: 20}}>
+      <View style={{ backgroundColor: "#F8F5FB", padding: 16 }}>
+        <View style={{ paddingVertical: 20 }}>
           <StyledText style={styles.titleText}>
             Time to Settle Up with{" "}
             <StyledText style={styles.housemateName}>
@@ -68,7 +67,10 @@ const SettleUpScreen = ({ navigation }) => {
             !
           </StyledText>
         </View>
-        <View
+        
+        {dataLoaded ? (
+          <>
+          <View
           style={{
             display: "flex",
             flexDirection: "row",
@@ -81,14 +83,10 @@ const SettleUpScreen = ({ navigation }) => {
           />
           <StyledText style={styles.subtitleText}>You Owe</StyledText>
         </View>
-        {dataLoaded ? (
-          <>
             <View>
-              <Image
-                source={illustration}
-                style={styles.illustration}
-              />
+              <Image source={illustration} style={styles.illustration} />
             </View>
+
             <FlatList
               data={transactions.filter(
                 (transaction) => transaction.ownerId == otherUser._id
@@ -119,6 +117,7 @@ const SettleUpScreen = ({ navigation }) => {
                 display: "flex",
                 flexDirection: "row",
                 alignItems: "center",
+                marginTop: 12
               }}
             >
               <Image
@@ -129,31 +128,32 @@ const SettleUpScreen = ({ navigation }) => {
                 {otherUser.name.firstName} Owes
               </StyledText>
             </View>
-            <FlatList
-              data={transactions.filter(
-                (transaction) => transaction.ownerId == currentUser.id
-              )}
-              keyExtractor={(debt) => debt._id}
-              renderItem={({ item }) => {
-                return (
-                  <View style={styles.listRow}>
-                    <StyledText style={styles.owedAmount}>
-                      $
-                      {Number(
-                        Math.abs(
-                          item.debtors.find(
-                            (debtor) => debtor.housemateId === otherUser._id
-                          ).share
-                        )
-                      ).toFixed(2)}
-                    </StyledText>
-                    <StyledText style={styles.debtTitle}>
-                      {item.title}
-                    </StyledText>
-                  </View>
-                );
-              }}
-            />
+            
+              <FlatList
+                data={transactions.filter(
+                  (transaction) => transaction.ownerId == currentUser.id
+                )}
+                keyExtractor={(debt) => debt._id}
+                renderItem={({ item }) => {
+                  return (
+                    <View style={styles.listRow}>
+                      <StyledText style={styles.owedAmount}>
+                        $
+                        {Number(
+                          Math.abs(
+                            item.debtors.find(
+                              (debtor) => debtor.housemateId === otherUser._id
+                            ).share
+                          )
+                        ).toFixed(2)}
+                      </StyledText>
+                      <StyledText style={styles.debtTitle}>
+                        {item.title}
+                      </StyledText>
+                    </View>
+                  );
+                }}
+              />
           </>
         ) : null}
       </View>
@@ -227,6 +227,7 @@ const styles = StyleSheet.create({
   netDebt: {
     backgroundColor: "#FFF",
     padding: 16,
+    marginTop: 'auto'
   },
   netDebtText: {
     color: "#4900A7",
@@ -234,12 +235,12 @@ const styles = StyleSheet.create({
     fontFamily: "ProductSansBold",
   },
   illustration: {
-    position: 'absolute',
-    alignSelf: 'flex-end',
+    position: "absolute",
+    alignSelf: "flex-end",
     height: 600,
     width: 250,
     zIndex: 2,
-  }
+  },
 });
 
 export default withNavigation(SettleUpScreen);
