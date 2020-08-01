@@ -6,9 +6,11 @@ import { Context as TransactionContext } from "../context/TransactionContext";
 import { Context as HousemateContext } from "../context/HousemateContext";
 
 import { View, FlatList } from "react-native";
-import StyledText from '../components/StyledText';
+import StyledText from "../components/StyledText";
 
 const SettleUpScreen = ({ navigation }) => {
+  const [dataLoaded, setDataLoaded] = useState(false);
+
   const {
     state: { housemateDebts, transactions },
     getTransactions,
@@ -21,7 +23,7 @@ const SettleUpScreen = ({ navigation }) => {
   // Find housemateDebt
   let housemateDebt;
   let netDebt = 0;
-  if (housemateDebts) {
+  if (dataLoaded) {
     for (let i = 0; i < housemateDebts.length; i++) {
       if (housemateDebts[i].housemateId == otherUserId) {
         housemateDebt = housemateDebts[i];
@@ -29,8 +31,7 @@ const SettleUpScreen = ({ navigation }) => {
     }
     let debts = [];
     housemateDebt.transactions.map((transaction) => {
-      if (currentUser.id == debtor.housemateId) {
-        
+      if (currentUser.id === housemateDebt.housemateId) {
         transaction.debtors.forEach((debtor) => {
           if (transaction.ownerId == debtor.housemateId) {
             console.log(
@@ -42,6 +43,8 @@ const SettleUpScreen = ({ navigation }) => {
             );
           }
         });
+      } else {
+        console.log("not equal id")
       }
       debts.push({
         ownerId: transaction.ownerId,
@@ -54,6 +57,7 @@ const SettleUpScreen = ({ navigation }) => {
 
   useEffect(() => {
     getTransactions(currentUser.id, otherUserId);
+    setDataLoaded(true);
     console.log("housemateDebts");
     console.log(housemateDebts);
   }, []);
@@ -61,30 +65,34 @@ const SettleUpScreen = ({ navigation }) => {
     <View>
       <StyledText>Time to Settle Up with {currentUser.displayName}</StyledText>
       <StyledText>You Owe</StyledText>
-      <FlatList
-        data={transactions.filter(
-          (transaction) => transaction.ownerId == otherUserId
-        )}
-        keyExtractor={(debt) => debt._id}
-        renderItem={({ item }) => {
-          return (
-            <StyledText>
-              {item.title} - {item.amount}
-            </StyledText>
-          );
-        }}
-      />
-      <StyledText>They Owe</StyledText>
-      <FlatList
-        data={transactions.filter(
-          (transaction) => transaction.ownerId == currentUser.id
-        )}
-        keyExtractor={(debt) => debt._id}
-        renderItem={({ item }) => {
-          return <StyledText>{item.title}</StyledText>;
-        }}
-      />
-      <StyledText>Total ${netDebt}</StyledText>
+      {dataLoaded ? (
+        <>
+          <FlatList
+            data={transactions.filter(
+              (transaction) => transaction.ownerId == otherUserId
+            )}
+            keyExtractor={(debt) => debt._id}
+            renderItem={({ item }) => {
+              return (
+                <StyledText>
+                  {item.title} - {item.amount}
+                </StyledText>
+              );
+            }}
+          />
+          <StyledText>They Owe</StyledText>
+          <FlatList
+            data={transactions.filter(
+              (transaction) => transaction.ownerId == currentUser.id
+            )}
+            keyExtractor={(debt) => debt._id}
+            renderItem={({ item }) => {
+              return <StyledText>{item.title}</StyledText>;
+            }}
+          />
+          <StyledText>Total ${netDebt}</StyledText>
+        </>
+      ) : null}
     </View>
   );
 };
