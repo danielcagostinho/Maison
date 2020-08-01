@@ -17,11 +17,12 @@ const Transaction = ({ transaction, title, onPress }) => {
  
   Moment.locale("en");
   const isOwner = currentUser.id === transaction.ownerId;
-  console.log(transaction.ownerId)
-  console.log(`Housemate`)
-  console.log(housemates.find(housemate => housemate._id === transaction.ownerId));
-  let avatarURL = housemates.find(housemate => housemate._id === transaction.ownerId).avatarURL;
-  let amount = 0;
+  let avatarURL;
+  let housemate =housemates.find(housemate => housemate._id === transaction.ownerId)
+  if(housemate){
+   avatarURL = housemate.avatarURL;
+  }
+   let amount = 0;
   if (isOwner) {
     for (let i = 0; i < transaction.debtors.length; i++) {
       let debtor = transaction.debtors[i];
@@ -34,7 +35,7 @@ const Transaction = ({ transaction, title, onPress }) => {
       let debtor = transaction.debtors[i];
       if (debtor.housemateId == currentUser.id) {
         amount =
-          Number(transaction.amount).toFixed(2) -
+          // Number(transaction.amount).toFixed(2) -
           Number(debtor.share).toFixed(2);
       }
     }

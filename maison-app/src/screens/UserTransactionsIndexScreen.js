@@ -24,7 +24,7 @@ const UserTransactionsIndexScreen = ({ navigation }) => {
   const {
     state: { currentUser },
   } = useContext(HousemateContext);
-  const [localHousemateDebts, setLocalHousemateDebts] = useState([]);
+  //const [localHousemateDebts, setLocalHousemateDebts] = useState([]);
   const otherUser = navigation.getParam("otherUser");
   const otherUserId = navigation.getParam("otherUserId");
   const otherUserName = navigation.getParam("otherUserName");
@@ -33,7 +33,7 @@ const UserTransactionsIndexScreen = ({ navigation }) => {
 
   useEffect(() => {
     getTransactions(currentUser.id, otherUserId);
-    setLocalHousemateDebts(housemateDebts)
+    //setLocalHousemateDebts(housemateDebts)
     
   }, []);
   return (
