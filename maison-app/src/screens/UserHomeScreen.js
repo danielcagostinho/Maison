@@ -49,8 +49,6 @@ const UserHomeScreen = ({ navigation }) => {
     }
   }
 
-  // UseEffect Hoo
-
   const illustration = require("../../assets/imgs/homepage.png");
   const houseName = "Oxley St.";
 
@@ -60,14 +58,9 @@ const UserHomeScreen = ({ navigation }) => {
         getTransactions(state.currentUser.id, null);
         getHousemates();
       }} />
-      <View style={styles.topSection}>
+      <View style={styles.header}>
         <View style={styles.row}>
           <View
-            style={{
-              flexDirection: "row",
-              marginLeft: 16,
-              alignItems: "center",
-            }}
           >
             <Image
               source={{ uri: state.currentUser.avatarURL }}
@@ -132,7 +125,6 @@ const UserHomeScreen = ({ navigation }) => {
                     debt = amounts[i].amount;
                   }
                 }
-
                 return (
                   <HousemateCard
                     top={index < 2}
@@ -159,7 +151,7 @@ UserHomeScreen.navigationOptions = () => {
   };
 };
 const styles = StyleSheet.create({
-  topSection: {
+  header: {
     backgroundColor: "#4900A7",
   },
   houseName: {
@@ -168,8 +160,6 @@ const styles = StyleSheet.create({
     marginLeft: 12,
     fontFamily: "ProductSansBold",
     marginVertical: 16,
-    // borderWidth: 1,
-    // borderColor: "red",
     textAlignVertical: "auto",
   },
   row: {
