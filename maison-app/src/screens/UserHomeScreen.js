@@ -1,6 +1,6 @@
 // React Imports
 import React, { useContext, useEffect } from "react";
-import { withNavigation } from "react-navigation";
+import { withNavigation, NavigationEvents } from "react-navigation";
 
 // Context Imports
 import { Context as HousemateContext } from "../context/HousemateContext";
@@ -49,17 +49,17 @@ const UserHomeScreen = ({ navigation }) => {
     }
   }
 
-  // UseEffect Hook
-  useEffect(() => {
-    getTransactions(state.currentUser.id, null);
-    getHousemates();
-  }, []);
+  // UseEffect Hoo
 
   const illustration = require("../../assets/imgs/homepage.png");
   const houseName = "Oxley St.";
 
   return (
     <View style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
+      <NavigationEvents onWillFocus={() => {
+        getTransactions(state.currentUser.id, null);
+        getHousemates();
+      }} />
       <View style={styles.topSection}>
         <View style={styles.row}>
           <View

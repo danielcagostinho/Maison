@@ -7,6 +7,9 @@ import { FlatList } from "react-native-gesture-handler";
 import { View, StyleSheet, Button, TextInput } from "react-native";
 import StyledText from '../components/StyledText';
 import CheckBox from "@react-native-community/checkbox";
+import TransactionTitleForm from '../components/NewTransactionForm/TransactionTitleForm';
+import TransactionAmountForm from '../components/NewTransactionForm/TransactionAmountForm';
+import TransactionHousematesForm from '../components/NewTransactionForm/TransactionHousematesForm';
 
 const NewTransactionScreen = (props) => {
   // Context State
@@ -113,7 +116,7 @@ const NewTransactionScreen = (props) => {
 
   return (
     <View>
-      <StyledText style={styles.textStyle}>What is this for?</StyledText>
+      {/* <StyledText style={styles.textStyle}>What is this for?</StyledText>
       <TextInput
         style={styles.inputStyle}
         placeholder="Dinner, groceries, rent, etc."
@@ -155,10 +158,19 @@ const NewTransactionScreen = (props) => {
           );
         }}
       />
-      <Button onPress={onSubmit} title="Continue" />
+      <Button onPress={onSubmit} title="Continue" /> */}
+      <TransactionTitleForm/>
+      <TransactionAmountForm/>
+      <TransactionHousematesForm amount="92.38"/>
     </View>
   );
 };
+
+NewTransactionScreen.navigationOptions = () => {
+  return {
+    header: () => false,
+  };
+}
 
 const styles = StyleSheet.create({
   card: {
