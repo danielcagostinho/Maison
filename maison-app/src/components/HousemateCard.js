@@ -4,12 +4,10 @@ import StyledText from './StyledText';
 import { withNavigation } from "react-navigation";
 import colors from "../constants/colors";
 
-const HousemateCard = ({ housemate, top, last, navigation }) => {
+const HousemateCard = ({ housemate, navigation }) => {
   let cardStyle = styles.card;
   let cardStyles = [
-    cardStyle,
-    top ? styles.topCard : styles.notTopCard,
-    last ? styles.lastCard : styles.notLastCard,
+    cardStyle
   ];
 
   let amountStyle = [styles.amountTextStyle];

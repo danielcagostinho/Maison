@@ -1,6 +1,6 @@
 // React Imports
 import React, { useContext, useState, useEffect } from "react";
-import { withNavigation, NavigationEvents } from "react-navigation";
+import { withNavigation } from "react-navigation";
 
 // Context Imports
 import { Context as HousemateContext } from "../context/HousemateContext";
@@ -15,8 +15,14 @@ import StyledText from "../components/StyledText";
 import colors from "../constants/colors";
 
 const UserHomeScreen = ({ navigation }) => {
+  const illustration = require("../../assets/imgs/homepage.png");
+  const houseName = "Oxley St.";
+
   const [dataLoaded, setDataLoaded] = useState(false);
-  let { state : {currentUser, housemates }, getHousemates } = useContext(HousemateContext);
+  let {
+    state: { currentUser, housemates },
+    getHousemates,
+  } = useContext(HousemateContext);
   let {
     state: { housemateDebts },
     getTransactions,
@@ -26,39 +32,22 @@ const UserHomeScreen = ({ navigation }) => {
     async function getData() {
       await getTransactions(currentUser.id, null);
       await getHousemates();
-      setDataLoaded(true)
+      setDataLoaded(true);
     }
-    
     getData();
-  }, [])
+  }, []);
 
   const otherHousemates = housemates.filter((housemate) => {
     return housemate._id !== currentUser.id;
   });
 
-  let amounts = [];
   let owedAmount = 0;
-  if (housemateDebts) {
-    for (let i = 0; i < otherHousemates.length; i++) {
-      for (let j = 0; j < housemateDebts.length; j++) {
-        if (housemateDebts[j].housemateId == otherHousemates[i]._id) {
-          amounts.push({
-            housemateId: otherHousemates[i]._id,
-            amount: housemateDebts[j].amount,
-          });
-        }
-      }
-    }
-    if (amounts.length) {
-      owedAmount = amounts.reduce((previous, current) => {
-        return Number(previous) + Number(current.amount);
-      }, 0);
-    }
+  if (dataLoaded) {
+    housemateDebts.map((housemateDebt) => {
+      owedAmount += Number(housemateDebt.amount);
+    });
   }
-
-  const illustration = require("../../assets/imgs/homepage.png");
-  const houseName = "Oxley St.";
-
+  
   return (
     <View style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
       <View style={styles.header}>
@@ -86,7 +75,7 @@ const UserHomeScreen = ({ navigation }) => {
                   {owedAmount < 0 ? "You're owed" : "You owe"}
                 </StyledText>
                 <StyledText style={styles.statusText}>
-                  ${Math.abs(owedAmount).toFixed(2)}
+                  ${Math.abs(owedAmount)}
                 </StyledText>
               </>
             ) : null}
@@ -104,21 +93,14 @@ const UserHomeScreen = ({ navigation }) => {
         {dataLoaded ? (
           <FlatGrid
             data={otherHousemates}
-            renderItem={({ item, index }) => {
-              let debt = 0;
-              for (let i = 0; i < amounts.length; i++) {
-                if (amounts[i].housemateId == item._id) {
-                  debt = amounts[i].amount;
-                }
-              }
-              debt = housemateDebts.find(housemateDebt => housemateDebt.housemateId === item._id);
+            renderItem={({ item }) => {
               return (
                 <HousemateCard
-                  top={index < 2}
-                  last={index == otherHousemates.length - 1}
                   housemate={{
                     _id: item._id,
-                    amount: debt.amount,
+                    amount: housemateDebts.find(
+                      (housemateDebt) => housemateDebt.housemateId === item._id
+                    ).amount,
                     name: item.name,
                     avatarURL: item.avatarURL,
                   }}
