@@ -52,29 +52,30 @@ const styles = StyleSheet.create({
     borderColor: "rgba(0,0,0,0.08)",
     borderRadius: 16,
     height: 176,
-    flex: 1 / 2,
+    width: 164,
+    // flex: 1 / 2,
     alignItems: "center",
   },
   selectedCard: {
     borderRadius: 16,
-    flex: 1 / 2,
+    // flex: 1 / 2,
     height: 176,
     backgroundColor: colors.LIGHT_PURPLE,
     alignItems: "center",
   },
   topCard: {
-    marginTop: 0,
+    // marginTop: 0,
   },
   notTopCard: {
-    marginTop: 8,
+    // marginTop: 8,
   },
   notLastCard: {
-    margin: 8,
+    // margin: 8,
   },
   lastCard: {
-    marginLeft: 8,
-    marginBottom: 8,
-    marginRight: 24,
+    // marginLeft: 8,
+    // marginBottom: 8,
+    // marginRight: 24,
   },
   displayPic: {
     width: 60,

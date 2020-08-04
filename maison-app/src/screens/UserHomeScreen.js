@@ -1,5 +1,5 @@
 // React Imports
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { withNavigation, NavigationEvents } from "react-navigation";
 
 // Context Imports
@@ -8,36 +8,42 @@ import { Context as TransactionContext } from "../context/TransactionContext";
 
 // Component Imports
 import HousemateCard from "../components/HousemateCard";
-import {
-  View,
-  StyleSheet,
-  FlatList,
-  Image,
-  TouchableOpacity,
-} from "react-native";
+import { View, StyleSheet, Image, TouchableOpacity } from "react-native";
+import { FlatGrid } from "react-native-super-grid";
 import NewBillIcon from "../../assets/imgs/newbill.png";
 import StyledText from "../components/StyledText";
 import colors from "../constants/colors";
 
 const UserHomeScreen = ({ navigation }) => {
-  let { state, getHousemates } = useContext(HousemateContext);
+  const [dataLoaded, setDataLoaded] = useState(false);
+  let { state : {currentUser, housemates }, getHousemates } = useContext(HousemateContext);
   let {
     state: { housemateDebts },
     getTransactions,
   } = useContext(TransactionContext);
 
-  const housemates = state.housemates.filter((housemate) => {
-    return housemate._id !== state.currentUser.id;
+  useEffect(() => {
+    async function getData() {
+      await getTransactions(currentUser.id, null);
+      await getHousemates();
+      setDataLoaded(true)
+    }
+    
+    getData();
+  }, [])
+
+  const otherHousemates = housemates.filter((housemate) => {
+    return housemate._id !== currentUser.id;
   });
 
   let amounts = [];
   let owedAmount = 0;
   if (housemateDebts) {
-    for (let i = 0; i < housemates.length; i++) {
+    for (let i = 0; i < otherHousemates.length; i++) {
       for (let j = 0; j < housemateDebts.length; j++) {
-        if (housemateDebts[j].housemateId == housemates[i]._id) {
+        if (housemateDebts[j].housemateId == otherHousemates[i]._id) {
           amounts.push({
-            housemateId: housemates[i]._id,
+            housemateId: otherHousemates[i]._id,
             amount: housemateDebts[j].amount,
           });
         }
@@ -55,20 +61,13 @@ const UserHomeScreen = ({ navigation }) => {
 
   return (
     <View style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
-      <NavigationEvents
-        onWillFocus={() => {
-          getTransactions(state.currentUser.id, null);
-          getHousemates();
-        }}
-      />
       <View style={styles.header}>
         <View style={styles.titleRow}>
           <View style={{ flexDirection: "row" }}>
             <Image
-              source={{ uri: state.currentUser.avatarURL }}
+              source={{ uri: currentUser.avatarURL }}
               style={styles.displayPic}
             />
-
             <StyledText style={styles.houseName}>{houseName}</StyledText>
           </View>
           <View>
@@ -81,7 +80,7 @@ const UserHomeScreen = ({ navigation }) => {
         </View>
         <View style={styles.statusRow}>
           <View style={styles.statusContainer}>
-            {housemateDebts ? (
+            {dataLoaded ? (
               <>
                 <StyledText style={styles.statusText}>
                   {owedAmount < 0 ? "You're owed" : "You owe"}
@@ -98,40 +97,37 @@ const UserHomeScreen = ({ navigation }) => {
           <Image source={illustration} style={styles.illustration} />
         </View>
       </View>
-      <View style={{backgroundColor: "white", flex: 1 }}>
-          <View>
-            <StyledText style={styles.listTitle}>Housemates</StyledText>
-          </View>
-          {housemateDebts ? (
-            <FlatList
-              numColumns={2}
-              style={styles.list}
-              data={housemates}
-              keyExtractor={(housemate) => housemate._id}
-              
-              renderItem={({ item, index }) => {
-                let debt = 0;
-                for (let i = 0; i < amounts.length; i++) {
-                  if (amounts[i].housemateId == item._id) {
-                    debt = amounts[i].amount;
-                  }
-                }
-                return (
-                  <HousemateCard
-                    top={index < 2}
-                    last={index == housemates.length - 1}
-                    housemate={{
-                      _id: item._id,
-                      amount: debt,
-                      name: item.name,
-                      avatarURL: item.avatarURL,
-                    }}
-                  />
-                );
-              }}
-            />
-          ) : null}
+      <View style={{ backgroundColor: "white", flex: 1 }}>
+        <View>
+          <StyledText style={styles.listTitle}>Housemates</StyledText>
         </View>
+        {dataLoaded ? (
+          <FlatGrid
+            data={otherHousemates}
+            renderItem={({ item, index }) => {
+              let debt = 0;
+              for (let i = 0; i < amounts.length; i++) {
+                if (amounts[i].housemateId == item._id) {
+                  debt = amounts[i].amount;
+                }
+              }
+              debt = housemateDebts.find(housemateDebt => housemateDebt.housemateId === item._id);
+              return (
+                <HousemateCard
+                  top={index < 2}
+                  last={index == otherHousemates.length - 1}
+                  housemate={{
+                    _id: item._id,
+                    amount: debt.amount,
+                    name: item.name,
+                    avatarURL: item.avatarURL,
+                  }}
+                />
+              );
+            }}
+          />
+        ) : null}
+      </View>
     </View>
   );
 };
@@ -166,15 +162,13 @@ const styles = StyleSheet.create({
     fontSize: 14,
     margin: 16,
   },
-  list: {
-  },
   listTitle: {
     fontSize: 17,
     alignSelf: "center",
     margin: 16,
+    marginBottom: 8,
     fontFamily: "ProductSansBold",
   },
-
   statusText: {
     color: "white",
     fontSize: 24,
