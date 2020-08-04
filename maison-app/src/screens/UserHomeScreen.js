@@ -17,6 +17,7 @@ import {
 } from "react-native";
 import NewBillIcon from "../../assets/imgs/newbill.png";
 import StyledText from "../components/StyledText";
+import colors from "../constants/colors";
 
 const UserHomeScreen = ({ navigation }) => {
   let { state, getHousemates } = useContext(HousemateContext);
@@ -54,14 +55,15 @@ const UserHomeScreen = ({ navigation }) => {
 
   return (
     <View style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
-      <NavigationEvents onWillFocus={() => {
-        getTransactions(state.currentUser.id, null);
-        getHousemates();
-      }} />
+      <NavigationEvents
+        onWillFocus={() => {
+          getTransactions(state.currentUser.id, null);
+          getHousemates();
+        }}
+      />
       <View style={styles.header}>
-        <View style={styles.row}>
-          <View
-          >
+        <View style={styles.titleRow}>
+          <View style={{ flexDirection: "row" }}>
             <Image
               source={{ uri: state.currentUser.avatarURL }}
               style={styles.displayPic}
@@ -69,23 +71,15 @@ const UserHomeScreen = ({ navigation }) => {
 
             <StyledText style={styles.houseName}>{houseName}</StyledText>
           </View>
-          <View style={styles.newBillButtonContainer}>
+          <View>
             <TouchableOpacity
               onPress={() => navigation.navigate("NewTransaction")}
             >
-              <Image
-                source={NewBillIcon}
-                style={{
-                  height: 29,
-                  width: 24,
-                  alignSelf: "flex-end",
-                }}
-              />
+              <Image source={NewBillIcon} style={styles.newBillButton} />
             </TouchableOpacity>
           </View>
         </View>
-        <View>
-          {/* <View style={styles.row}> */}
+        <View style={styles.statusRow}>
           <View style={styles.statusContainer}>
             {housemateDebts ? (
               <>
@@ -98,26 +92,23 @@ const UserHomeScreen = ({ navigation }) => {
               </>
             ) : null}
           </View>
-          <StyledText
-            style={{ color: "rgba(255,255,255,0.6)", fontSize: 14, margin: 16 }}
-          >
+          <StyledText style={styles.headerBottomText}>
             Now all you gotta do is wait...
           </StyledText>
           <Image source={illustration} style={styles.illustration} />
-          {/* </View> */}
         </View>
       </View>
-      <View style={{ width: "100%", backgroundColor: "white" }}>
-        <View>
-          <View style={styles.listTitleContainer}>
+      <View style={{backgroundColor: "white", flex: 1 }}>
+          <View>
             <StyledText style={styles.listTitle}>Housemates</StyledText>
           </View>
           {housemateDebts ? (
             <FlatList
+              numColumns={2}
               style={styles.list}
               data={housemates}
               keyExtractor={(housemate) => housemate._id}
-              numColumns={2}
+              
               renderItem={({ item, index }) => {
                 let debt = 0;
                 for (let i = 0; i < amounts.length; i++) {
@@ -141,7 +132,6 @@ const UserHomeScreen = ({ navigation }) => {
             />
           ) : null}
         </View>
-      </View>
     </View>
   );
 };
@@ -152,23 +142,31 @@ UserHomeScreen.navigationOptions = () => {
 };
 const styles = StyleSheet.create({
   header: {
-    backgroundColor: "#4900A7",
+    backgroundColor: colors.PRIMARY,
+  },
+  titleRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: 16,
+  },
+  newBillButton: {
+    height: 24,
+    width: 19,
   },
   houseName: {
     color: "rgba(255,255,255,0.6)",
-    fontSize: 30,
-    marginLeft: 12,
+    fontSize: 24,
     fontFamily: "ProductSansBold",
-    marginVertical: 16,
-    textAlignVertical: "auto",
+    marginLeft: 16,
+    textAlignVertical: "center",
   },
-  row: {
-    justifyContent: "space-between",
-    flexDirection: "row",
-    alignItems: "center",
+  headerBottomText: {
+    color: "rgba(255,255,255,0.6)",
+    fontSize: 14,
+    margin: 16,
   },
   list: {
-    marginHorizontal: 8,
   },
   listTitle: {
     fontSize: 17,
@@ -176,25 +174,15 @@ const styles = StyleSheet.create({
     margin: 16,
     fontFamily: "ProductSansBold",
   },
-  listTitleContainer: {},
-  newBillButton: {
-    width: 25,
-  },
-  newBillButtonContainer: {
-    width: 100,
-    height: 100,
-    marginRight: 24,
-    flexDirection: "column",
-    justifyContent: "space-around",
-  },
+
   statusText: {
     color: "white",
     fontSize: 24,
     fontFamily: "ProductSansBold",
   },
   displayPic: {
-    width: 40,
-    height: 40,
+    width: 32,
+    height: 32,
     borderRadius: 50,
   },
   statusContainer: {

@@ -5,6 +5,7 @@ import { Context as HousemateContext } from "../context/HousemateContext";
 
 import { View, StyleSheet, Image } from "react-native";
 import StyledText from './StyledText';
+import colors from "../constants/colors";
 
 const Transaction = ({ transaction, title, onPress }) => {
   const { state: {housemates, currentUser} } = useContext(HousemateContext);
@@ -76,19 +77,19 @@ const styles = StyleSheet.create({
   },
   ownerStyle: {
     fontSize: 17,
-    color: "green",
+    color: colors.SUCCESS,
   },
   debtorStyle: {
     fontSize: 17,
-    color: "red",
+    color: colors.FAIL,
   },
   ownerStyleText: {
     fontSize: 13,
-    color: "green",
+    color: colors.SUCCESS,
   },
   debtorStyleText: {
     fontSize: 13,
-    color: "red",
+    color: colors.FAIL,
   },
   date: {
     fontSize: 13,
@@ -100,7 +101,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 16,
     borderBottomWidth: 1,
-    borderBottomColor: "rgba(223,216,241,0.50)",
+    borderBottomColor: colors.LIST_BORDER,
     width: "100%",
     justifyContent: "space-between",
     alignItems: "center",

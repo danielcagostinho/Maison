@@ -5,6 +5,8 @@ import { createBottomTabNavigator } from "react-navigation-tabs";
 import * as Font from "expo-font";
 import { AppLoading } from "expo";
 
+import colors from './src/constants/colors';
+
 import { Provider as TransactionProvider } from "./src/context/TransactionContext";
 import { Provider as HousemateProvider } from "./src/context/HousemateContext";
 
@@ -47,8 +49,8 @@ const switchNavigator = createSwitchNavigator(
             <Image source={HomeTabIcon} style={{ height: 28, width: 28 }} />
           ),
           tabBarOptions: {
-            activeTintColor: "#4900A7",
-            inactiveTintColor: "#9D8CCB",
+            activeTintColor: colors.PRIMARY,
+            inactiveTintColor: colors.LIGHT_GRAY,
           },
         },
       },
@@ -60,8 +62,8 @@ const switchNavigator = createSwitchNavigator(
             <Image source={ActivityTabIcon} style={{ height: 28, width: 28 }} />
           ),
           tabBarOptions: {
-            activeTintColor: "#4900A7",
-            inactiveTintColor: "#9D8CCB",
+            activeTintColor: colors.PRIMARY,
+            inactiveTintColor: colors.LIGHT_GRAY,
           },
         },
       },
@@ -76,8 +78,8 @@ const switchNavigator = createSwitchNavigator(
             />
           ),
           tabBarOptions: {
-            activeTintColor: "#4900A7",
-            inactiveTintColor: "#9D8CCB",
+            activeTintColor: colors.PRIMARY,
+            inactiveTintColor: colors.LIGHT_GRAY,
           },
         },
       },
@@ -89,8 +91,8 @@ const switchNavigator = createSwitchNavigator(
             <Image source={ProfileTabIcon} style={{ height: 28, width: 28 }} />
           ),
           tabBarOptions: {
-            activeTintColor: "#4900A7",
-            inactiveTintColor: "#9D8CCB",
+            activeTintColor: colors.PRIMARY,
+            inactiveTintColor: colors.LIGHT_GRAY,
           },
         },
       },

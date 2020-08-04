@@ -1,5 +1,6 @@
 import React from "react";
 import { View, TouchableOpacity, StyleSheet } from "react-native";
+import colors from '../constants/colors';
 import StyledText from "./StyledText";
 
 const StyledButton = ({ buttonAction, title, variant, size }) => {
@@ -52,10 +53,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#DFD8F1",
   },
   lightVariantText: {
-    color: "#4900A7",
+    color: colors.PRIMARY,
   },
   darkVariant: {
-    backgroundColor: "#4900A7",
+    backgroundColor: colors.PRIMARY,
   },
   darkVariantText: {
     color: "#FFF",

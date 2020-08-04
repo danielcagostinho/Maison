@@ -2,6 +2,7 @@ import React from "react";
 import { Image, View, StyleSheet, TextInput } from "react-native";
 import StyledText from "../StyledText";
 import StyledButton from "../StyledButton";
+import colors from "../../constants/colors";
 
 const TransactionHousemateForm = ({amount}) => {
   const illustration = require("../../../assets/imgs/newtransaction-illustration-4.png");
@@ -47,7 +48,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
   },
   backdrop: {
-    backgroundColor: "#F8F5FB",
+    backgroundColor: colors.BACKDROP_PURPLE,
     height: 200,
     width: "100%",
   },

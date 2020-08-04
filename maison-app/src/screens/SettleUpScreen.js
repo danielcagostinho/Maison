@@ -8,6 +8,8 @@ import { Context as HousemateContext } from "../context/HousemateContext";
 import { View, FlatList, Image, StyleSheet } from "react-native";
 import StyledText from "../components/StyledText";
 import StyledButton from "../components/StyledButton";
+import colors from '../constants/colors';
+
 
 const SettleUpScreen = ({ navigation }) => {
   const [dataLoaded, setDataLoaded] = useState(false);
@@ -194,7 +196,7 @@ const styles = StyleSheet.create({
     fontSize: 28,
   },
   housemateName: {
-    color: "#4900A7",
+    color: colors.PRIMARY,
   },
   avatar: {
     borderRadius: 50,
@@ -221,7 +223,7 @@ const styles = StyleSheet.create({
     marginLeft: 40,
     height: 60,
     justifyContent: "center",
-    borderBottomColor: "rgba(223, 216, 241, 0.5)",
+    borderBottomColor: colors.LIST_BORDER,
     borderBottomWidth: 1,
   },
   netDebt: {
@@ -230,7 +232,7 @@ const styles = StyleSheet.create({
     marginTop: 'auto'
   },
   netDebtText: {
-    color: "#4900A7",
+    color: colors.PRIMARY,
     fontSize: 24,
     fontFamily: "ProductSansBold",
   },

@@ -2,6 +2,7 @@ import React from "react";
 import { View, StyleSheet, TouchableOpacity, Image } from "react-native";
 import StyledText from './StyledText';
 import { withNavigation } from "react-navigation";
+import colors from "../constants/colors";
 
 const HousemateCard = ({ housemate, top, last, navigation }) => {
   let cardStyle = styles.card;
@@ -58,7 +59,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     flex: 1 / 2,
     height: 176,
-    backgroundColor: "#D1CCED",
+    backgroundColor: colors.LIGHT_PURPLE,
     alignItems: "center",
   },
   topCard: {
@@ -92,8 +93,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   textContainer: {
-    // borderColor: 'red',
-    // borderWidth: 1
   },
   amountTextStyle: {
     fontSize: 17,
@@ -102,10 +101,10 @@ const styles = StyleSheet.create({
     margin: 16,
   },
   isOwed: {
-    color: "#DC0344",
+    color: colors.FAIL,
   },
   owesYou: {
-    color: "#00A469",
+    color: colors.SUCCESS,
   },
   good: {
     color: "rgba(0,0,0,0.5)",

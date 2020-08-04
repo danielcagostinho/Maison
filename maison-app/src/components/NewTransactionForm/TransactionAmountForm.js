@@ -2,6 +2,7 @@ import React from "react";
 import { Image, View, StyleSheet, TextInput } from "react-native";
 import StyledText from "../StyledText";
 import StyledButton from "../StyledButton";
+import colors from '../../constants/colors';
 
 const TransactionAmountForm = () => {
   const illustration = require("../../../assets/imgs/newtransaction-illustration-3.png");
@@ -19,7 +20,7 @@ const TransactionAmountForm = () => {
             style={{
               height: 64,
               marginVertical: 8,
-              color: '#4900A7',
+              color: colors.PRIMARY,
               fontFamily: 'ProductSansBold',
               fontSize: 58
             }}
@@ -54,7 +55,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
   },
   backdrop: {
-    backgroundColor: "#F8F5FB",
+    backgroundColor: colors.BACKDROP_PURPLE,
     height: 180,
     width: "100%",
   },
