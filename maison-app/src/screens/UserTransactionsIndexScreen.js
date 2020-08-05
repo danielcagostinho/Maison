@@ -14,6 +14,7 @@ import {
 import StyledText from "../components/StyledText";
 import StyledButton from "../components/StyledButton";
 
+
 const UserTransactionsIndexScreen = ({ navigation }) => {
   const {
     state: { transactions, housemateDebts },
@@ -42,9 +43,9 @@ const UserTransactionsIndexScreen = ({ navigation }) => {
           }}
         >
           <View>
-            <StyledText style={styles.amount}>${otherUserDebt}</StyledText>
+            <StyledText style={styles.amount}>${Math.abs(Number(otherUserDebt)).toFixed(2)}</StyledText>
             <StyledText style={styles.debtStatus}>
-              {otherUserDebt < 0
+              {otherUserDebt > 0
                 ? `you owe ${otherUser.name.displayName}`
                 : `${otherUser.name.displayName} owes you`}
             </StyledText>

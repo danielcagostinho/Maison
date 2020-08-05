@@ -1,12 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import { Image, View, StyleSheet, TextInput } from "react-native";
 import StyledText from "../StyledText";
 import StyledButton from "../StyledButton";
+import colors from "../../constants/colors";
 
-const TransactionTitleForm = () => {
+const TransactionTitleForm = ({title, back, next}) => {
   const illustrationL = require("../../../assets/imgs/newtransaction-illustration-1.png");
   const illustrationR = require("../../../assets/imgs/newtransaction-illustration-2.png");
 
+  const [titleS, setTitleS] = useState(title);
+
+  console.log(title)
   return (
     <View>
       <View style={styles.backdrop}></View>
@@ -18,18 +22,25 @@ const TransactionTitleForm = () => {
         <View style={{ paddingHorizontal: 16, paddingVertical: 8 }}>
           <StyledText style={styles.title}>What is this for?</StyledText>
           <TextInput
+            autoCapitalize="none"
+            autoCorrect={false}
+            autoFocus={true}
             style={{
               height: 33,
               borderBottomWidth: 1,
-              borderBottomColor: "#D1CCED",
-              marginVertical: 8,
-              color: '#4900A7',
-              fontFamily: 'ProductSansRegular',
-              fontSize: 24
+              borderBottomColor: colors.LIGHT_PURPLE,
+              color: colors.PRIMARY,
+              fontFamily: "ProductSansRegular",
+              fontSize: 24,
+            }}
+            placeholder="Dinner, groceries, rent, etc."
+            value={titleS}
+            onChangeText={(newText) => {
+              setTitleS(newText);
             }}
           />
           <View style={{ marginVertical: 8 }}>
-            <StyledButton size="lg" title="Continue" variant="dark" />
+            <StyledButton size="lg" title="Continue" variant="dark" buttonAction={() => next(titleS)}/>
           </View>
         </View>
       </View>

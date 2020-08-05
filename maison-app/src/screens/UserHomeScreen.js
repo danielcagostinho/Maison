@@ -12,10 +12,12 @@ import { View, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { FlatGrid } from "react-native-super-grid";
 import NewBillIcon from "../../assets/imgs/newbill.png";
 import StyledText from "../components/StyledText";
+const illustration = require("../../assets/imgs/homepage.png");
+
+// CSS Imports
 import colors from "../constants/colors";
 
 const UserHomeScreen = ({ navigation }) => {
-  const illustration = require("../../assets/imgs/homepage.png");
   const houseName = "Oxley St.";
 
   const [dataLoaded, setDataLoaded] = useState(false);
@@ -47,7 +49,7 @@ const UserHomeScreen = ({ navigation }) => {
       owedAmount += Number(housemateDebt.amount);
     });
   }
-  
+
   return (
     <View style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
       <View style={styles.header}>
@@ -95,16 +97,28 @@ const UserHomeScreen = ({ navigation }) => {
             data={otherHousemates}
             renderItem={({ item }) => {
               return (
-                <HousemateCard
-                  housemate={{
-                    _id: item._id,
-                    amount: housemateDebts.find(
-                      (housemateDebt) => housemateDebt.housemateId === item._id
-                    ).amount,
-                    name: item.name,
-                    avatarURL: item.avatarURL,
+                <TouchableOpacity
+                  
+                  onPress={() => {
+                    navigation.navigate("UserTransactionsIndex", {
+                      otherUser: item,
+                      otherUserDebt: item.amount,
+                    });
                   }}
-                />
+                >
+                  <HousemateCard
+                    housemate={{
+                      _id: item._id,
+                      amount: housemateDebts.find(
+                        (housemateDebt) =>
+                          housemateDebt.housemateId === item._id
+                      ).amount,
+                      name: item.name,
+                      avatarURL: item.avatarURL,
+                    }}
+                    variant="select"
+                  />
+                </TouchableOpacity>
               );
             }}
           />

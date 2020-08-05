@@ -4,12 +4,20 @@ import { Context as HousemateContext } from "../context/HousemateContext";
 import { Context as TransactionContext } from "../context/TransactionContext";
 
 import { FlatList } from "react-native-gesture-handler";
-import { View, StyleSheet, Button, TextInput } from "react-native";
-import StyledText from '../components/StyledText';
+import {
+  View,
+  ScrollView,
+  StyleSheet,
+  Button,
+  TextInput,
+  TouchableOpacity,
+} from "react-native";
+import StyledText from "../components/StyledText";
 import CheckBox from "@react-native-community/checkbox";
-import TransactionTitleForm from '../components/NewTransactionForm/TransactionTitleForm';
-import TransactionAmountForm from '../components/NewTransactionForm/TransactionAmountForm';
-import TransactionHousematesForm from '../components/NewTransactionForm/TransactionHousematesForm';
+import TransactionTitleForm from "../components/NewTransactionForm/TransactionTitleForm";
+import TransactionAmountForm from "../components/NewTransactionForm/TransactionAmountForm";
+import TransactionHousematesForm from "../components/NewTransactionForm/TransactionHousematesForm";
+import { BottomSheet } from "react-native-btr";
 
 const NewTransactionScreen = (props) => {
   // Context State
@@ -24,7 +32,7 @@ const NewTransactionScreen = (props) => {
   // Local State
   const [transaction, setTransaction] = useState({
     title: "",
-    amount: "",
+    amount: 0,
     isPaid: false,
     timestamp: new Date(),
     ownerId: null,
@@ -41,6 +49,29 @@ const NewTransactionScreen = (props) => {
       };
     })
   );
+
+  const [currentScreen, setCurrentScreen] = useState(0);
+  const maxScreenInd = 2;
+
+  const next = (value) => {
+    const nextScreen = Math.min(currentScreen + 1, maxScreenInd);
+    setCurrentScreen(nextScreen);
+    switch (currentScreen) {
+      case 0: {
+        setTransaction({ ...transaction, title: value });
+        break;
+      }
+      case 1: {
+        setTransaction({ ...transaction, amount: value });
+        break;
+      }
+    }
+  };
+
+  const back = () => {
+    const nextScreen = Math.max(currentScreen - 1, 0);
+    setCurrentScreen(nextScreen);
+  };
 
   // Set the selected property of a housemate after corresponding checkbox is checked
   const setSelected = (index) => {
@@ -159,9 +190,35 @@ const NewTransactionScreen = (props) => {
         }}
       />
       <Button onPress={onSubmit} title="Continue" /> */}
-      <TransactionTitleForm/>
-      <TransactionAmountForm/>
-      <TransactionHousematesForm amount="92.38"/>
+      <BottomSheet visible={true}>
+        <Button title="Previous" onPress={back} />
+        <StyledText style={{ backgroundColor: "white", fontSize: 20 }}>
+          {currentScreen}
+        </StyledText>
+        <ScrollView>
+          {currentScreen == 0 ? (
+            <TransactionTitleForm
+              title={transaction.title}
+              previous={back}
+              next={next}
+            />
+          ) : currentScreen == 1 ? (
+            <TransactionAmountForm
+              title={transaction.title}
+              amount={transaction.amount}
+              previous={back}
+              next={next}
+            />
+          ) : (
+            <TransactionHousematesForm
+              title={transaction.title}
+              amount={transaction.amount}
+              previous={back}
+              next={next}
+            />
+          )}
+        </ScrollView>
+      </BottomSheet>
     </View>
   );
 };
@@ -170,7 +227,7 @@ NewTransactionScreen.navigationOptions = () => {
   return {
     header: () => false,
   };
-}
+};
 
 const styles = StyleSheet.create({
   card: {

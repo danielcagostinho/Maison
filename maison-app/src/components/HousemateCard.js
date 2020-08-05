@@ -1,14 +1,16 @@
 import React from "react";
-import { View, StyleSheet, TouchableOpacity, Image } from "react-native";
+import { View, StyleSheet, TouchableOpacity, Image, TextInput } from "react-native";
 import StyledText from './StyledText';
 import { withNavigation } from "react-navigation";
 import colors from "../constants/colors";
 
-const HousemateCard = ({ housemate, navigation }) => {
+const HousemateCard = ({ housemate, variant }) => {
   let cardStyle = styles.card;
   let cardStyles = [
     cardStyle
   ];
+
+  // variants checkbox and homepage
 
   let amountStyle = [styles.amountTextStyle];
   if (housemate.amount > 0) {
@@ -23,24 +25,32 @@ const HousemateCard = ({ housemate, navigation }) => {
     <StyledText style={amountStyle}>{housemate.amount == 0 ? "Settled Up": "$" + debtAmount}</StyledText>
   );
   return (
-    <TouchableOpacity
-      style={cardStyles}
-      onPress={() => {
-        navigation.navigate("UserTransactionsIndex", {
-          otherUser: housemate,
-          otherUserDebt: housemate.amount
-        });
-      }}
-    >
+    <View style={cardStyles}>
       <Image source={{ uri: housemate.avatarURL }} style={styles.displayPic}/>
       <View style={styles.textContainer}>
         <StyledText style={styles.name}>{housemate.name.displayName}</StyledText>
-        <StyledText style={styles.debtStatus}>
+       { variant == "select" ? <StyledText style={styles.debtStatus}>
           {housemate.amount > 0 ? "is owed" : housemate.amount == 0 ? "we're good" : "owes you"}
-        </StyledText>
+        </StyledText> : null}
       </View>
-      {amountDisplay}
-    </TouchableOpacity>
+      {variant == "select" ? amountDisplay : <TextInput
+          keyboardType='numeric'
+            style={{
+              width: 80,
+              marginTop: 24,
+              height: 22,
+              marginVertical: 8,
+              fontSize: 17,
+              color: colors.PRIMARY,
+              fontFamily: "ProductSansBold",
+              borderBottomWidth: 1,
+              borderBottomColor: colors.LIGHT_PURPLE,
+              textAlign: 'center'
+            }}
+            
+          />}
+    </View>
+    
   );
 };
 
@@ -60,20 +70,6 @@ const styles = StyleSheet.create({
     height: 176,
     backgroundColor: colors.LIGHT_PURPLE,
     alignItems: "center",
-  },
-  topCard: {
-    // marginTop: 0,
-  },
-  notTopCard: {
-    // marginTop: 8,
-  },
-  notLastCard: {
-    // margin: 8,
-  },
-  lastCard: {
-    // marginLeft: 8,
-    // marginBottom: 8,
-    // marginRight: 24,
   },
   displayPic: {
     width: 60,

@@ -1,43 +1,55 @@
+// React Imports
 import React, { useContext } from "react";
-import Moment from "moment";
 
+// Context Imports
 import { Context as HousemateContext } from "../context/HousemateContext";
 
+// Component Imports
+import StyledText from "./StyledText";
 import { View, StyleSheet, Image } from "react-native";
-import StyledText from './StyledText';
+const chevron = require("../../assets/imgs/Chevron.png");
+
+// CSS Imports
 import colors from "../constants/colors";
 
-const Transaction = ({ transaction, title, onPress }) => {
-  const { state: {housemates, currentUser} } = useContext(HousemateContext);
+// Moment Import
+import Moment from "moment";
+Moment.locale("en");
+
+const Transaction = ({ transaction, title }) => {
+  const {
+    state: { housemates, currentUser },
+  } = useContext(HousemateContext);
+
   const titleStyles = [
     styles.title,
-    title === "Pending" ? { fontFamily: "ProductSansBold" } : { fontFamily: "ProductSansRegular" },
+    title === "Pending"
+      ? { fontFamily: "ProductSansBold" }
+      : { fontFamily: "ProductSansRegular" },
   ];
-  
 
- 
-  Moment.locale("en");
   const isOwner = currentUser.id === transaction.ownerId;
+
   let avatarURL;
-  let housemate =housemates.find(housemate => housemate._id === transaction.ownerId)
-  if(housemate){
-   avatarURL = housemate.avatarURL;
+  let housemate = housemates.find(
+    (housemate) => housemate._id === transaction.ownerId
+  );
+  if (housemate) {
+    avatarURL = housemate.avatarURL;
   }
-   let amount = 0;
+  let amount = 0;
   if (isOwner) {
     for (let i = 0; i < transaction.debtors.length; i++) {
       let debtor = transaction.debtors[i];
       if (debtor.housemateId == currentUser.id) {
-        amount = Number(debtor.share).toFixed(2);
+        amount = Number(debtor.share);
       }
     }
   } else {
     for (let i = 0; i < transaction.debtors.length; i++) {
       let debtor = transaction.debtors[i];
       if (debtor.housemateId == currentUser.id) {
-        amount =
-          // Number(transaction.amount).toFixed(2) -
-          Number(debtor.share).toFixed(2);
+        amount = Number(debtor.share);
       }
     }
     //amount = transaction.amount - transaction.debtors.find((debtor) => debtor.housemateId === currentUser.id).share;
@@ -46,7 +58,7 @@ const Transaction = ({ transaction, title, onPress }) => {
   return (
     <View style={styles.row}>
       <View style={{ flexDirection: "row" }}>
-        <Image source={{uri: avatarURL}} style={styles.displayPic}/>
+        <Image source={{ uri: avatarURL }} style={styles.displayPic} />
         <View
           style={{
             flexDirection: "column",
@@ -60,11 +72,21 @@ const Transaction = ({ transaction, title, onPress }) => {
           </StyledText>
         </View>
       </View>
-      <View style={{ flexDirection: "column", alignItems: 'center' }}>
-        <StyledText style={isOwner ? styles.ownerStyle : styles.debtorStyle}>
-          ${Number(amount).toFixed(2)}
-        </StyledText>
-        <StyledText style={isOwner ? styles.ownerStyleText : styles.debtorStyleText}>{isOwner ? "Owes You" : "You Owe"}</StyledText>
+      <View style={{ flexDirection: "row", alignItems: "center" }}>
+        <View style={{ flexDirection: "column", alignItems: "flex-end" }}>
+          <StyledText style={isOwner ? styles.ownerStyle : styles.debtorStyle}>
+            ${Number(amount).toFixed(2)}
+          </StyledText>
+          <StyledText
+            style={[isOwner ? styles.ownerStyleText : styles.debtorStyleText]}
+          >
+            {isOwner ? "Owes You" : "You Owe"}
+          </StyledText>
+        </View>
+        <Image
+          style={{ height: 12, width: 6, marginLeft: 12 }}
+          source={chevron}
+        />
       </View>
     </View>
   );
@@ -76,19 +98,25 @@ const styles = StyleSheet.create({
     lineHeight: 17,
   },
   ownerStyle: {
+    letterSpacing: -0.41,
+    lineHeight: 20,
     fontSize: 17,
     color: colors.SUCCESS,
   },
   debtorStyle: {
+    letterSpacing: -0.41,
+    lineHeight: 20,
     fontSize: 17,
     color: colors.FAIL,
   },
   ownerStyleText: {
     fontSize: 13,
+    letterSpacing: -0.41,
     color: colors.SUCCESS,
   },
   debtorStyleText: {
     fontSize: 13,
+    letterSpacing: -0.41,
     color: colors.FAIL,
   },
   date: {
