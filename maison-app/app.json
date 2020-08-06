@@ -22,8 +22,11 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "bundleIdentifier": "com.danielcagostinho.maison"
     },
-    "description": ""
+    "description": "",
+    "android": {
+      "package": "com.danielcagostinho.maison"
+    }
   }
 }

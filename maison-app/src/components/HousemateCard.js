@@ -1,17 +1,44 @@
-import React from "react";
-import { View, StyleSheet, TouchableOpacity, Image, TextInput } from "react-native";
-import StyledText from './StyledText';
+// React Imports
+import React, { useState, useEffect } from "react";
 import { withNavigation } from "react-navigation";
+
+// Context Imports
+
+// Copmonent Imports
+import {
+  View,
+  StyleSheet,
+  Image,
+  TextInput,
+  TouchableOpacity,
+} from "react-native";
+import StyledText from "./StyledText";
+
+// CSS Imports
 import colors from "../constants/colors";
+const check = require("../../assets/imgs/check.png");
+const uncheck = require("../../assets/imgs/uncheck.png");
 
-const HousemateCard = ({ housemate, variant }) => {
-  let cardStyle = styles.card;
-  let cardStyles = [
-    cardStyle
-  ];
+const HousemateCard = ({
+  housemate,
+  variant,
+  toggleHousemate,
+  currentUser,
+  shares,
+  navigation,
+  totalAmount,
+}) => {
 
-  // variants checkbox and homepage
+  
+  // Local State
+  const [share, setShare] = useState("0");
+  const [checked, setChecked] = useState(currentUser.id === housemate._id);
+  //console.log(checked)
+  // Set Checkbox Image source
+  let imgSrc = checked ? check : uncheck;
+  let cardStyle = !checked ? styles.card : styles.selectedCard;
 
+  // Set styles for user amount
   let amountStyle = [styles.amountTextStyle];
   if (housemate.amount > 0) {
     amountStyle = [...amountStyle, styles.isOwed];
@@ -20,37 +47,113 @@ const HousemateCard = ({ housemate, variant }) => {
   } else {
     amountStyle = [...amountStyle, styles.owesYou];
   }
+  
+
+  // set OnPress method
+  const cardPressed = () => {
+    switch (variant) {
+      case "display":
+        {
+          navigation.navigate("UserTransactionsIndex", {
+            otherUser: housemate,
+            otherUserDebt: housemate.amount,
+          });
+        }
+        break;
+      case "select":
+        {
+          if (housemate._id !== currentUser.id) {
+            toggleHousemate(
+              !checked,
+              housemate,
+              totalAmount / shares
+            );
+            setChecked(!checked);
+          }
+        }
+        break;
+    }
+  };
+
+  // Set CheckBox Display
+  let checkBoxDisplay =
+    variant !== "display" ? (
+      <View style={styles.checkBoxBackground}>
+        <Image source={imgSrc} style={{ width: 20, height: 20 }} />
+      </View>
+    ) : null;
+
+  // Set user amount value
   const debtAmount = Math.abs(housemate.amount).toFixed(2);
   const amountDisplay = (
-    <StyledText style={amountStyle}>{housemate.amount == 0 ? "Settled Up": "$" + debtAmount}</StyledText>
+    <StyledText style={amountStyle}>
+      {housemate.amount == 0 ? "Settled Up" : "$" + debtAmount}
+    </StyledText>
   );
+
+  // Set user debt status
+  let debtStatus = (variant == "display" ? (
+    <StyledText style={styles.debtStatus}>
+      {housemate.amount > 0
+        ? "is owed"
+        : housemate.amount == 0
+        ? "we're good"
+        : "owes you"}
+    </StyledText>
+  ) : null)
+  
+  
+
   return (
-    <View style={cardStyles}>
-      <Image source={{ uri: housemate.avatarURL }} style={styles.displayPic}/>
-      <View style={styles.textContainer}>
-        <StyledText style={styles.name}>{housemate.name.displayName}</StyledText>
-       { variant == "select" ? <StyledText style={styles.debtStatus}>
-          {housemate.amount > 0 ? "is owed" : housemate.amount == 0 ? "we're good" : "owes you"}
-        </StyledText> : null}
+    <TouchableOpacity style={cardStyle} onPress={cardPressed}>
+      <View style={styles.avatarContainer}>
+        <Image
+          source={{ uri: housemate.avatarURL }}
+          style={styles.displayPic}
+        />
+        {checkBoxDisplay}
       </View>
-      {variant == "select" ? amountDisplay : <TextInput
-          keyboardType='numeric'
-            style={{
-              width: 80,
-              marginTop: 24,
-              height: 22,
-              marginVertical: 8,
-              fontSize: 17,
-              color: colors.PRIMARY,
-              fontFamily: "ProductSansBold",
-              borderBottomWidth: 1,
-              borderBottomColor: colors.LIGHT_PURPLE,
-              textAlign: 'center'
-            }}
-            
-          />}
-    </View>
-    
+      <View style={styles.textContainer}>
+        <StyledText style={styles.name}>
+          {housemate.name.displayName}
+        </StyledText>
+        {debtStatus}
+      </View>
+      {variant === "display" ? (
+        amountDisplay
+      ) : checked ? (
+        // <TextInput
+        //   keyboardType="numeric"
+        //   value={share}
+        //   style={{
+        //     width: 80,
+        //     marginTop: 24,
+        //     height: 22,
+        //     marginVertical: 8,
+        //     fontSize: 17,
+        //     color: colors.PRIMARY,
+        //     fontFamily: "ProductSansBold",
+        //     borderBottomWidth: 1,
+        //     borderBottomColor: colors.LIGHT_PURPLE,
+        //     textAlign: "center",
+        //   }}
+        //   defaultValue="$00.00"
+        //   placeholder="$00.00"
+        //   onChangeText={(newText) => setShare(newText)}
+        // />
+        <StyledText
+          style={styles.selectedText}
+        >
+          ${Number(totalAmount / shares).toFixed(2)}
+        </StyledText>
+      ) : (
+        <StyledText
+          style={styles.unSelectedText}
+        >
+          ${Number(share).toFixed(2)}
+        </StyledText>
+      )}
+    </TouchableOpacity>
   );
 };
 
@@ -61,22 +164,21 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     height: 176,
     width: 164,
-    // flex: 1 / 2,
+    padding: 16,
     alignItems: "center",
   },
   selectedCard: {
     borderRadius: 16,
-    // flex: 1 / 2,
     height: 176,
-    backgroundColor: colors.LIGHT_PURPLE,
+    width: 164,
+    padding: 16,
     alignItems: "center",
+    backgroundColor: colors.BACKDROP_PURPLE,
   },
   displayPic: {
     width: 60,
     height: 60,
     borderRadius: 50,
-    marginTop: 16,
-    marginBottom: 8,
   },
   name: {
     fontSize: 15,
@@ -86,8 +188,6 @@ const styles = StyleSheet.create({
   status: {
     color: "rgba(0,0,0,0.5)",
     textAlign: "center",
-  },
-  textContainer: {
   },
   amountTextStyle: {
     fontSize: 17,
@@ -107,7 +207,43 @@ const styles = StyleSheet.create({
   debtStatus: {
     color: "rgba(0,0,0,0.5)",
     letterSpacing: -0.41,
+  },
+  avatarContainer: {
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    alignItems: "flex-end",
+    marginBottom: 8,
+  },
+  checkBoxBackground: {
+    position: "absolute",
+    borderRadius: 50,
+    width: 28,
+    height: 28,
+    backgroundColor: "white",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  unSelectedText: {
+    width: 80,
+    marginTop: 24,
+    height: 22,
+    marginVertical: 8,
+    fontSize: 17,
+    color: "#E0E0E0",
+    fontFamily: "ProductSansBold",
+    textAlign: "center",
+  },
+  selectedText: {
+    width: 80,
+    marginTop: 24,
+    height: 22,
+    marginVertical: 8,
+    fontSize: 17,
+    color: colors.PRIMARY,
+    fontFamily: "ProductSansBold",
+    textAlign: "center",
   }
+
 });
 
 export default withNavigation(HousemateCard);

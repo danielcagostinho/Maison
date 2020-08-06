@@ -6,6 +6,7 @@ import { Context as HousemateContext } from "../context/HousemateContext";
 import Transaction from "../components/Transaction";
 import {
   View,
+  ScrollView,
   Image,
   StyleSheet,
   FlatList,
@@ -13,7 +14,6 @@ import {
 } from "react-native";
 import StyledText from "../components/StyledText";
 import StyledButton from "../components/StyledButton";
-
 
 const UserTransactionsIndexScreen = ({ navigation }) => {
   const {
@@ -33,7 +33,7 @@ const UserTransactionsIndexScreen = ({ navigation }) => {
     //setLocalHousemateDebts(housemateDebts)
   }, []);
   return (
-    <View style={{ flex: 1, backgroundColor: "#FFF" }}>
+    <View style={{ backgroundColor: "#FFF" }}>
       <View style={{ backgroundColor: "#F8F5FB", padding: 16 }}>
         <View
           style={{
@@ -43,7 +43,9 @@ const UserTransactionsIndexScreen = ({ navigation }) => {
           }}
         >
           <View>
-            <StyledText style={styles.amount}>${Math.abs(Number(otherUserDebt)).toFixed(2)}</StyledText>
+            <StyledText style={styles.amount}>
+              ${Math.abs(Number(otherUserDebt)).toFixed(2)}
+            </StyledText>
             <StyledText style={styles.debtStatus}>
               {otherUserDebt > 0
                 ? `you owe ${otherUser.name.displayName}`
@@ -55,30 +57,34 @@ const UserTransactionsIndexScreen = ({ navigation }) => {
         </View>
 
         <StyledButton
-        size="md"
+          size="md"
           variant="light"
           title="Settle up"
-          buttonAction={() => navigation.navigate("SettleUp", { otherUser, otherUserDebt })}
+          buttonAction={() =>
+            navigation.navigate("SettleUp", { otherUser, otherUserDebt })
+          }
         />
       </View>
       {transactions ? (
         <View style={{ backgroundColor: "white" }}>
           <StyledText style={titleStyles}>Pending</StyledText>
-          <FlatList
-            data={transactions.filter((transaction) => !transaction.isPaid)}
-            keyExtractor={(item) => item._id}
-            renderItem={({ item }) => {
-              return (
-                <TouchableOpacity
-                  onPress={() => {
-                    navigation.navigate("ShowTransaction", { _id: item._id });
-                  }}
-                >
-                  <Transaction title="Pending" transaction={item} />
-                </TouchableOpacity>
-              );
-            }}
-          />
+          <View>
+            <FlatList
+              data={transactions.filter((transaction) => !transaction.isPaid)}
+              keyExtractor={(item) => item._id}
+              renderItem={({ item }) => {
+                return (
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigation.navigate("ShowTransaction", { _id: item._id });
+                    }}
+                  >
+                    <Transaction title="Pending" transaction={item} />
+                  </TouchableOpacity>
+                );
+              }}
+            />
+          </View>
 
           <StyledText style={titleStyles}>Past Transactions</StyledText>
           <FlatList

@@ -12,7 +12,7 @@ const TransactionAmountForm = ({ title, amount, back, next }) => {
   return (
     <View>
       <View style={styles.backdrop}></View>
-      <View style={styles.illustrationContair}>
+      <View style={styles.illustrationContainer}>
         <Image source={illustration} style={styles.illustration} />
       </View>
       <View style={{ zIndex: 3, backgroundColor: "#FFF" }}>
@@ -21,6 +21,7 @@ const TransactionAmountForm = ({ title, amount, back, next }) => {
             How much was <StyledText style={styles.transactionTitle}>{title}</StyledText>?
           </StyledText>
           <TextInput
+          autoFocus={true}
           keyboardType='numeric'
             style={{
               height: 64,

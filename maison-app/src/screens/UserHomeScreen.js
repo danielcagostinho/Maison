@@ -1,6 +1,6 @@
 // React Imports
 import React, { useContext, useState, useEffect } from "react";
-import { withNavigation } from "react-navigation";
+import { withNavigation, NavigationEvents } from "react-navigation";
 
 // Context Imports
 import { Context as HousemateContext } from "../context/HousemateContext";
@@ -29,7 +29,7 @@ const UserHomeScreen = ({ navigation }) => {
     state: { housemateDebts },
     getTransactions,
   } = useContext(TransactionContext);
-
+  
   useEffect(() => {
     async function getData() {
       await getTransactions(currentUser.id, null);
@@ -52,6 +52,7 @@ const UserHomeScreen = ({ navigation }) => {
 
   return (
     <View style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
+      {/* <NavigationEvents onWillFocus={getData()}/> */}
       <View style={styles.header}>
         <View style={styles.titleRow}>
           <View style={{ flexDirection: "row" }}>
@@ -97,15 +98,6 @@ const UserHomeScreen = ({ navigation }) => {
             data={otherHousemates}
             renderItem={({ item }) => {
               return (
-                <TouchableOpacity
-                  
-                  onPress={() => {
-                    navigation.navigate("UserTransactionsIndex", {
-                      otherUser: item,
-                      otherUserDebt: item.amount,
-                    });
-                  }}
-                >
                   <HousemateCard
                     housemate={{
                       _id: item._id,
@@ -116,9 +108,9 @@ const UserHomeScreen = ({ navigation }) => {
                       name: item.name,
                       avatarURL: item.avatarURL,
                     }}
-                    variant="select"
+                    currentUser={currentUser}
+                    variant="display"
                   />
-                </TouchableOpacity>
               );
             }}
           />

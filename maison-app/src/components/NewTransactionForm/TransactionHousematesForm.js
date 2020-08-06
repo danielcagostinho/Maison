@@ -1,74 +1,124 @@
+// React Imports
 import React, { useState, useContext, useEffect } from "react";
-import { withNavigation } from 'react-navigation';
-import {
-  Image,
-  View,
-  StyleSheet,
-  TextInput,
-  FlatList,
-  TouchableOpacity,
-} from "react-native";
-import { FlatGrid } from "react-native-super-grid";
+import { withNavigation } from "react-navigation";
+
+// Context Imports
 import { Context as HousemateContext } from "../../context/HousemateContext";
+
+// Component Imports
+import { Image, View, StyleSheet } from "react-native";
+import { FlatGrid } from "react-native-super-grid";
 import StyledText from "../StyledText";
 import StyledButton from "../StyledButton";
-import colors from "../../constants/colors";
 import HousemateCard from "../HousemateCard";
 
-const TransactionHousemateForm = ({ navigation, amount }) => {
-  const illustration = require("../../../assets/imgs/newtransaction-illustration-4.png");
+// CSS Imports
+import colors from "../../constants/colors";
 
-  const housemateSentence = `Splitting ${amount} with`;
-
-  let {
-    state: { currentUser, housemates },
-    getHousemates,
-  } = useContext(HousemateContext);
-
-  const [housematesS, setHousematesS] = useState([]);
-  const [dataLoaded, setDataLoaded] = useState(false);
-
+const TransactionHousemateForm = ({ navigation, totalAmount, next }) => {
   useEffect(() => {
     async function getData() {
       await getHousemates();
       setDataLoaded(true);
     }
     getData();
+    //console.log(currentUser)
   }, []);
+  const illustration = require("../../../assets/imgs/newtransaction-illustration-4.png");
+  const {
+    state: { currentUser, housemates },
+    getHousemates,
+  } = useContext(HousemateContext);
+
+  const currentUserH = housemates.find(
+    (housemate) => (housemate._id = currentUser.id)
+  );
+
+  const [housematesS, setHousematesS] = useState([
+    { housemateId: currentUserH._id, share: totalAmount, firstName: currentUserH.name.firstName },
+  ]);
+  const [dataLoaded, setDataLoaded] = useState(false);
+
+  const toggleHousemate = (checked, housemate, share) => {
+    if (!checked) {
+      // If deselected
+      let newHousemates = housematesS.filter((h) => h.housemateId != housemate._id);
+      // console.log(" Unchecked! - New Housemates");
+      // console.log(newHousemates);
+      setHousematesS(updateShares(newHousemates));
+
+    } else {
+      // If Selected
+      let newHousemates = [
+        ...housematesS,
+        { housemateId: housemate._id, share: share, firstName: housemate.name.firstName },
+      ];
+      // console.log("New Housemates");
+      // console.log(newHousemates);
+      setHousematesS(updateShares(newHousemates));
+      
+    }
+    
+  };
+
+  const updateShares = (housematesToUpdate) => {
+    return (housematesToUpdate.map(housemate => {
+      return {...housemate, share: (totalAmount/housematesToUpdate.length).toFixed(2)}
+    }));
+  }
+
+  
+
+  const housemateSentence = (
+    <StyledText style={styles.title}>
+      Splitting <StyledText style={styles.amount}>${Number(totalAmount).toFixed(2)}</StyledText>{" "}
+      with{" "}
+      {housematesS.length > 2
+        ? housematesS
+            .filter((housemateS) => housemateS.housemateId !== currentUser.id)
+            .map((housemate) => housemate.firstName)
+            .join(" and ")
+        : housematesS
+            .filter((housemateS) => housemateS.housemateId !== currentUser.id)
+            .map((housemate) => housemate.firstName)}
+    </StyledText>
+  );
 
   return (
-    <View>
+    <View style={{ flex: 1 }}>
       <View style={styles.backdrop}></View>
       <View style={styles.illustrationContainer}>
         <Image source={illustration} style={styles.illustration} />
       </View>
-      <View style={{ zIndex: 3, backgroundColor: "#FFF" }}>
-        <View style={{ paddingHorizontal: 16, paddingVertical: 8 }}>
-          <StyledText style={styles.title}>
-            Splitting <StyledText style={styles.amount}>{amount}</StyledText>{" "}
-            with
-          </StyledText>
-          {dataLoaded ? (
-            <FlatGrid
-              data={housemates.filter(
-                (housemate) => housemate._id !== currentUser.id
-              )}
-              keyExtractor={(item) => item._id}
-              renderItem={({ item }) => {
-                return (
-                  <TouchableOpacity
-                    onPress={() => {
-                    }}
-                  >
-                    <HousemateCard housemate={item} variant="" />
-                  </TouchableOpacity>
-                );
-              }}
-            />
-          ) : null}
-          <View style={{ marginVertical: 8 }}>
-            <StyledButton size="lg" title="Split with ( 2 )" variant="dark" />
-          </View>
+      <View style={styles.housemateGrid}>
+        {housemateSentence}
+        {dataLoaded ? (
+          <FlatGrid
+            data={housemates.sort((x, y) =>
+              x._id == currentUser.id ? -1 : y == currentUser.id ? 1 : 0
+            )}
+            renderItem={({ item }) => {
+              console.log(currentUser)
+              return (
+                <HousemateCard
+                  housemate={item}
+                  variant="select"
+                  totalAmount={totalAmount}
+                  toggleHousemate={toggleHousemate}
+                  currentUser={currentUser}
+                  shares={housematesS.length}
+                />
+              );
+            }}
+          />
+        ) : null}
+        <View style={{ marginHorizontal: 16, marginBottom: 8 }}>
+          <StyledButton
+            size="lg"
+            title={`Split with ( ${housematesS.length} )`}
+            variant="dark"
+            buttonAction={() => next(housematesS)}
+          />
         </View>
       </View>
     </View>
@@ -79,7 +129,8 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 28,
     fontFamily: "ProductSansBold",
-    marginVertical: 8,
+    margin: 20,
+    marginBottom: 8,
   },
   amount: {
     color: colors.PRIMARY,
@@ -95,13 +146,17 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-around",
     alignSelf: "center",
-    top: 90,
+    top: 40,
     marginHorizontal: 16,
   },
   backdrop: {
     backgroundColor: colors.BACKDROP_PURPLE,
-    height: 200,
+    height: 150,
     width: "100%",
+  },
+  housemateGrid: {
+    zIndex: 3,
+    backgroundColor: "#FFF",
   },
 });
 

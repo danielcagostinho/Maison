@@ -27,7 +27,7 @@ import ActivityTabIcon from "../maison-app/assets/imgs/nav/activity-nav.png";
 import RecurringTabIcon from "../maison-app/assets/imgs/nav/recurring-nav.png";
 import ProfileTabIcon from "../maison-app/assets/imgs/nav/profile-nav.png";
 
-const homeFlow = createStackNavigator({
+const homeFlow = createSwitchNavigator({
   UserHome: UserHomeScreen,
   NewTransaction: NewTransactionScreen,
   TransactionsIndex: TransactionsIndexScreen,
