@@ -95,6 +95,7 @@ const UserHomeScreen = ({ navigation }) => {
         </View>
         {dataLoaded ? (
           <FlatGrid
+            // itemDimension={130}
             data={otherHousemates}
             renderItem={({ item }) => {
               return (
@@ -127,6 +128,7 @@ UserHomeScreen.navigationOptions = () => {
 const styles = StyleSheet.create({
   header: {
     backgroundColor: colors.PRIMARY,
+    paddingTop: 44
   },
   titleRow: {
     flexDirection: "row",

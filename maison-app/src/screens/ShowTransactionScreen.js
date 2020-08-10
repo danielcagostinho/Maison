@@ -1,4 +1,5 @@
 import React, { useContext } from "react";
+import { withNavigation } from 'react-navigation';
 
 import { Context as TransactionContext } from "../context/TransactionContext";
 import { Context as HousemateContext } from "../context/HousemateContext";
@@ -57,9 +58,17 @@ const ShowTransactionScreen = ({ navigation }) => {
             navigation.navigate("TransactionsIndex");
           }}
         />
+        
       ) : null}
+      <Button
+          title="BACK"
+          onPress={() => {
+            
+            navigation.navigate('UserTransactionsIndex');
+          }}
+        />
     </View>
   );
 };
 
-export default ShowTransactionScreen;
+export default withNavigation(ShowTransactionScreen);

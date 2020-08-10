@@ -7,6 +7,7 @@ import Transaction from "../components/Transaction";
 import {
   View,
   ScrollView,
+  Button,
   Image,
   StyleSheet,
   FlatList,
@@ -34,6 +35,7 @@ const UserTransactionsIndexScreen = ({ navigation }) => {
   }, []);
   return (
     <View style={{ backgroundColor: "#FFF" }}>
+      <Button title="Back" onPress={ () => navigation.navigate('UserHome')} />
       <View style={{ backgroundColor: "#F8F5FB", padding: 16 }}>
         <View
           style={{
@@ -64,6 +66,7 @@ const UserTransactionsIndexScreen = ({ navigation }) => {
             navigation.navigate("SettleUp", { otherUser, otherUserDebt })
           }
         />
+        <Button title="Back" onPress={ () => navigation.navigate('UserHome')} />
       </View>
       {transactions ? (
         <View style={{ backgroundColor: "white" }}>

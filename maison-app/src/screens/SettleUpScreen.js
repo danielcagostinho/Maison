@@ -5,7 +5,7 @@ import { withNavigation } from "react-navigation";
 import { Context as TransactionContext } from "../context/TransactionContext";
 import { Context as HousemateContext } from "../context/HousemateContext";
 
-import { View, FlatList, Image, StyleSheet } from "react-native";
+import { View, FlatList, Image, StyleSheet, Button } from "react-native";
 import StyledText from "../components/StyledText";
 import StyledButton from "../components/StyledButton";
 import colors from '../constants/colors';
@@ -69,6 +69,7 @@ const SettleUpScreen = ({ navigation }) => {
             !
           </StyledText>
         </View>
+        <Button title="Back" onPress={ () => navigation.navigate('UserHome')} />
         
         {dataLoaded ? (
           <>

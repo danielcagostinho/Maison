@@ -13,7 +13,7 @@ import TransactionHousematesForm from "../components/NewTransactionForm/Transact
 
 import RBSheet from "react-native-raw-bottom-sheet";
 
-const NewTransactionScreen = (props) => {
+const NewTransactionScreen = ({navigation}) => {
   const refRBSheet = useRef();
   // Context State
   const { state, getHousemates } = useContext(HousemateContext);
@@ -68,6 +68,11 @@ const NewTransactionScreen = (props) => {
   };
 
   const back = () => {
+    switch(currentScreen) {
+      case 0: {
+        navigation.navigate('UserHome')
+      }
+    }
     const nextScreen = Math.max(currentScreen - 1, 0);
     setCurrentScreen(nextScreen);
   };
@@ -127,7 +132,7 @@ const NewTransactionScreen = (props) => {
     console.log(newTransaction)
     await addTransaction(newTransaction);
     clearForm();
-    props.navigation.navigate("UserHome");
+    navigation.navigate("UserHome");
   };
 
   return (
