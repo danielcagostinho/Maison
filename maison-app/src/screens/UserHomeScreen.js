@@ -13,6 +13,8 @@ import { FlatGrid } from "react-native-super-grid";
 import NewBillIcon from "../../assets/imgs/newbill.png";
 import StyledText from "../components/StyledText";
 const illustration = require("../../assets/imgs/homepage.png");
+import Modal from "react-native-modalbox";
+import NewTransactionScreen from "./NewTransactionScreen";
 
 // CSS Imports
 import colors from "../constants/colors";
@@ -21,6 +23,18 @@ const UserHomeScreen = ({ navigation }) => {
   const houseName = "Oxley St.";
 
   const [dataLoaded, setDataLoaded] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const getModal = () => {
+    return (
+      <Modal isOpen={modalVisible}>
+        <View>
+          <StyledText>Hello from modal</StyledText>
+        </View>
+      </Modal>
+    );
+  };
+
   let {
     state: { currentUser, housemates },
     getHousemates,
@@ -29,7 +43,7 @@ const UserHomeScreen = ({ navigation }) => {
     state: { housemateDebts },
     getTransactions,
   } = useContext(TransactionContext);
-  
+
   useEffect(() => {
     async function getData() {
       await getTransactions(currentUser.id, null);
@@ -51,54 +65,59 @@ const UserHomeScreen = ({ navigation }) => {
   }
 
   return (
-    <View style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
-      {/* <NavigationEvents onWillFocus={getData()}/> */}
-      <View style={styles.header}>
-        <View style={styles.titleRow}>
-          <View style={{ flexDirection: "row" }}>
-            <Image
-              source={{ uri: currentUser.avatarURL }}
-              style={styles.displayPic}
-            />
-            <StyledText style={styles.houseName}>{houseName}</StyledText>
+    <>
+      <View style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
+        {/* <NavigationEvents onWillFocus={getData()}/> */}
+        <View style={styles.header}>
+          <View style={styles.titleRow}>
+            <View style={{ flexDirection: "row" }}>
+              <Image
+                source={{ uri: currentUser.avatarURL }}
+                style={styles.displayPic}
+              />
+              <StyledText style={styles.houseName}>{houseName}</StyledText>
+            </View>
+            <View>
+              <TouchableOpacity
+                onPress={() => {
+                  // navigation.navigate("NewTransaction")}
+                  setModalVisible(true);
+                }}
+              >
+                <Image source={NewBillIcon} style={styles.newBillButton} />
+              </TouchableOpacity>
+            </View>
           </View>
+          <View style={styles.statusRow}>
+            <View style={styles.statusContainer}>
+              {dataLoaded ? (
+                <>
+                  <StyledText style={styles.statusText}>
+                    {owedAmount < 0 ? "You're owed" : "You owe"}
+                  </StyledText>
+                  <StyledText style={styles.statusText}>
+                    ${Math.abs(owedAmount)}
+                  </StyledText>
+                </>
+              ) : null}
+            </View>
+            <StyledText style={styles.headerBottomText}>
+              Now all you gotta do is wait...
+            </StyledText>
+            <Image source={illustration} style={styles.illustration} />
+          </View>
+        </View>
+        <View style={{ backgroundColor: "white", flex: 1 }}>
           <View>
-            <TouchableOpacity
-              onPress={() => navigation.navigate("NewTransaction")}
-            >
-              <Image source={NewBillIcon} style={styles.newBillButton} />
-            </TouchableOpacity>
+            <StyledText style={styles.listTitle}>Housemates</StyledText>
           </View>
-        </View>
-        <View style={styles.statusRow}>
-          <View style={styles.statusContainer}>
-            {dataLoaded ? (
-              <>
-                <StyledText style={styles.statusText}>
-                  {owedAmount < 0 ? "You're owed" : "You owe"}
-                </StyledText>
-                <StyledText style={styles.statusText}>
-                  ${Math.abs(owedAmount)}
-                </StyledText>
-              </>
-            ) : null}
-          </View>
-          <StyledText style={styles.headerBottomText}>
-            Now all you gotta do is wait...
-          </StyledText>
-          <Image source={illustration} style={styles.illustration} />
-        </View>
-      </View>
-      <View style={{ backgroundColor: "white", flex: 1 }}>
-        <View>
-          <StyledText style={styles.listTitle}>Housemates</StyledText>
-        </View>
-        {dataLoaded ? (
-          <FlatGrid
-            // itemDimension={130}
-            data={otherHousemates}
-            renderItem={({ item }) => {
-              return (
+          {dataLoaded ? (
+            <FlatGrid
+              itemDimension={130}
+              style={{ width: "100%", borderWidth: 1, borderColor: "red" }}
+              data={otherHousemates}
+              renderItem={({ item }) => {
+                return (
                   <HousemateCard
                     housemate={{
                       _id: item._id,
@@ -112,12 +131,17 @@ const UserHomeScreen = ({ navigation }) => {
                     currentUser={currentUser}
                     variant="display"
                   />
-              );
-            }}
-          />
-        ) : null}
+                );
+              }}
+            />
+          ) : null}
+        </View>
       </View>
-    </View>
+      <NewTransactionScreen
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+      />
+    </>
   );
 };
 UserHomeScreen.navigationOptions = () => {
@@ -128,7 +152,7 @@ UserHomeScreen.navigationOptions = () => {
 const styles = StyleSheet.create({
   header: {
     backgroundColor: colors.PRIMARY,
-    paddingTop: 44
+    paddingTop: 44,
   },
   titleRow: {
     flexDirection: "row",

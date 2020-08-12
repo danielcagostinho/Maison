@@ -2,18 +2,22 @@ import React, { useState, useContext, useEffect, useRef } from "react";
 
 import { Context as HousemateContext } from "../context/HousemateContext";
 import { Context as TransactionContext } from "../context/TransactionContext";
+
 import {
   View,
   StyleSheet,
   Button,
 } from "react-native";
+import Modal from 'react-native-modalbox';
+import StyledText from '../components/StyledText';
+
 import TransactionTitleForm from "../components/NewTransactionForm/TransactionTitleForm";
 import TransactionAmountForm from "../components/NewTransactionForm/TransactionAmountForm";
 import TransactionHousematesForm from "../components/NewTransactionForm/TransactionHousematesForm";
 
 import RBSheet from "react-native-raw-bottom-sheet";
 
-const NewTransactionScreen = ({navigation}) => {
+const NewTransactionScreen = ({navigation, modalVisible, setModalVisible}) => {
   const refRBSheet = useRef();
   // Context State
   const { state, getHousemates } = useContext(HousemateContext);
@@ -22,7 +26,7 @@ const NewTransactionScreen = ({navigation}) => {
   // Initialize housemates
   useEffect(() => {
     getHousemates();
-    refRBSheet.current.open();
+    //refRBSheet.current.open();
   }, []);
 
   // Local State
@@ -70,7 +74,7 @@ const NewTransactionScreen = ({navigation}) => {
   const back = () => {
     switch(currentScreen) {
       case 0: {
-        navigation.navigate('UserHome')
+        setModalVisible(false)
       }
     }
     const nextScreen = Math.max(currentScreen - 1, 0);
@@ -132,22 +136,51 @@ const NewTransactionScreen = ({navigation}) => {
     console.log(newTransaction)
     await addTransaction(newTransaction);
     clearForm();
-    navigation.navigate("UserHome");
+    // navigation.navigate("UserHome");
+    setCurrentScreen(0)
+    setModalVisible(false)
   };
 
   return (
-    <View>
-      <RBSheet
-        ref={refRBSheet}
-        closeOnDragDown={true}
-        closeOnPressMask={false}
-        customStyles={{
-          draggableIcon: {
-            backgroundColor: "#000",
-          },
-        }}
-        height={2000}
-      >
+    // <View>
+    //   <RBSheet
+    //     ref={refRBSheet}
+    //     closeOnDragDown={true}
+    //     closeOnPressMask={false}
+    //     customStyles={{
+    //       draggableIcon: {
+    //         backgroundColor: "#000",
+    //       },
+    //     }}
+    //     height={2000}
+    //   >
+    //     <Button title="Previous" onPress={back} />
+    //     {currentScreen == 0 ? (
+    //       <TransactionTitleForm
+    //         title={transaction.title}
+    //         previous={back}
+    //         next={next}
+    //       />
+    //     ) : currentScreen == 1 ? (
+    //       <TransactionAmountForm
+    //         title={transaction.title}
+    //         amount={transaction.amount}
+    //         previous={back}
+    //         next={next}
+    //       />
+    //     ) : (
+    //       <TransactionHousematesForm
+    //         title={transaction.title}
+    //         totalAmount={transaction.amount}
+    //         previous={back}
+    //         next={next}
+    //       />
+    //     )}
+    //   </RBSheet>
+    // </View>
+    
+      <Modal style={styles.modalBox} isOpen={modalVisible} onClosed={() => setModalVisible(false)}>
+        <View style={styles.content}>
         <Button title="Previous" onPress={back} />
         {currentScreen == 0 ? (
           <TransactionTitleForm
@@ -170,8 +203,9 @@ const NewTransactionScreen = ({navigation}) => {
             next={next}
           />
         )}
-      </RBSheet>
-    </View>
+        </View>
+      </Modal>
+    
   );
 };
 
@@ -195,6 +229,25 @@ const styles = StyleSheet.create({
   },
   list: {
     marginHorizontal: 8,
+  },
+  container: {
+    flex: 1,
+    alignContent: "center",
+    justifyContent: "center",
+  },
+  modalBox: {
+    overflow: "hidden",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
+    backgroundColor: "transparent",
+  },
+  content: {
+    height: 500,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    backgroundColor: "white",
+    width: "100%",
   },
 });
 
