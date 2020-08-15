@@ -3,13 +3,11 @@ import React, { useState, useContext, useEffect, useRef } from "react";
 import { Context as HousemateContext } from "../context/HousemateContext";
 import { Context as TransactionContext } from "../context/TransactionContext";
 
-import {
-  View,
-  StyleSheet,
-  Button,
-} from "react-native";
-import Modal from 'react-native-modalbox';
-import StyledText from '../components/StyledText';
+import { View, StyleSheet, Button } from "react-native";
+import Modal from "react-native-modalbox";
+import StyledText from "../components/StyledText";
+import SheetHeader from '../components/SheetHeader';
+import colors from '../constants/colors';
 
 import TransactionTitleForm from "../components/NewTransactionForm/TransactionTitleForm";
 import TransactionAmountForm from "../components/NewTransactionForm/TransactionAmountForm";
@@ -17,7 +15,11 @@ import TransactionHousematesForm from "../components/NewTransactionForm/Transact
 
 import RBSheet from "react-native-raw-bottom-sheet";
 
-const NewTransactionScreen = ({navigation, modalVisible, setModalVisible}) => {
+const NewTransactionScreen = ({
+  navigation,
+  modalVisible,
+  setModalVisible,
+}) => {
   const refRBSheet = useRef();
   // Context State
   const { state, getHousemates } = useContext(HousemateContext);
@@ -65,22 +67,22 @@ const NewTransactionScreen = ({navigation, modalVisible, setModalVisible}) => {
         setTransaction({ ...transaction, amount: value });
         break;
       }
-      case 2: {        
+      case 2: {
         onSubmit(value);
       }
     }
   };
 
   const back = () => {
-    switch(currentScreen) {
+    console.log("back button pressed")
+    switch (currentScreen) {
       case 0: {
-        setModalVisible(false)
+        setModalVisible(false);
       }
     }
     const nextScreen = Math.max(currentScreen - 1, 0);
     setCurrentScreen(nextScreen);
   };
-
 
   // Reset the form after the new transaction is submitted
   const clearForm = () => {
@@ -104,7 +106,6 @@ const NewTransactionScreen = ({navigation, modalVisible, setModalVisible}) => {
   };
 
   const onSubmit = async (selectedHousemates) => {
-
     const owner = state.currentUser;
 
     // Set Share
@@ -132,13 +133,13 @@ const NewTransactionScreen = ({navigation, modalVisible, setModalVisible}) => {
       ownerId: owner.id,
       debtors,
     };
-    console.log('newTransaction')
-    console.log(newTransaction)
+    console.log("newTransaction");
+    console.log(newTransaction);
     await addTransaction(newTransaction);
     clearForm();
     // navigation.navigate("UserHome");
-    setCurrentScreen(0)
-    setModalVisible(false)
+    setCurrentScreen(0);
+    setModalVisible(false);
   };
 
   return (
@@ -178,10 +179,14 @@ const NewTransactionScreen = ({navigation, modalVisible, setModalVisible}) => {
     //     )}
     //   </RBSheet>
     // </View>
-    
-      <Modal style={styles.modalBox} isOpen={modalVisible} onClosed={() => setModalVisible(false)}>
-        <View style={styles.content}>
-        <Button title="Previous" onPress={back} />
+
+    <Modal
+      style={styles.modalBox}
+      isOpen={modalVisible}
+      onClosed={() => setModalVisible(false)}
+    >
+      <View style={styles.content}>
+        <SheetHeader backAction={back} screenNum={currentScreen} />
         {currentScreen == 0 ? (
           <TransactionTitleForm
             title={transaction.title}
@@ -203,9 +208,8 @@ const NewTransactionScreen = ({navigation, modalVisible, setModalVisible}) => {
             next={next}
           />
         )}
-        </View>
-      </Modal>
-    
+      </View>
+    </Modal>
   );
 };
 
@@ -246,7 +250,7 @@ const styles = StyleSheet.create({
     height: 500,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
-    backgroundColor: "white",
+    backgroundColor: colors.BACKDROP_PURPLE,
     width: "100%",
   },
 });
