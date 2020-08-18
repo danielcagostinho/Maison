@@ -7,7 +7,11 @@ import colors from "../../constants/colors";
 const TransactionAmountForm = ({ title, amount, back, next }) => {
   const illustration = require("../../../assets/imgs/newtransaction-illustration-3.png");
 
-  const [amountS, setAmountS] = useState(amount);
+  const [amountS, setAmountS] = useState(String(amount));
+
+  const formatNumberInput = (number) => {
+    console.log(number)
+  }
 
   return (
     <View>
@@ -32,11 +36,12 @@ const TransactionAmountForm = ({ title, amount, back, next }) => {
             }}
             value={amountS}
             onChangeText={(newText) => {
+              formatNumberInput(newText)
               setAmountS(newText);
             }}
           />
           <View style={{ marginVertical: 8 }}>
-            <StyledButton size="lg" title="Continue" variant="dark" buttonAction={() => next(amountS)}/>
+            <StyledButton size="lg" title="Continue" variant="dark" buttonAction={() => next(Number(amountS))}/>
           </View>
         </View>
       </View>
