@@ -17,7 +17,6 @@
     "expo-font": "~8.1.0",
     "expo-image-picker": "~8.1.0",
     "expo-permissions": "~8.1.0",
-    "firebase": "^7.15.1",
     "moment": "^2.27.0",
     "multer": "^1.4.2",
     "react": "~16.9.0",

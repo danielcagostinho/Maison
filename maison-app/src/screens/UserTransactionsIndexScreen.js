@@ -6,8 +6,6 @@ import { Context as HousemateContext } from "../context/HousemateContext";
 import Transaction from "../components/Transaction";
 import {
   View,
-  ScrollView,
-  Button,
   Image,
   StyleSheet,
   FlatList,
@@ -15,6 +13,9 @@ import {
 } from "react-native";
 import StyledText from "../components/StyledText";
 import StyledButton from "../components/StyledButton";
+
+import colors from "../constants/colors";
+const purplechevron = require("../../assets/imgs/purplechevron.png");
 
 const UserTransactionsIndexScreen = ({ navigation }) => {
   const {
@@ -35,13 +36,22 @@ const UserTransactionsIndexScreen = ({ navigation }) => {
   }, []);
   return (
     <View style={{ backgroundColor: "#FFF" }}>
-      <Button title="Back" onPress={ () => navigation.navigate('UserHome')} />
+      <View style={styles.header}>
+        <TouchableOpacity onPress={() => navigation.navigate("UserHome")}>
+          <View
+            style={{ flexDirection: "row", height: 36, alignItems: "center" }}
+          >
+            <Image style={{ height: 36, width: 36 }} source={purplechevron} />
+            <StyledText style={styles.headerText}>Back</StyledText>
+          </View>
+        </TouchableOpacity>
+      </View>
       <View style={{ backgroundColor: "#F8F5FB", padding: 16 }}>
         <View
           style={{
             flexDirection: "row",
             justifyContent: "space-between",
-            marginVertical: 16,
+            marginBottom: 24
           }}
         >
           <View>
@@ -54,7 +64,6 @@ const UserTransactionsIndexScreen = ({ navigation }) => {
                 : `${otherUser.name.displayName} owes you`}
             </StyledText>
           </View>
-          {/* display picture below */}
           <Image source={{ uri: otherUser.avatarURL }} style={styles.profile} />
         </View>
 
@@ -66,7 +75,6 @@ const UserTransactionsIndexScreen = ({ navigation }) => {
             navigation.navigate("SettleUp", { otherUser, otherUserDebt })
           }
         />
-        <Button title="Back" onPress={ () => navigation.navigate('UserHome')} />
       </View>
       {transactions ? (
         <View style={{ backgroundColor: "white" }}>
@@ -138,6 +146,18 @@ const styles = StyleSheet.create({
     width: 68,
     height: 68,
     borderRadius: 45,
+  },
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    backgroundColor: colors.BACKDROP_PURPLE,
+    paddingTop: 32,
+    paddingHorizontal: 8
+  },
+  headerText: {
+    color: colors.PRIMARY,
+    lineHeight: 36,
+    fontSize: 18,
   },
 });
 

@@ -114,7 +114,6 @@ const UserHomeScreen = ({ navigation }) => {
           {dataLoaded ? (
             <FlatGrid
               itemDimension={130}
-              style={{ width: "100%", borderWidth: 1, borderColor: "red" }}
               data={otherHousemates}
               renderItem={({ item }) => {
                 return (
