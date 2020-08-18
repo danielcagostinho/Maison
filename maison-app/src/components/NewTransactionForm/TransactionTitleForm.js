@@ -17,7 +17,7 @@ const TransactionTitleForm = ({title, back, next}) => {
   
 
   return (
-    <View>
+    <View style={{borderWidth: 1, borderColor: 'red'}}>
       <View style={styles.backdrop}></View>
       <View style={styles.illustrationContainer}>
         <Image source={illustrationL} style={styles.illustration1} />

@@ -22,7 +22,6 @@ const TransactionHousemateForm = ({ navigation, totalAmount, next }) => {
       setDataLoaded(true);
     }
     getData();
-    //console.log(currentUser)
   }, []);
   const illustration = require("../../../assets/imgs/newtransaction-illustration-4.png");
   const {
@@ -43,8 +42,6 @@ const TransactionHousemateForm = ({ navigation, totalAmount, next }) => {
     if (!checked) {
       // If deselected
       let newHousemates = housematesS.filter((h) => h.housemateId != housemate._id);
-      // console.log(" Unchecked! - New Housemates");
-      // console.log(newHousemates);
       setHousematesS(updateShares(newHousemates));
 
     } else {
@@ -53,8 +50,6 @@ const TransactionHousemateForm = ({ navigation, totalAmount, next }) => {
         ...housematesS,
         { housemateId: housemate._id, share: share, firstName: housemate.name.firstName },
       ];
-      // console.log("New Housemates");
-      // console.log(newHousemates);
       setHousematesS(updateShares(newHousemates));
       
     }
@@ -98,7 +93,6 @@ const TransactionHousemateForm = ({ navigation, totalAmount, next }) => {
               x._id == currentUser.id ? -1 : y == currentUser.id ? 1 : 0
             )}
             renderItem={({ item }) => {
-              console.log(currentUser)
               return (
                 <HousemateCard
                   housemate={item}
