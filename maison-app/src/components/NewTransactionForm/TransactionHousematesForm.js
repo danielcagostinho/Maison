@@ -65,19 +65,45 @@ const TransactionHousemateForm = ({ navigation, totalAmount, next }) => {
   
 
   const housemateSentence = (
-    <StyledText style={styles.title}>
-      Splitting <StyledText style={styles.amount}>${Number(totalAmount).toFixed(2)}</StyledText>{" "}
-      with{" "}
+    <View style={styles.housemateSentence}>
+      <StyledText style={styles.title}>{"Splitting "}</StyledText>
+      <StyledText style={styles.amount}>${Number(totalAmount).toFixed(2)}</StyledText>
+      <StyledText style={styles.title}>{" with "}</StyledText>
+
+      
       {housematesS.length > 2
-        ? housematesS
+        ? <StyledText style={styles.title}>{housematesS
             .filter((housemateS) => housemateS.housemateId !== currentUser.id)
             .map((housemate) => housemate.firstName)
-            .join(" and ")
-        : housematesS
+            .join(" and ")}</StyledText>
+        : <StyledText style={styles.title}>{housematesS
             .filter((housemateS) => housemateS.housemateId !== currentUser.id)
-            .map((housemate) => housemate.firstName)}
-    </StyledText>
+            .map((housemate) => housemate.firstName)}</StyledText>}
+    </View>
   );
+
+  function housemateSentenceBuilder() {
+    let selectedHousemates = housematesS.filter((housemateS) => housemateS.housemateId !== currentUser.id);
+  let styledSelectedHousemates = selectedHousemates.map((housemate, i) => {
+    return (
+      <>
+      <StyledText style={styles.housemateName}>{housemate.firstName}</StyledText>
+      {selectedHousemates.length-1 !== i ? 
+      <StyledText style={styles.title}>{" and "}</StyledText>
+      : null}
+      </>)
+  })
+    return (
+      <View style={styles.housemateSentence}>
+        <StyledText style={styles.title}>{"Splitting "}</StyledText>
+      <StyledText style={styles.amount}>${Number(totalAmount).toFixed(2)}</StyledText>
+      <StyledText style={styles.title}>{" with "}</StyledText>
+        {styledSelectedHousemates}
+      </View>
+    )
+  }
+
+
 
   return (
     <View style={{flex: 1}}>
@@ -86,7 +112,7 @@ const TransactionHousemateForm = ({ navigation, totalAmount, next }) => {
         <Image source={illustration} style={styles.illustration} />
       </View>
       <View style={styles.housemateGrid}>
-        {housemateSentence}
+        {housemateSentenceBuilder()}
         {dataLoaded ? (
           <FlatGrid
             data={housemates.sort((x, y) =>
@@ -120,14 +146,25 @@ const TransactionHousemateForm = ({ navigation, totalAmount, next }) => {
 };
 
 const styles = StyleSheet.create({
+  housemateSentence: {
+    margin: 20,
+    marginBottom: 8,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+  housemateName: {
+    color: colors.PRIMARY,
+    fontSize: 28,
+    fontFamily: "ProductSansBold",
+  },
   title: {
     fontSize: 28,
     fontFamily: "ProductSansBold",
-    margin: 20,
-    marginBottom: 8,
   },
   amount: {
     color: colors.PRIMARY,
+    fontSize: 28,
+    fontFamily: "ProductSansBold",
   },
   illustration: {
     height: 120,

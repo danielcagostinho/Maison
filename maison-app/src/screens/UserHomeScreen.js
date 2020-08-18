@@ -96,7 +96,7 @@ const UserHomeScreen = ({ navigation }) => {
                     {owedAmount < 0 ? "You're owed" : "You owe"}
                   </StyledText>
                   <StyledText style={styles.statusText}>
-                    ${Math.abs(owedAmount)}
+                    ${Number(Math.abs(owedAmount)).toFixed(2)}
                   </StyledText>
                 </>
               ) : null}
