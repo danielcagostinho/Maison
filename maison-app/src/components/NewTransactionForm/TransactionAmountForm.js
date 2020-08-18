@@ -33,6 +33,7 @@ const TransactionAmountForm = ({ title, amount, back, next }) => {
               color: colors.PRIMARY,
               fontFamily: "ProductSansBold",
               fontSize: 58,
+              textAlign: 'center'
             }}
             value={amountS}
             onChangeText={(newText) => {

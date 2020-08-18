@@ -238,6 +238,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignContent: "center",
     justifyContent: "center",
+    
   },
   modalBox: {
     overflow: "hidden",
@@ -247,9 +248,9 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
   },
   content: {
-    height: 500,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
+    height: 400,
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
     backgroundColor: colors.BACKDROP_PURPLE,
     width: "100%",
   },

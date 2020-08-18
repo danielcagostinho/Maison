@@ -40,7 +40,12 @@ const TransactionTitleForm = ({title, back, next}) => {
             }}
           />
           <View style={{ marginVertical: 8 }}>
-            <StyledButton size="lg" title="Continue" variant="dark" buttonAction={() => next(titleS)}/>
+            <StyledButton 
+              size="lg" 
+              title="Continue" 
+              variant="dark" 
+              buttonAction={() => next(titleS)}
+            />
           </View>
         </View>
       </View>
