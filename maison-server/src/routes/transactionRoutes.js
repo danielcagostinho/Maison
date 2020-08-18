@@ -10,8 +10,10 @@ router.get("/updatedebts", async (req, res) => {
   try {
     const housemates = await Housemate.find({});
     const usersTransactions = await Transaction.find({
-      $or: [{ "debtors.housemateId": currentId }, { ownerId: currentId }],
+      $or: [{ "debtors.housemateId": currentId }, { ownerId: currentId }, ],
     });
+
+    const pendingTransactions = usersTransactions.filter(transaction => !transaction.isPaid)
 
     const housemateDebts = [];
     housemates.forEach((housemate) => {
@@ -19,8 +21,8 @@ router.get("/updatedebts", async (req, res) => {
       let transactions = [];
       if (currentId != housemate._id) {
         // find transactions for this person
-        for (let i = 0; i < usersTransactions.length; i++) {
-          let currentTransaction = usersTransactions[i];
+        for (let i = 0; i < pendingTransactions.length; i++) {
+          let currentTransaction = pendingTransactions[i];
           if (currentTransaction.ownerId.equals(currentId)) {
             for (let j = 0; j < currentTransaction.debtors.length; j++) {
               let currentDebtor = currentTransaction.debtors[j];

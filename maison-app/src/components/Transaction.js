@@ -16,7 +16,7 @@ import colors from "../constants/colors";
 import Moment from "moment";
 Moment.locale("en");
 
-const Transaction = ({ transaction, title }) => {
+const Transaction = ({ transaction, title, otherUserName }) => {
   const {
     state: { housemates, currentUser },
   } = useContext(HousemateContext);
@@ -29,6 +29,12 @@ const Transaction = ({ transaction, title }) => {
   ];
 
   const isOwner = currentUser.id === transaction.ownerId;
+
+  const paidTransaction = title !== "Pending";
+
+  const transactionTextStyles = paidTransaction ? styles.paidStyleText : isOwner ? styles.ownerStyleText : styles.debtorStyleText;
+  const amountStyles = paidTransaction ? styles.paidStyle : isOwner ? styles.ownerStyle : styles.debtorStyle;
+
 
   let avatarURL;
   let housemate = housemates.find(
@@ -52,8 +58,11 @@ const Transaction = ({ transaction, title }) => {
         amount = Number(debtor.share);
       }
     }
-    //amount = transaction.amount - transaction.debtors.find((debtor) => debtor.housemateId === currentUser.id).share;
   }
+
+
+  const debtTextStyle = paidTransaction ? (isOwner ? otherUserName + " Paid" : "You Paid") : isOwner ? "Owes You" : "You Owe"
+
 
   return (
     <View style={styles.row}>
@@ -74,13 +83,13 @@ const Transaction = ({ transaction, title }) => {
       </View>
       <View style={{ flexDirection: "row", alignItems: "center" }}>
         <View style={{ flexDirection: "column", alignItems: "flex-end" }}>
-          <StyledText style={isOwner ? styles.ownerStyle : styles.debtorStyle}>
+          <StyledText style={amountStyles}>
             ${Number(amount).toFixed(2)}
           </StyledText>
           <StyledText
-            style={[isOwner ? styles.ownerStyleText : styles.debtorStyleText]}
+            style={transactionTextStyles}
           >
-            {isOwner ? "Owes You" : "You Owe"}
+            {debtTextStyle}
           </StyledText>
         </View>
         <Image
@@ -103,6 +112,12 @@ const styles = StyleSheet.create({
     fontSize: 17,
     color: colors.SUCCESS,
   },
+  paidStyle: {
+    letterSpacing: -0.41,
+    lineHeight: 20,
+    fontSize: 17,
+    color: colors.PAID,
+  },
   debtorStyle: {
     letterSpacing: -0.41,
     lineHeight: 20,
@@ -118,6 +133,11 @@ const styles = StyleSheet.create({
     fontSize: 13,
     letterSpacing: -0.41,
     color: colors.FAIL,
+  },
+  paidStyleText: {
+    color: colors.PAID,
+    fontSize: 13,
+    letterSpacing: -0.41,
   },
   date: {
     fontSize: 13,
@@ -147,6 +167,9 @@ const styles = StyleSheet.create({
   col: {
     flexDirection: "row",
   },
+  paid: {
+    color: colors.PAID
+  }
 });
 
 export default Transaction;

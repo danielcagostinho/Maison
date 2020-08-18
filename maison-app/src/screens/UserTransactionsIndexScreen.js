@@ -93,7 +93,7 @@ const UserTransactionsIndexScreen = ({ navigation }) => {
                         });
                       }}
                     >
-                      <Transaction title="Pending" transaction={item} />
+                      <Transaction title="Pending" transaction={item} otherUserName={otherUser.name.firstName} />
                     </TouchableOpacity>
                   );
                 }}
@@ -111,7 +111,7 @@ const UserTransactionsIndexScreen = ({ navigation }) => {
                       navigation.navigate("ShowTransaction", { _id: item._id })
                     }
                   >
-                    <Transaction title="Past Transactions" transaction={item} />
+                    <Transaction title="Past Transactions" transaction={item} otherUserName={otherUser.name.firstName}/>
                   </TouchableOpacity>
                 );
               }}
