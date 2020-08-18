@@ -20,10 +20,16 @@ const TransactionAmountForm = ({ title, amount, back, next }) => {
         <Image source={illustration} style={styles.illustration} />
       </View>
       <View style={{ zIndex: 3, backgroundColor: "#FFF" }}>
+
         <View style={{ paddingHorizontal: 16, paddingVertical: 8 }}>
+        <View style={{flexDirection: 'row'}}>
           <StyledText style={styles.title}>
-            How much was <StyledText style={styles.transactionTitle}>{title}</StyledText>?
+            {"How much was "}
           </StyledText>
+          <StyledText style={[styles.transactionTitle, styles.title]}>{title}</StyledText> 
+          <StyledText style={styles.title}>?
+          </StyledText>
+        </View>
           <TextInput
           autoFocus={true}
           keyboardType='numeric'
@@ -77,6 +83,7 @@ const styles = StyleSheet.create({
   },
   transactionTitle : {
     color: colors.PRIMARY,
+    fontFamily: 'ProductSansRegular'
   }
 
 });
