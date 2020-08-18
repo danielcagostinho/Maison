@@ -151,6 +151,7 @@ UserHomeScreen.navigationOptions = () => {
 const styles = StyleSheet.create({
   header: {
     backgroundColor: colors.PRIMARY,
+    paddingTop: 24
   },
   titleRow: {
     flexDirection: "row",

@@ -1,9 +1,9 @@
-import React, { useState, useContext, useEffect, useRef } from "react";
+import React, { useState, useContext, useEffect } from "react";
 
 import { Context as HousemateContext } from "../context/HousemateContext";
 import { Context as TransactionContext } from "../context/TransactionContext";
 
-import { View, StyleSheet, Button } from "react-native";
+import { View, StyleSheet, Dimensions, Keyboard } from "react-native";
 import Modal from "react-native-modalbox";
 import StyledText from "../components/StyledText";
 import SheetHeader from '../components/SheetHeader';
@@ -13,14 +13,16 @@ import TransactionTitleForm from "../components/NewTransactionForm/TransactionTi
 import TransactionAmountForm from "../components/NewTransactionForm/TransactionAmountForm";
 import TransactionHousematesForm from "../components/NewTransactionForm/TransactionHousematesForm";
 
-import RBSheet from "react-native-raw-bottom-sheet";
+
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
+
 
 const NewTransactionScreen = ({
   navigation,
   modalVisible,
   setModalVisible,
 }) => {
-  const refRBSheet = useRef();
   // Context State
   const { state, getHousemates } = useContext(HousemateContext);
   const { addTransaction } = useContext(TransactionContext);
@@ -28,8 +30,17 @@ const NewTransactionScreen = ({
   // Initialize housemates
   useEffect(() => {
     getHousemates();
-    //refRBSheet.current.open();
+    Keyboard.addListener('keyboardDidShow', _keyboardDidShow);
+    Keyboard.addListener('keyboardDidHide', _keyboardDidHide);
+
+    return () => {
+      Keyboard.removeListener('keyboardDidHide', _keyboardDidHide);
+      Keyboard.removeListener('keyboardDidShow', _keyboardDidShow);
+    }
   }, []);
+
+
+  
 
   // Local State
   const [transaction, setTransaction] = useState({
@@ -40,6 +51,18 @@ const NewTransactionScreen = ({
     ownerId: null,
     debtors: [],
   });
+
+  const [sheetHeight, setSheetHeight] = useState(100)
+
+  function _keyboardDidHide() {
+    console.log("Hiding Keyboard")
+  }
+
+  function _keyboardDidShow(e) {
+    console.log("Showing Keyboard")
+    console.log(e.endCoordinates.height)
+    setSheetHeight(Math.round(e.endCoordinates.height));
+  }
 
   // Initialize housemates with current user selected
   const [housemates, setHousemates] = useState(
@@ -74,7 +97,6 @@ const NewTransactionScreen = ({
   };
 
   const back = () => {
-    console.log("back button pressed")
     switch (currentScreen) {
       case 0: {
         setModalVisible(false);
@@ -133,14 +155,13 @@ const NewTransactionScreen = ({
       ownerId: owner.id,
       debtors,
     };
-    console.log("newTransaction");
-    console.log(newTransaction);
     await addTransaction(newTransaction);
     clearForm();
-    // navigation.navigate("UserHome");
     setCurrentScreen(0);
     setModalVisible(false);
   };
+
+  
 
   return (
     // <View>
@@ -245,10 +266,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     width: "100%",
-    backgroundColor: "transparent",
+    backgroundColor: "white",
   },
   content: {
-    height: 400,
+    height: 600,
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
     backgroundColor: colors.BACKDROP_PURPLE,

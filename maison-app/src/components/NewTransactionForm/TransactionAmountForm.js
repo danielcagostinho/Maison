@@ -8,9 +8,22 @@ const TransactionAmountForm = ({ title, amount, back, next }) => {
   const illustration = require("../../../assets/imgs/newtransaction-illustration-3.png");
 
   const [amountS, setAmountS] = useState(String(amount));
+  const [amountChanged, setAmountChanged] = useState(false);
 
   const formatNumberInput = (number) => {
     console.log(number)
+
+    // return Number(number).toFixed(2)
+  }
+
+  const changeInputText = (number) => {
+    console.log(typeof(number))
+    if(!amountChanged){
+      let amount = number.substring(1,4) + number[5];1
+      console.log(`Changing number to ${amount}`)
+      setAmountChanged(true)
+      return Number(amount);
+    }
   }
 
   return (
@@ -41,10 +54,9 @@ const TransactionAmountForm = ({ title, amount, back, next }) => {
               fontSize: 58,
               textAlign: 'center'
             }}
-            value={amountS}
+            value={formatNumberInput(amountS)}
             onChangeText={(newText) => {
-              formatNumberInput(newText)
-              setAmountS(newText);
+              setAmountS(newText);   
             }}
           />
           <View style={{ marginVertical: 8 }}>

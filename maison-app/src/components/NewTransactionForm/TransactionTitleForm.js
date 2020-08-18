@@ -1,8 +1,12 @@
-import React, { useState } from "react";
-import { Image, View, StyleSheet, TextInput } from "react-native";
+import React, { useState, useEffect } from "react";
+import { Image, View, StyleSheet, TextInput} from "react-native";
 import StyledText from "../StyledText";
 import StyledButton from "../StyledButton";
 import colors from "../../constants/colors";
+
+const capitalizeLetter = (str) => {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
 
 const TransactionTitleForm = ({title, back, next}) => {
   const illustrationL = require("../../../assets/imgs/newtransaction-illustration-1.png");
@@ -10,7 +14,8 @@ const TransactionTitleForm = ({title, back, next}) => {
 
   const [titleS, setTitleS] = useState(title);
 
-  console.log(title)
+  
+
   return (
     <View>
       <View style={styles.backdrop}></View>
@@ -44,7 +49,7 @@ const TransactionTitleForm = ({title, back, next}) => {
               size="lg" 
               title="Continue" 
               variant="dark" 
-              buttonAction={() => next(titleS)}
+              buttonAction={() => next(capitalizeLetter(titleS))}
             />
           </View>
         </View>
