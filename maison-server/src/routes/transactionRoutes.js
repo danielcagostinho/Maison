@@ -64,7 +64,7 @@ router.get("/transactions", async (req, res) => {
         { ownerId: housemateId, "debtors.housemateId": currentId },
         { ownerId: currentId, "debtors.housemateId": housemateId },
       ],
-    });
+    }).sort({'timestamp': 'desc'});
   }
   res.send(transactions);
 });
@@ -83,42 +83,6 @@ router.post("/transactions", async (req, res) => {
     });
     await transaction.save((err, t) => t._id);
     
-    // for (let i = 0; i < debtors.length; i++) {
-    //   let currentDebtor = debtors[i];
-    //   let damage;
-    //   if (currentDebtor.housemateId == ownerId) {
-    //     damage = currentDebtor.share - amount;
-    //   } else {
-    //     damage = currentDebtor.share;
-    //   }
-
-      // // Find housemate and update the debt to that housemate and net debt
-      // const housemate = await Housemate.findById({
-      //   _id: currentDebtor.housemateId,
-      // });
-      // // Find the owner of the transaction and change the current housemates debt towards
-      // // for (let j = 0; j < housemate.debts.length; j++) {
-      // //   // If not the owner search through and find the owner
-      // //   let housemateToCheck = housemate.debts[j];
-      // //   if (!ownerId == housemate._id) {
-      // //     if (ownerId == housemateToCheck.housemateId) {
-      // //       // for the housemate, if this current other user is the owner of the transaction
-      // //       housemateToCheck.amount -= Number(currentDebtor.share); // increase the debt for that user
-      // //       housemateToCheck.transactionIds.push(transaction._id); // add the transactions id
-      // //     }
-      // //   } else {
-      // //     //if it is the transaction owner, cycle through the housemates and add debts to the ones involved
-      // //     for (let k = 0; k < debtors.length; k++) {
-      // //       if (debtors[k].housemateId == housemateToCheck.housemateId) {
-      // //         housemateToCheck.amount -= Number(currentDebtor.share); // increase the debt for that user
-      // //         housemateToCheck.transactionIds.push(transaction._id); // add the transactions id
-      // //       }
-      // //     }
-      // //   }
-      // // }
-      // housemate.debt = Number(housemate.debt) + Number(damage);
-      // await housemate.save();
-    //}
     res.send("You made a POST Request to /transactions");
   } catch (err) {
     return res.status(422).send(err);
