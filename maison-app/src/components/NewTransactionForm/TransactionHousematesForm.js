@@ -151,6 +151,7 @@ const styles = StyleSheet.create({
   housemateGrid: {
     zIndex: 3,
     backgroundColor: "#FFF",
+    flex: 1
   },
 });
 
