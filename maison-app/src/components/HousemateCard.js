@@ -33,7 +33,7 @@ const HousemateCard = ({
   // Local State
   const [share, setShare] = useState("0");
   const [checked, setChecked] = useState(currentUser.id === housemate._id);
-  //console.log(checked)
+  console.log(`${housemate.name.firstName} - ${checked}`)
   // Set Checkbox Image source
   let imgSrc = checked ? check : uncheck;
   let cardStyle = !checked ? styles.card : styles.selectedCard;
@@ -207,6 +207,7 @@ const styles = StyleSheet.create({
   debtStatus: {
     color: "rgba(0,0,0,0.5)",
     letterSpacing: -0.41,
+    textAlign: 'center'
   },
   avatarContainer: {
     flexDirection: "row",

@@ -80,7 +80,7 @@ const TransactionHousemateForm = ({ navigation, totalAmount, next }) => {
   );
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{flex: 1}}>
       <View style={styles.backdrop}></View>
       <View style={styles.illustrationContainer}>
         <Image source={illustration} style={styles.illustration} />

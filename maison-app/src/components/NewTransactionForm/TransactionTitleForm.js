@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState} from "react";
 import { Image, View, StyleSheet, TextInput} from "react-native";
 import StyledText from "../StyledText";
 import StyledButton from "../StyledButton";
@@ -17,7 +17,7 @@ const TransactionTitleForm = ({title, back, next}) => {
   
 
   return (
-    <View style={{borderWidth: 1, borderColor: 'red'}}>
+    <View>
       <View style={styles.backdrop}></View>
       <View style={styles.illustrationContainer}>
         <Image source={illustrationL} style={styles.illustration1} />

@@ -184,7 +184,7 @@ const NewTransactionScreen = ({
           />
         </View>
       ) : (
-        <View style={styles.content, {flex: 1}}>
+        <View style={styles.contentLast}>
           <SheetHeader backAction={back} screenNum={currentScreen} />
           <TransactionHousematesForm
             title={transaction.title}
@@ -218,9 +218,15 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 16,
     backgroundColor: colors.BACKDROP_PURPLE,
     width: "100%",
-    borderWidth: 1,
-    borderColor: "blue",
     marginTop: 44,
+  },
+  contentLast: {
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
+    backgroundColor: colors.BACKDROP_PURPLE,
+    width: "100%",
+    flex: 1,
+    marginTop: 44
   },
 });
 
