@@ -24,7 +24,7 @@ const TransactionsIndexScreen = ({ navigation }) => {
   const titleStyles = [styles.listTitle];
 
   return (
-    <View>
+    <View style={{flex: 1}}>
       <NavigationEvents onWillFocus={() => getTransactions(currentUser.id)} />
 
       <Button

@@ -35,7 +35,7 @@ const TransactionAmountForm = ({ title, amount, back, next }) => {
       <View style={{ zIndex: 3, backgroundColor: "#FFF" }}>
 
         <View style={{ paddingHorizontal: 16, paddingVertical: 8 }}>
-        <View style={{flexDirection: 'row'}}>
+        <View style={{flexDirection: 'row', flexWrap: 'wrap',marginVertical: 8}}>
           <StyledText style={styles.title}>
             {"How much was "}
           </StyledText>
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 28,
     fontFamily: "ProductSansBold",
-    marginVertical: 8,
+    lineHeight: 30,
   },
   illustration: {
     height: 200,

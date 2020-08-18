@@ -51,7 +51,7 @@ const UserTransactionsIndexScreen = ({ navigation }) => {
           style={{
             flexDirection: "row",
             justifyContent: "space-between",
-            marginBottom: 24
+            marginBottom: 24,
           }}
         >
           <View>
@@ -76,45 +76,49 @@ const UserTransactionsIndexScreen = ({ navigation }) => {
           }
         />
       </View>
-      {transactions ? (
-        <View style={{ backgroundColor: "white" }}>
-          <StyledText style={titleStyles}>Pending</StyledText>
-          <View>
+      <View>
+        {transactions ? (
+          <View style={{ backgroundColor: "white", height: 240}}>
+            <StyledText style={titleStyles}>Pending</StyledText>
+            <View>
+              <FlatList
+                data={transactions.filter((transaction) => !transaction.isPaid)}
+                keyExtractor={(item) => item._id}
+                renderItem={({ item }) => {
+                  return (
+                    <TouchableOpacity
+                      onPress={() => {
+                        navigation.navigate("ShowTransaction", {
+                          _id: item._id,
+                        });
+                      }}
+                    >
+                      <Transaction title="Pending" transaction={item} />
+                    </TouchableOpacity>
+                  );
+                }}
+              />
+            </View>
+
+            <StyledText style={titleStyles}>Past Transactions</StyledText>
             <FlatList
-              data={transactions.filter((transaction) => !transaction.isPaid)}
+              data={transactions.filter((transaction) => transaction.isPaid)}
               keyExtractor={(item) => item._id}
               renderItem={({ item }) => {
                 return (
                   <TouchableOpacity
-                    onPress={() => {
-                      navigation.navigate("ShowTransaction", { _id: item._id });
-                    }}
+                    onPress={() =>
+                      navigation.navigate("ShowTransaction", { _id: item._id })
+                    }
                   >
-                    <Transaction title="Pending" transaction={item} />
+                    <Transaction title="Past Transactions" transaction={item} />
                   </TouchableOpacity>
                 );
               }}
             />
           </View>
-
-          <StyledText style={titleStyles}>Past Transactions</StyledText>
-          <FlatList
-            data={transactions.filter((transaction) => transaction.isPaid)}
-            keyExtractor={(item) => item._id}
-            renderItem={({ item }) => {
-              return (
-                <TouchableOpacity
-                  onPress={() =>
-                    navigation.navigate("ShowTransaction", { _id: item._id })
-                  }
-                >
-                  <Transaction title="Past Transactions" transaction={item} />
-                </TouchableOpacity>
-              );
-            }}
-          />
-        </View>
-      ) : null}
+        ) : null}
+      </View>
     </View>
   );
 };
@@ -152,7 +156,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     backgroundColor: colors.BACKDROP_PURPLE,
     paddingTop: 32,
-    paddingHorizontal: 8
+    paddingHorizontal: 8,
   },
   headerText: {
     color: colors.PRIMARY,
