@@ -149,6 +149,12 @@ const NewTransactionScreen = ({
     setModalVisible(false);
   };
 
+  const cancel = () => {
+    console.log('cancel')
+    clearForm();
+    setModalVisible(false);
+  }
+
   return (
     <Modal
       style={styles.modalBox}
@@ -160,7 +166,7 @@ const NewTransactionScreen = ({
     >
       {currentScreen == 0 ? (
         <View style={styles.content}>
-          <SheetHeader backAction={back} screenNum={currentScreen} />
+          <SheetHeader backAction={back} screenNum={currentScreen} cancelAction={cancel}/>
           <TransactionTitleForm
             title={transaction.title}
             previous={back}
@@ -169,7 +175,7 @@ const NewTransactionScreen = ({
         </View>
       ) : currentScreen == 1 ? (
         <View style={styles.content}>
-          <SheetHeader backAction={back} screenNum={currentScreen} />
+          <SheetHeader backAction={back} screenNum={currentScreen} cancelAction={cancel}/>
           <TransactionAmountForm
             title={transaction.title}
             amount={transaction.amount}
@@ -179,7 +185,7 @@ const NewTransactionScreen = ({
         </View>
       ) : (
         <View style={styles.contentLast}>
-          <SheetHeader backAction={back} screenNum={currentScreen} />
+          <SheetHeader backAction={back} screenNum={currentScreen} cancelAction={cancel}/>
           <TransactionHousematesForm
             title={transaction.title}
             totalAmount={transaction.amount}

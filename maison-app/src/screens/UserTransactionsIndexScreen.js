@@ -84,7 +84,7 @@ const UserTransactionsIndexScreen = ({ navigation }) => {
         </View>
         <View>
           {transactions ? (
-            <View style={{ backgroundColor: "white", height: 240 }}>
+            <View style={{ backgroundColor: "white" }}>
               <StyledText style={titleStyles}>Pending</StyledText>
               <View>
                 <FlatList

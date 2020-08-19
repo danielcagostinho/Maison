@@ -6,7 +6,7 @@ import StyledText from "./StyledText";
 import colors from "../constants/colors";
 const purplechevron = require("../../assets/imgs/purplechevron.png");
 
-const SheetHeader = ({ screenNum, backAction }) => {
+const SheetHeader = ({ screenNum, backAction, cancelAction }) => {
   return (
     <View style={styles.header}>
       {screenNum > 0 ? (
@@ -25,7 +25,7 @@ const SheetHeader = ({ screenNum, backAction }) => {
           <View style={styles.textContainer}>
             <StyledText style={styles.text}>Split Bill</StyledText>
           </View>
-          <TouchableOpacity style={styles.buttonContainer}>
+          <TouchableOpacity onPress={cancelAction} style={styles.buttonContainer}>
             <StyledText style={styles.button}>Cancel</StyledText>
           </TouchableOpacity>
         </>
@@ -35,7 +35,7 @@ const SheetHeader = ({ screenNum, backAction }) => {
           <View style={styles.textContainer}>
             <StyledText style={styles.text}>Split Bill</StyledText>
           </View>
-          <TouchableOpacity style={styles.buttonContainer}>
+          <TouchableOpacity onPress={cancelAction} style={styles.buttonContainer}>
             <StyledText style={styles.button}>Cancel</StyledText>
           </TouchableOpacity>
         </>
