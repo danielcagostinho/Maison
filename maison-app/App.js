@@ -9,6 +9,7 @@ import colors from './src/constants/colors';
 import { Provider as TransactionProvider } from "./src/context/TransactionContext";
 import { Provider as HousemateProvider } from "./src/context/HousemateContext";
 
+import SigninScreen from "./src/screens/SigninScreen";
 import HousematesIndexScreen from "./src/screens/HousematesIndexScreen";
 import NewTransactionScreen from "./src/screens/NewTransactionScreen";
 import TransactionsIndexScreen from "./src/screens/TransactionsIndexScreen";
@@ -20,7 +21,7 @@ import ProfileScreen from "./src/screens/ProfileScreen";
 import RecurringScreen from "./src/screens/RecurringScreen";
 import UserTransactionsIndexScreen from "./src/screens/UserTransactionsIndexScreen";
 import SettleUpScreen from "./src/screens/SettleUpScreen";
-import { Image, SafeAreaView } from "react-native";
+import { Image } from "react-native";
 
 import HomeTabIcon from "../maison-app/assets/imgs/nav/home-nav.png";
 import ActivityTabIcon from "../maison-app/assets/imgs/nav/activity-nav.png";
@@ -98,6 +99,7 @@ const switchNavigator = createSwitchNavigator(
     }),
     HousematesIndex: HousematesIndexScreen,
     NewHousemate: NewHousemateScreen,
+    Signin: SigninScreen
   },
   {
     initialRouteName: "HousematesIndex",

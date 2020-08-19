@@ -6,6 +6,8 @@ const colors = {
   PAID: 'rgba(73,0,167, 0.5)',
   LIGHT_GRAY: '#9D8CCB',
   LIGHT_PURPLE: '#D1CCED',
-  BACKDROP_PURPLE: '#F8F5FB'
+  BACKDROP_PURPLE: '#F8F5FB',
+  FB: '#3479EA',
+  GOOGLE: '#4285F4',
 }
 export default colors;
