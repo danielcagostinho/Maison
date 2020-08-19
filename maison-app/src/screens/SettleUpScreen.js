@@ -1,19 +1,32 @@
+// React Imports
 import React, { useContext, useEffect, useState } from "react";
 
+// React Native Imports
 import { withNavigation } from "react-navigation";
 
+// Context Imports
 import { Context as TransactionContext } from "../context/TransactionContext";
 import { Context as HousemateContext } from "../context/HousemateContext";
 
-import { View, FlatList, Image, StyleSheet, Button } from "react-native";
+// Component Imports
+import {
+  View,
+  FlatList,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
+import Modal from "react-native-modalbox";
 import StyledText from "../components/StyledText";
 import StyledButton from "../components/StyledButton";
-import colors from '../constants/colors';
+import colors from "../constants/colors";
+const illustration = require("../../assets/imgs/settleup.png");
 
-
-const SettleUpScreen = ({ navigation }) => {
+const SettleUpScreen = ({ navigation, setModalVisible, modalVisible }) => {
+  // useState
   const [dataLoaded, setDataLoaded] = useState(false);
-  const illustration = require("../../assets/imgs/settleup.png");
+
+  // useContext
   const {
     state: { housemateDebts, transactions },
     getTransactions,
@@ -21,6 +34,8 @@ const SettleUpScreen = ({ navigation }) => {
   const {
     state: { currentUser },
   } = useContext(HousemateContext);
+
+  // Set Params
   const otherUser = navigation.getParam("otherUser");
   const otherUserDebt = navigation.getParam("otherUserDebt");
 
@@ -54,134 +69,142 @@ const SettleUpScreen = ({ navigation }) => {
     getTransactions(currentUser.id, otherUser._id);
     setDataLoaded(true);
   }, []);
+
   return (
-    <>
-      <View style={{ backgroundColor: "#F8F5FB", padding: 16 }}>
-        <View style={{ paddingVertical: 20 }}>
+    <Modal
+      style={styles.modalContainer}
+      isOpen={modalVisible}
+      entry="bottom"
+      position="bottom"
+      backdropPressToClose
+      onClosed={() => setModalVisible(false)}
+    >
+      <View style={styles.modalBackground}>
+        <View style={styles.header}>
+          <View style={styles.cancelContainer}>
+            <TouchableOpacity onPress={() => setModalVisible(false)}>
+              <StyledText style={styles.cancel}>Cancel</StyledText>
+            </TouchableOpacity>
+          </View>
           <StyledText style={styles.titleText}>
-            Time to Settle Up with{" "}
+            {"Time to Settle Up"}
+          </StyledText>
+          <View style={{ flexDirection: "row" }}>
+            <StyledText style={styles.titleText}>{"with "}</StyledText>
             <StyledText style={styles.housemateName}>
-              {currentUser.displayName.substring(
+              {otherUser.name.displayName.substring(
                 0,
-                currentUser.displayName.length - 1
+                otherUser.name.displayName.length - 1
               )}
+              !
             </StyledText>
-            !
+          </View>
+        </View>
+        <View style={styles.contentContainer}>
+          {dataLoaded ? (
+            <View
+              style={{ flexDirection: "column", justifyContent: "flex-start" }}
+            >
+              <View style={styles.illustrationContainer}>
+                <Image source={illustration} style={styles.illustration} />
+              </View>
+
+              <View style={styles.debtListContainer}>
+                <View style={styles.debtListTitle}>
+                  <Image
+                    source={{ uri: currentUser.avatarURL }}
+                    style={styles.avatar}
+                  />
+                  <StyledText style={styles.subtitleText}>You Owe</StyledText>
+                </View>
+                <FlatList
+                  data={transactions.filter(
+                    (transaction) =>
+                      !transaction.isPaid &&
+                      transaction.ownerId == otherUser._id
+                  )}
+                  keyExtractor={(debt) => debt._id}
+                  renderItem={({ item }) => {
+                    return (
+                      <View style={styles.listRow}>
+                        <StyledText style={styles.owedAmount}>
+                          $
+                          {Number(
+                            Math.abs(
+                              item.debtors.find(
+                                (debtor) =>
+                                  debtor.housemateId === currentUser.id
+                              ).share
+                            )
+                          ).toFixed(2)}
+                        </StyledText>
+                        <StyledText style={styles.debtTitle}>
+                          {item.title}
+                        </StyledText>
+                      </View>
+                    );
+                  }}
+                />
+              </View>
+
+              <View style={styles.debtListContainer}>
+                <View style={styles.debtListTitle}>
+                  <Image
+                    source={{ uri: otherUser.avatarURL }}
+                    style={styles.avatar}
+                  />
+                  <StyledText style={styles.subtitleText}>
+                    {otherUser.name.firstName} Owes
+                  </StyledText>
+                </View>
+                <FlatList
+                  data={transactions.filter(
+                    (transaction) =>
+                      !transaction.isPaid &&
+                      transaction.ownerId == currentUser.id
+                  )}
+                  keyExtractor={(debt) => debt._id}
+                  renderItem={({ item }) => {
+                    return (
+                      <View style={styles.listRow}>
+                        <StyledText style={styles.owedAmount}>
+                          -$
+                          {Number(
+                            Math.abs(
+                              item.debtors.find(
+                                (debtor) => debtor.housemateId === otherUser._id
+                              ).share
+                            )
+                          ).toFixed(2)}
+                        </StyledText>
+                        <StyledText style={styles.debtTitle}>
+                          {item.title}
+                        </StyledText>
+                      </View>
+                    );
+                  }}
+                />
+              </View>
+            </View>
+          ) : null}
+        </View>
+      </View>
+      <View style={styles.payContainer}>
+        <View style={styles.netDebt}>
+          <StyledText style={styles.netDebtText}>
+            {"Total $" + Number(Math.abs(otherUserDebt)).toFixed(2)}
           </StyledText>
         </View>
-        <Button title="Back" onPress={ () => navigation.navigate('UserHome')} />
-        
-        {dataLoaded ? (
-          <>
-          <View
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-          }}
-        >
-          <Image
-            source={{ uri: currentUser.avatarURL }}
-            style={styles.avatar}
+        <View style={styles.payButtonContainer}>
+          <StyledButton
+            size="lg"
+            variant="dark"
+            title={"Pay $" + Number(Math.abs(otherUserDebt)).toFixed(2)}
+            buttonAction={() => alert("Feature not ready")}
           />
-          <StyledText style={styles.subtitleText}>You Owe</StyledText>
         </View>
-            <View>
-              <Image source={illustration} style={styles.illustration} />
-            </View>
-
-            <FlatList
-              data={transactions.filter(
-                (transaction) => transaction.ownerId == otherUser._id
-              )}
-              keyExtractor={(debt) => debt._id}
-              renderItem={({ item }) => {
-                return (
-                  <View style={styles.listRow}>
-                    <StyledText style={styles.owedAmount}>
-                      $
-                      {Number(
-                        Math.abs(
-                          item.debtors.find(
-                            (debtor) => debtor.housemateId === currentUser.id
-                          ).share
-                        )
-                      ).toFixed(2)}
-                    </StyledText>
-                    <StyledText style={styles.debtTitle}>
-                      {item.title}
-                    </StyledText>
-                  </View>
-                );
-              }}
-            />
-            <View
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-                marginTop: 12
-              }}
-            >
-              <Image
-                source={{ uri: otherUser.avatarURL }}
-                style={styles.avatar}
-              />
-              <StyledText style={styles.subtitleText}>
-                {otherUser.name.firstName} Owes
-              </StyledText>
-            </View>
-            
-              <FlatList
-                data={transactions.filter(
-                  (transaction) => transaction.ownerId == currentUser.id
-                )}
-                keyExtractor={(debt) => debt._id}
-                renderItem={({ item }) => {
-                  return (
-                    <View style={styles.listRow}>
-                      <StyledText style={styles.owedAmount}>
-                        $
-                        {Number(
-                          Math.abs(
-                            item.debtors.find(
-                              (debtor) => debtor.housemateId === otherUser._id
-                            ).share
-                          )
-                        ).toFixed(2)}
-                      </StyledText>
-                      <StyledText style={styles.debtTitle}>
-                        {item.title}
-                      </StyledText>
-                    </View>
-                  );
-                }}
-              />
-          </>
-        ) : null}
       </View>
-      <View style={styles.netDebt}>
-        <StyledText style={styles.netDebtText}>
-          Total ${otherUserDebt}
-        </StyledText>
-      </View>
-      <View
-        style={{
-          padding: 16,
-          paddingTop: 0,
-          backgroundColor: "#FFF",
-          display: "flex",
-          flexDirection: "column",
-        }}
-      >
-        <StyledButton
-          size="lg"
-          variant="dark"
-          title={"Pay $" + otherUserDebt}
-          buttonAction={() => alert("Feature not ready")}
-        />
-      </View>
-    </>
+    </Modal>
   );
 };
 
@@ -192,12 +215,47 @@ SettleUpScreen.navigationOptions = () => {
 };
 
 const styles = StyleSheet.create({
+  modalContainer: {
+    overflow: "hidden",
+    justifyContent: "space-between",
+    width: "100%",
+    backgroundColor: "#F8F5FB",
+    marginTop: 16,
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
+  },
+  modalBackground: {
+    backgroundColor: "#F8F5FB",
+  },
+  header: {
+    margin: 16,
+  },
+  cancelContainer: {
+    flexDirection: "row",
+    justifyContent: "flex-end",
+  },
+  contentContainer: {
+    margin: 16,
+  },
+  debtListTitle: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  debtListContainer: {
+    marginTop: 12,
+  },
+  payContainer: {
+    marginBottom: 16,
+  },
   titleText: {
     fontFamily: "ProductSansBold",
     fontSize: 28,
   },
   housemateName: {
     color: colors.PRIMARY,
+    fontSize: 28,
+    fontFamily: "ProductSansBold",
   },
   avatar: {
     borderRadius: 50,
@@ -230,7 +288,7 @@ const styles = StyleSheet.create({
   netDebt: {
     backgroundColor: "#FFF",
     padding: 16,
-    marginTop: 'auto'
+    marginTop: "auto",
   },
   netDebtText: {
     color: colors.PRIMARY,
@@ -243,6 +301,16 @@ const styles = StyleSheet.create({
     height: 600,
     width: 250,
     zIndex: 2,
+  },
+  payButtonContainer: {
+    padding: 16,
+    paddingTop: 0,
+    backgroundColor: "#FFF",
+    flexDirection: "column",
+  },
+  cancel: {
+    color: colors.PRIMARY,
+    fontSize: 17,
   },
 });
 

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { withNavigation } from "react-navigation";
 import { Context as TransactionContext } from "../context/TransactionContext";
 import { Context as HousemateContext } from "../context/HousemateContext";
@@ -15,111 +15,134 @@ import StyledText from "../components/StyledText";
 import StyledButton from "../components/StyledButton";
 
 import colors from "../constants/colors";
+import SettleUpScreen from "./SettleUpScreen";
 const purplechevron = require("../../assets/imgs/purplechevron.png");
 
 const UserTransactionsIndexScreen = ({ navigation }) => {
   const {
-    state: { transactions, housemateDebts },
+    state: { transactions},
     getTransactions,
   } = useContext(TransactionContext);
   const {
     state: { currentUser },
   } = useContext(HousemateContext);
-  //const [localHousemateDebts, setLocalHousemateDebts] = useState([]);
+
   const otherUser = navigation.getParam("otherUser");
   const otherUserDebt = navigation.getParam("otherUserDebt");
   const titleStyles = [styles.listTitle];
+  const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
     getTransactions(currentUser.id, otherUser._id);
-    //setLocalHousemateDebts(housemateDebts)
   }, []);
   return (
-    <View style={{ backgroundColor: "#FFF" }}>
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.navigate("UserHome")}>
-          <View
-            style={{ flexDirection: "row", height: 36, alignItems: "center" }}
-          >
-            <Image style={{ height: 36, width: 36 }} source={purplechevron} />
-            <StyledText style={styles.headerText}>Back</StyledText>
-          </View>
-        </TouchableOpacity>
-      </View>
-      <View style={{ backgroundColor: "#F8F5FB", padding: 16 }}>
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            marginBottom: 24,
-          }}
-        >
-          <View>
-            <StyledText style={styles.amount}>
-              ${Math.abs(Number(otherUserDebt)).toFixed(2)}
-            </StyledText>
-            <StyledText style={styles.debtStatus}>
-              {otherUserDebt > 0
-                ? `you owe ${otherUser.name.displayName}`
-                : `${otherUser.name.displayName} owes you`}
-            </StyledText>
-          </View>
-          <Image source={{ uri: otherUser.avatarURL }} style={styles.profile} />
+    <>
+      <View style={{ backgroundColor: "#FFF" }}>
+        <View style={styles.header}>
+          <TouchableOpacity onPress={() => navigation.navigate("UserHome")}>
+            <View
+              style={{ flexDirection: "row", height: 36, alignItems: "center" }}
+            >
+              <Image style={{ height: 36, width: 36 }} source={purplechevron} />
+              <StyledText style={styles.headerText}>Back</StyledText>
+            </View>
+          </TouchableOpacity>
         </View>
-
-        <StyledButton
-          size="md"
-          variant="light"
-          title="Settle up"
-          buttonAction={() =>
-            navigation.navigate("SettleUp", { otherUser, otherUserDebt })
-          }
-        />
-      </View>
-      <View>
-        {transactions ? (
-          <View style={{ backgroundColor: "white", height: 240}}>
-            <StyledText style={titleStyles}>Pending</StyledText>
+        <View style={{ backgroundColor: "#F8F5FB", padding: 16 }}>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              marginBottom: 24,
+            }}
+          >
             <View>
+              <StyledText style={styles.amount}>
+                ${Math.abs(Number(otherUserDebt)).toFixed(2)}
+              </StyledText>
+              <StyledText style={styles.debtStatus}>
+                {otherUserDebt > 0
+                  ? `you owe ${otherUser.name.displayName}`
+                  : `${otherUser.name.displayName} owes you`}
+              </StyledText>
+            </View>
+            <Image
+              source={{ uri: otherUser.avatarURL }}
+              style={styles.profile}
+            />
+          </View>
+
+          <StyledButton
+            size="md"
+            variant="light"
+            title="Settle up"
+            buttonAction={() =>
+              //navigation.navigate("SettleUp", { otherUser, otherUserDebt })
+              setModalVisible(true)
+            }
+          />
+        </View>
+        <View>
+          {transactions ? (
+            <View style={{ backgroundColor: "white", height: 240 }}>
+              <StyledText style={titleStyles}>Pending</StyledText>
+              <View>
+                <FlatList
+                  data={transactions.filter(
+                    (transaction) => !transaction.isPaid
+                  )}
+                  keyExtractor={(item) => item._id}
+                  renderItem={({ item }) => {
+                    return (
+                      <TouchableOpacity
+                        onPress={() => {
+                          navigation.navigate("ShowTransaction", {
+                            _id: item._id,
+                          });
+                        }}
+                      >
+                        <Transaction
+                          title="Pending"
+                          transaction={item}
+                          otherUserName={otherUser.name.firstName}
+                        />
+                      </TouchableOpacity>
+                    );
+                  }}
+                />
+              </View>
+
+              <StyledText style={titleStyles}>Past Transactions</StyledText>
               <FlatList
-                data={transactions.filter((transaction) => !transaction.isPaid)}
+                data={transactions.filter((transaction) => transaction.isPaid)}
                 keyExtractor={(item) => item._id}
                 renderItem={({ item }) => {
                   return (
                     <TouchableOpacity
-                      onPress={() => {
+                      onPress={() =>
                         navigation.navigate("ShowTransaction", {
                           _id: item._id,
-                        });
-                      }}
+                        })
+                      }
                     >
-                      <Transaction title="Pending" transaction={item} otherUserName={otherUser.name.firstName} />
+                      <Transaction
+                        title="Past Transactions"
+                        transaction={item}
+                        otherUserName={otherUser.name.firstName}
+                      />
                     </TouchableOpacity>
                   );
                 }}
               />
             </View>
-
-            <StyledText style={titleStyles}>Past Transactions</StyledText>
-            <FlatList
-              data={transactions.filter((transaction) => transaction.isPaid)}
-              keyExtractor={(item) => item._id}
-              renderItem={({ item }) => {
-                return (
-                  <TouchableOpacity
-                    onPress={() =>
-                      navigation.navigate("ShowTransaction", { _id: item._id })
-                    }
-                  >
-                    <Transaction title="Past Transactions" transaction={item} otherUserName={otherUser.name.firstName}/>
-                  </TouchableOpacity>
-                );
-              }}
-            />
-          </View>
-        ) : null}
+          ) : null}
+        </View>
       </View>
-    </View>
+      <SettleUpScreen
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+      />
+    </>
   );
 };
 

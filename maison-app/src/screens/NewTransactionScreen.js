@@ -3,9 +3,8 @@ import React, { useState, useContext, useEffect } from "react";
 import { Context as HousemateContext } from "../context/HousemateContext";
 import { Context as TransactionContext } from "../context/TransactionContext";
 
-import { View, StyleSheet, Dimensions, Keyboard } from "react-native";
+import { View, StyleSheet, Keyboard } from "react-native";
 import Modal from "react-native-modalbox";
-import StyledText from "../components/StyledText";
 import SheetHeader from "../components/SheetHeader";
 import colors from "../constants/colors";
 
@@ -13,8 +12,6 @@ import TransactionTitleForm from "../components/NewTransactionForm/TransactionTi
 import TransactionAmountForm from "../components/NewTransactionForm/TransactionAmountForm";
 import TransactionHousematesForm from "../components/NewTransactionForm/TransactionHousematesForm";
 
-const windowWidth = Dimensions.get("window").width;
-const windowHeight = Dimensions.get("window").height;
 
 const NewTransactionScreen = ({
   navigation,
@@ -47,8 +44,6 @@ const NewTransactionScreen = ({
     debtors: [],
   });
 
-  const [sheetHeight, setSheetHeight] = useState(100);
-
   function _keyboardDidHide() {
     console.log("Hiding Keyboard");
   }
@@ -56,7 +51,6 @@ const NewTransactionScreen = ({
   function _keyboardDidShow(e) {
     console.log("Showing Keyboard");
     console.log(e.endCoordinates.height);
-    setSheetHeight(Math.round(e.endCoordinates.height));
   }
 
   // Initialize housemates with current user selected
@@ -160,7 +154,7 @@ const NewTransactionScreen = ({
       style={styles.modalBox}
       isOpen={modalVisible}
       entry="bottom"
-      position="center"
+      position="bottom"
       backdropPressToClose
       onClosed={() => setModalVisible(false)}
     >

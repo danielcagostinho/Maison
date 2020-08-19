@@ -1,6 +1,6 @@
 // React Imports
 import React, { useContext, useState, useEffect } from "react";
-import { withNavigation, NavigationEvents } from "react-navigation";
+import { withNavigation } from "react-navigation";
 
 // Context Imports
 import { Context as HousemateContext } from "../context/HousemateContext";
@@ -13,7 +13,6 @@ import { FlatGrid } from "react-native-super-grid";
 import NewBillIcon from "../../assets/imgs/newbill.png";
 import StyledText from "../components/StyledText";
 const illustration = require("../../assets/imgs/homepage.png");
-import Modal from "react-native-modalbox";
 import NewTransactionScreen from "./NewTransactionScreen";
 
 // CSS Imports
@@ -24,16 +23,6 @@ const UserHomeScreen = ({ navigation }) => {
 
   const [dataLoaded, setDataLoaded] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
-
-  const getModal = () => {
-    return (
-      <Modal isOpen={modalVisible}>
-        <View>
-          <StyledText>Hello from modal</StyledText>
-        </View>
-      </Modal>
-    );
-  };
 
   let {
     state: { currentUser, housemates },
