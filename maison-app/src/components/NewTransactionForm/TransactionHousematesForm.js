@@ -34,79 +34,77 @@ const TransactionHousemateForm = ({ navigation, totalAmount, next }) => {
   );
 
   const [housematesS, setHousematesS] = useState([
-    { housemateId: currentUserH._id, share: totalAmount, firstName: currentUserH.name.firstName },
+    {
+      housemateId: currentUserH._id,
+      share: totalAmount,
+      firstName: currentUserH.name.firstName,
+    },
   ]);
   const [dataLoaded, setDataLoaded] = useState(false);
 
   const toggleHousemate = (checked, housemate, share) => {
     if (!checked) {
       // If deselected
-      let newHousemates = housematesS.filter((h) => h.housemateId != housemate._id);
+      let newHousemates = housematesS.filter(
+        (h) => h.housemateId != housemate._id
+      );
       setHousematesS(updateShares(newHousemates));
-
     } else {
       // If Selected
       let newHousemates = [
         ...housematesS,
-        { housemateId: housemate._id, share: share, firstName: housemate.name.firstName },
+        {
+          housemateId: housemate._id,
+          share: share,
+          firstName: housemate.name.firstName,
+          avatarURL: housemate.avatarURL
+        },
       ];
       setHousematesS(updateShares(newHousemates));
-      
     }
-    
   };
 
   const updateShares = (housematesToUpdate) => {
-    return (housematesToUpdate.map(housemate => {
-      return {...housemate, share: (totalAmount/housematesToUpdate.length).toFixed(2)}
-    }));
-  }
+    return housematesToUpdate.map((housemate) => {
+      return {
+        ...housemate,
+        share: (totalAmount / housematesToUpdate.length).toFixed(2),
+      };
+    });
+  };
 
   
 
-  const housemateSentence = (
-    <View style={styles.housemateSentence}>
-      <StyledText style={styles.title}>{"Splitting "}</StyledText>
-      <StyledText style={styles.amount}>${Number(totalAmount).toFixed(2)}</StyledText>
-      <StyledText style={styles.title}>{" with "}</StyledText>
-
-      
-      {housematesS.length > 2
-        ? <StyledText style={styles.title}>{housematesS
-            .filter((housemateS) => housemateS.housemateId !== currentUser.id)
-            .map((housemate) => housemate.firstName)
-            .join(" and ")}</StyledText>
-        : <StyledText style={styles.title}>{housematesS
-            .filter((housemateS) => housemateS.housemateId !== currentUser.id)
-            .map((housemate) => housemate.firstName)}</StyledText>}
-    </View>
-  );
-
   function housemateSentenceBuilder() {
-    let selectedHousemates = housematesS.filter((housemateS) => housemateS.housemateId !== currentUser.id);
-  let styledSelectedHousemates = selectedHousemates.map((housemate, i) => {
-    return (
-      <>
-      <StyledText style={styles.housemateName}>{housemate.firstName}</StyledText>
-      {selectedHousemates.length-1 !== i ? 
-      <StyledText style={styles.title}>{" and "}</StyledText>
-      : null}
-      </>)
-  })
+    let selectedHousemates = housematesS.filter(
+      (housemateS) => housemateS.housemateId !== currentUser.id
+    );
+    let styledSelectedHousemates = selectedHousemates.map((housemate, i) => {
+      return (
+        <React.Fragment key={housemate.firstName}>
+          <StyledText style={styles.housemateName}>
+            {housemate.firstName}
+          </StyledText>
+          {selectedHousemates.length - 1 !== i ? (
+            <StyledText style={styles.title}>{" and "}</StyledText>
+          ) : null}
+        </React.Fragment>
+      );
+    });
     return (
       <View style={styles.housemateSentence}>
         <StyledText style={styles.title}>{"Splitting "}</StyledText>
-      <StyledText style={styles.amount}>${Number(totalAmount).toFixed(2)}</StyledText>
-      <StyledText style={styles.title}>{" with "}</StyledText>
+        <StyledText style={styles.amount}>
+          ${Number(totalAmount).toFixed(2)}
+        </StyledText>
+        <StyledText style={styles.title}>{" with "}</StyledText>
         {styledSelectedHousemates}
       </View>
-    )
+    );
   }
 
-
-
   return (
-    <View style={{flex: 1}}>
+    <View style={{ flex: 1 }}>
       <View style={styles.backdrop}></View>
       <View style={styles.illustrationContainer}>
         <Image source={illustration} style={styles.illustration} />
@@ -149,8 +147,8 @@ const styles = StyleSheet.create({
   housemateSentence: {
     margin: 20,
     marginBottom: 8,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
+    flexDirection: "row",
+    flexWrap: "wrap",
   },
   housemateName: {
     color: colors.PRIMARY,
@@ -188,7 +186,7 @@ const styles = StyleSheet.create({
   housemateGrid: {
     zIndex: 3,
     backgroundColor: "#FFF",
-    flex: 1
+    flex: 1,
   },
 });
 

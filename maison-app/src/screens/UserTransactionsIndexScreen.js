@@ -24,16 +24,21 @@ const UserTransactionsIndexScreen = ({ navigation }) => {
     getTransactions,
   } = useContext(TransactionContext);
   const {
-    state: { currentUser },
+    state: { currentUser, },
   } = useContext(HousemateContext);
 
   const otherUser = navigation.getParam("otherUser");
   const otherUserDebt = navigation.getParam("otherUserDebt");
   const titleStyles = [styles.listTitle];
   const [modalVisible, setModalVisible] = useState(false);
+  const [dataLoaded, setDataLoaded] = useState(false);
 
   useEffect(() => {
-    getTransactions(currentUser.id, otherUser._id);
+    async function getData() {
+      await getTransactions(currentUser.id, otherUser._id);
+      setDataLoaded(true);
+    }
+    getData();
   }, []);
   return (
     <>
@@ -83,7 +88,7 @@ const UserTransactionsIndexScreen = ({ navigation }) => {
           />
         </View>
         <View>
-          {transactions ? (
+          {dataLoaded ? (
             <View style={{ backgroundColor: "white" }}>
               <StyledText style={titleStyles}>Pending</StyledText>
               <View>

@@ -128,6 +128,7 @@ const UserHomeScreen = ({ navigation }) => {
       <NewTransactionScreen
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
+        currentUser={currentUser}
       />
     </>
   );

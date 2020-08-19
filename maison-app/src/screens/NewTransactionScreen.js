@@ -3,7 +3,7 @@ import React, { useState, useContext, useEffect } from "react";
 import { Context as HousemateContext } from "../context/HousemateContext";
 import { Context as TransactionContext } from "../context/TransactionContext";
 
-import { View, StyleSheet, Keyboard } from "react-native";
+import { View, StyleSheet } from "react-native";
 import Modal from "react-native-modalbox";
 import SheetHeader from "../components/SheetHeader";
 import colors from "../constants/colors";
@@ -11,12 +11,14 @@ import colors from "../constants/colors";
 import TransactionTitleForm from "../components/NewTransactionForm/TransactionTitleForm";
 import TransactionAmountForm from "../components/NewTransactionForm/TransactionAmountForm";
 import TransactionHousematesForm from "../components/NewTransactionForm/TransactionHousematesForm";
+import TransactionComplete from '../components/NewTransactionForm/TransactionComplete';
 
 
 const NewTransactionScreen = ({
   navigation,
   modalVisible,
   setModalVisible,
+  currentUser
 }) => {
   // Context State
   const { state, getHousemates } = useContext(HousemateContext);
@@ -25,13 +27,6 @@ const NewTransactionScreen = ({
   // Initialize housemates
   useEffect(() => {
     getHousemates();
-    Keyboard.addListener("keyboardDidShow", _keyboardDidShow);
-    Keyboard.addListener("keyboardDidHide", _keyboardDidHide);
-
-    return () => {
-      Keyboard.removeListener("keyboardDidHide", _keyboardDidHide);
-      Keyboard.removeListener("keyboardDidShow", _keyboardDidShow);
-    };
   }, [currentScreen]);
 
   // Local State
@@ -44,15 +39,6 @@ const NewTransactionScreen = ({
     debtors: [],
   });
 
-  function _keyboardDidHide() {
-    console.log("Hiding Keyboard");
-  }
-
-  function _keyboardDidShow(e) {
-    console.log("Showing Keyboard");
-    console.log(e.endCoordinates.height);
-  }
-
   // Initialize housemates with current user selected
   const [housemates, setHousemates] = useState(
     state.housemates.map((housemate) => {
@@ -64,9 +50,10 @@ const NewTransactionScreen = ({
     })
   );
 
-  const maxScreenInd = 2;
+  const maxScreenInd = 3;
 
   const next = (value) => {
+    console.log(currentScreen)
     const nextScreen = Math.min(currentScreen + 1, maxScreenInd);
     setCurrentScreen(nextScreen);
     switch (currentScreen) {
@@ -80,6 +67,11 @@ const NewTransactionScreen = ({
       }
       case 2: {
         onSubmit(value);
+        break;
+      }
+      case 3: {
+        close();
+        break;
       }
     }
   };
@@ -87,6 +79,7 @@ const NewTransactionScreen = ({
   const back = () => {
     switch (currentScreen) {
       case 0: {
+        console.log('[Back] closeModal')
         setModalVisible(false);
       }
     }
@@ -143,15 +136,30 @@ const NewTransactionScreen = ({
       ownerId: owner.id,
       debtors,
     };
-    await addTransaction(newTransaction);
-    clearForm();
-    setCurrentScreen(0);
-    setModalVisible(false);
+    await setTransaction(newTransaction)
+
+    await addTransaction(transaction);
+    
   };
 
-  const cancel = () => {
-    console.log('cancel')
+  const getAvatars = () => {
+    let avatars =[];
+    transaction.debtors.forEach(debtor => {
+      housemates.forEach(housemate => {
+        if (housemate._id == debtor.housemateId){
+          avatars.push({housemateId: housemate._id, name: housemate.name.displayName, avatarURL: housemate.avatarURL })
+        }
+      })
+    })
+
+    return avatars
+    
+  }
+
+  const close = () => {
     clearForm();
+    setCurrentScreen(0);
+    console.log('[close] closeModal')
     setModalVisible(false);
   }
 
@@ -166,7 +174,7 @@ const NewTransactionScreen = ({
     >
       {currentScreen == 0 ? (
         <View style={styles.content}>
-          <SheetHeader backAction={back} screenNum={currentScreen} cancelAction={cancel}/>
+          <SheetHeader backAction={back} screenNum={currentScreen} cancelAction={close}/>
           <TransactionTitleForm
             title={transaction.title}
             previous={back}
@@ -175,7 +183,7 @@ const NewTransactionScreen = ({
         </View>
       ) : currentScreen == 1 ? (
         <View style={styles.content}>
-          <SheetHeader backAction={back} screenNum={currentScreen} cancelAction={cancel}/>
+          <SheetHeader backAction={back} screenNum={currentScreen} cancelAction={close}/>
           <TransactionAmountForm
             title={transaction.title}
             amount={transaction.amount}
@@ -183,14 +191,21 @@ const NewTransactionScreen = ({
             next={next}
           />
         </View>
-      ) : (
+      ) : currentScreen == 2 ? (
         <View style={styles.contentLast}>
-          <SheetHeader backAction={back} screenNum={currentScreen} cancelAction={cancel}/>
+          <SheetHeader backAction={back} screenNum={currentScreen} cancelAction={close}/>
           <TransactionHousematesForm
             title={transaction.title}
             totalAmount={transaction.amount}
-            previous={back}
             next={next}
+          />
+        </View>
+      ) : (
+        <View style={styles.contentLast}>
+          <TransactionComplete
+            closeAction={close}
+            housemates={getAvatars()}
+            currentUser={currentUser}
           />
         </View>
       )}

@@ -12,7 +12,6 @@ import { Provider as HousemateProvider } from "./src/context/HousemateContext";
 import SigninScreen from "./src/screens/SigninScreen";
 import HousematesIndexScreen from "./src/screens/HousematesIndexScreen";
 import NewTransactionScreen from "./src/screens/NewTransactionScreen";
-import TransactionsIndexScreen from "./src/screens/TransactionsIndexScreen";
 import ShowTransactionScreen from "./src/screens/ShowTransactionScreen";
 import NewHousemateScreen from "./src/screens/NewHousemateScreen";
 import UserHomeScreen from "./src/screens/UserHomeScreen";
@@ -31,7 +30,6 @@ import ProfileTabIcon from "../maison-app/assets/imgs/nav/profile-nav.png";
 const homeFlow = createSwitchNavigator({
   UserHome: UserHomeScreen,
   NewTransaction: NewTransactionScreen,
-  TransactionsIndex: TransactionsIndexScreen,
   UserTransactionsIndex: UserTransactionsIndexScreen,
   ShowTransaction: ShowTransactionScreen,
   SettleUp: SettleUpScreen,

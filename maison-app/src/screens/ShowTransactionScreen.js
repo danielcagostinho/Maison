@@ -4,7 +4,7 @@ import { withNavigation } from 'react-navigation';
 import { Context as TransactionContext } from "../context/TransactionContext";
 import { Context as HousemateContext } from "../context/HousemateContext";
 
-import { View, StyleSheet, Button, FlatList } from "react-native";
+import { View, Button, FlatList } from "react-native";
 import StyledText from '../components/StyledText';
 const ShowTransactionScreen = ({ navigation }) => {
   const {
@@ -55,7 +55,7 @@ const ShowTransactionScreen = ({ navigation }) => {
           title="PAY"
           onPress={async () => {
             await payTransaction(transaction._id);
-            navigation.navigate("TransactionsIndex");
+            navigation.navigate("UserTransactionsIndex");
           }}
         />
         
