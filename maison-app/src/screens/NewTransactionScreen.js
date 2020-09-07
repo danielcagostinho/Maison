@@ -109,6 +109,7 @@ const NewTransactionScreen = ({
   };
 
   const onSubmit = async (selectedHousemates) => {
+
     const owner = state.currentUser;
 
     // Set Share
@@ -130,15 +131,16 @@ const NewTransactionScreen = ({
         sharePaid: false,
       };
     });
+
     const newTransaction = {
       ...transaction,
       amount: Number(transaction.amount).toFixed(2),
       ownerId: owner.id,
-      debtors,
+      debtors: debtors
     };
     await setTransaction(newTransaction)
 
-    await addTransaction(transaction);
+    await addTransaction(newTransaction);
     
   };
 

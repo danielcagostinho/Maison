@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
 
 import { View, StyleSheet, Image } from "react-native";
-import ConfettiCannon  from 'react-native-confetti-cannon';
 
 import StyledText from "../StyledText";
 import StyledButton from "../StyledButton";
@@ -10,7 +9,7 @@ import colors from "../../constants/colors";
 var illustration = require('../../../assets/imgs/complete.png');
 
 const TransactionComplete = ({ closeAction, housemates, currentUser }) => {
-  console.log(housemates);
+  // console.log(housemates);
   function getHousemates() {
     return housemates.map((housemate) => {
       let name =
@@ -18,7 +17,6 @@ const TransactionComplete = ({ closeAction, housemates, currentUser }) => {
       return (
         <View style={styles.housemate} key={housemate._id}>
           <View>
-          <ConfettiCannon count={200} origin={{x: 0, y: 0}} fadeOut={true} autostart />
           <Image source={{ uri: housemate.avatarURL }} style={styles.image} />
           </View>
           <StyledText style={styles.housemateName}>{name}</StyledText>
