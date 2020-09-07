@@ -20,6 +20,7 @@ const transactionReducer = (state, action) => {
 
 const addTransaction = (dispatch) => async (transaction) => {
   const transactionId = await maisonApi.post("/transactions", transaction);
+  
   dispatch({ type: "ADD_TRANSACTION", payload: transactionId.data });
 };
 

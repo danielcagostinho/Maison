@@ -53,7 +53,6 @@ const NewTransactionScreen = ({
   const maxScreenInd = 3;
 
   const next = (value) => {
-    console.log(currentScreen)
     const nextScreen = Math.min(currentScreen + 1, maxScreenInd);
     setCurrentScreen(nextScreen);
     switch (currentScreen) {
@@ -79,7 +78,6 @@ const NewTransactionScreen = ({
   const back = () => {
     switch (currentScreen) {
       case 0: {
-        console.log('[Back] closeModal')
         setModalVisible(false);
       }
     }
@@ -161,7 +159,6 @@ const NewTransactionScreen = ({
   const close = () => {
     clearForm();
     setCurrentScreen(0);
-    console.log('[close] closeModal')
     setModalVisible(false);
   }
 

@@ -9,7 +9,6 @@ import colors from "../../constants/colors";
 var illustration = require('../../../assets/imgs/complete.png');
 
 const TransactionComplete = ({ closeAction, housemates, currentUser }) => {
-  // console.log(housemates);
   function getHousemates() {
     return housemates.map((housemate) => {
       let name =

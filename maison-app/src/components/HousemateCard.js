@@ -33,7 +33,6 @@ const HousemateCard = ({
   // Local State
   const [share, setShare] = useState("0");
   const [checked, setChecked] = useState(currentUser.id === housemate._id);
-  // console.log(`${housemate.name.firstName} - ${checked}`)
   // Set Checkbox Image source
   let imgSrc = checked ? check : uncheck;
   let cardStyle = !checked ? styles.card : styles.selectedCard;

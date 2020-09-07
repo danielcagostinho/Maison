@@ -7,12 +7,16 @@ import Transaction from "../components/Transaction";
 import {
   View,
   Image,
+  Text,
+  ScrollView,
   StyleSheet,
   FlatList,
   TouchableOpacity,
 } from "react-native";
 import StyledText from "../components/StyledText";
 import StyledButton from "../components/StyledButton";
+import DebugBorder from "../utils/DebugBorder";
+import StickyList from "../components/StickyList";
 
 import colors from "../constants/colors";
 import SettleUpScreen from "./SettleUpScreen";
@@ -20,11 +24,11 @@ const purplechevron = require("../../assets/imgs/purplechevron.png");
 
 const UserTransactionsIndexScreen = ({ navigation }) => {
   const {
-    state: { transactions},
+    state: { transactions },
     getTransactions,
   } = useContext(TransactionContext);
   const {
-    state: { currentUser, },
+    state: { currentUser },
   } = useContext(HousemateContext);
 
   const otherUser = navigation.getParam("otherUser");
@@ -33,6 +37,16 @@ const UserTransactionsIndexScreen = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [dataLoaded, setDataLoaded] = useState(false);
 
+  const TransactionListHeader = () => {
+    return (
+      <View>
+        <Text style={{ color: "black", fontSize: 40 }}>
+          TransactionListHeader
+        </Text>
+      </View>
+    );
+  };
+
   useEffect(() => {
     async function getData() {
       await getTransactions(currentUser.id, otherUser._id);
@@ -40,6 +54,58 @@ const UserTransactionsIndexScreen = ({ navigation }) => {
     }
     getData();
   }, []);
+
+  const listItems = [
+    ...transactions.filter((transaction) => !transaction.isPaid),
+    ...transactions.filter((transaction) => transaction.isPaid),
+  ];
+
+  const transactionDisplay = () => {
+    return (
+      <DebugBorder color="red">
+        {transactions.map((transaction) => {
+          return (
+            <View key={transaction._id}>
+              <StyledText style={titleStyles}>Pending</StyledText>
+            </View>
+          );
+        })}
+      </DebugBorder>
+    );
+  };
+
+  const prepareDataForList = () => {
+    let newData = [];
+    let pendingTransactions = transactions
+      .filter((transaction) => !transaction.isPaid)
+      .map((transaction) => {
+        return { ...transaction, header: false };
+      });
+
+    let pastTransactions = transactions
+      .filter((transaction) => transaction.isPaid)
+      .map((transaction) => {
+        return { ...transaction, header: false };
+      });
+    newData.push({
+      header: true,
+      title: "Pending Transactions",
+      
+    });
+    newData = newData.concat(pendingTransactions);
+    newData.push({
+      header: true,
+      title: "Pending Transactions",
+    });
+    newData = newData.concat(pastTransactions);
+    newData = newData.concat(pastTransactions);
+    newData = newData.concat(pastTransactions);
+
+    // console.log("newData");
+    // console.log(newData);
+    return newData;
+  };
+
   return (
     <>
       <View style={{ backgroundColor: "#FFF" }}>
@@ -89,10 +155,11 @@ const UserTransactionsIndexScreen = ({ navigation }) => {
         </View>
         <View>
           {dataLoaded ? (
-            <View style={{ backgroundColor: "white" }}>
-              <StyledText style={titleStyles}>Pending</StyledText>
-              <View>
+            <DebugBorder color="blue">
+              {/* <View style={{ backgroundColor: "white" }}>
+                <StyledText style={titleStyles}>Pending</StyledText>
                 <FlatList
+                  // style={{paddingBottom: 40}}
                   data={transactions.filter(
                     (transaction) => !transaction.isPaid
                   )}
@@ -115,31 +182,34 @@ const UserTransactionsIndexScreen = ({ navigation }) => {
                     );
                   }}
                 />
-              </View>
 
-              <StyledText style={titleStyles}>Past Transactions</StyledText>
-              <FlatList
-                data={transactions.filter((transaction) => transaction.isPaid)}
-                keyExtractor={(item) => item._id}
-                renderItem={({ item }) => {
-                  return (
-                    <TouchableOpacity
-                      onPress={() =>
-                        navigation.navigate("ShowTransaction", {
-                          _id: item._id,
-                        })
-                      }
-                    >
-                      <Transaction
-                        title="Past Transactions"
-                        transaction={item}
-                        otherUserName={otherUser.name.firstName}
-                      />
-                    </TouchableOpacity>
-                  );
-                }}
-              />
-            </View>
+                <StyledText style={titleStyles}>Past Transactions</StyledText>
+                <FlatList
+                  data={transactions.filter(
+                    (transaction) => transaction.isPaid
+                  )}
+                  keyExtractor={(item) => item._id}
+                  renderItem={({ item }) => {
+                    return (
+                      <TouchableOpacity
+                        onPress={() =>
+                          navigation.navigate("ShowTransaction", {
+                            _id: item._id,
+                          })
+                        }
+                      >
+                        <Transaction
+                          title="Past Transactions"
+                          transaction={item}
+                          otherUserName={otherUser.name.firstName}
+                        />
+                      </TouchableOpacity>
+                    );
+                  }}
+                />
+              </View> */}
+              <StickyList dataToDisplay={prepareDataForList()} />
+            </DebugBorder>
           ) : null}
         </View>
       </View>

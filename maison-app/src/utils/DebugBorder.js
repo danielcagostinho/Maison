@@ -2,19 +2,13 @@ import React from 'react';
 
 import { View, StyleSheet } from 'react-native';
 
-const DebugBorder = ({children}) => {
+const DebugBorder = ({children, color}) => {
   return ( 
-    <View style={styles.border}>
+    <View style={{borderWidth: 1, borderColor: color}}>
       {children}
     </View>
    );
 }
 
-const styles = StyleSheet.create({
-  border: {
-    borderColor: 'red',
-    borderWidth: 1
-  }
-});
  
 export default DebugBorder;
