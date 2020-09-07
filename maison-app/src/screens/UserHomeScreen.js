@@ -32,15 +32,14 @@ const UserHomeScreen = ({ navigation }) => {
     state: { housemateDebts },
     getTransactions,
   } = useContext(TransactionContext);
-
+  async function getData() {
+    await getTransactions(currentUser.id, null);
+    await getHousemates();
+    setDataLoaded(true);
+  }
   useEffect(() => {
-    async function getData() {
-      await getTransactions(currentUser.id, null);
-      await getHousemates();
-      setDataLoaded(true);
-    }
     getData();
-  }, []);
+  }, [modalVisible]);
 
   const otherHousemates = housemates.filter((housemate) => {
     return housemate._id !== currentUser.id;
