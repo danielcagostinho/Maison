@@ -10,7 +10,7 @@
   "dependencies": {
     "@react-native-community/checkbox": "^0.4.2",
     "@react-native-community/masked-view": "^0.1.6",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "expo": "~37.0.3",
     "expo-cli": "^3.24.0",
     "expo-constants": "~9.0.0",
