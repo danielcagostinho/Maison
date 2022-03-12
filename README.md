@@ -7,7 +7,7 @@ Maison is a housemate sharing app to split bills, add recurring bills, and simpl
 
 ## Maison in Action
 
-![alt text](https://github.com/danielcagostinho/Maison/blob/master/demo/maison-video-1.mp4 "Logo Title Text 1")
+[![alt text](https://github.com/danielcagostinho/Maison/blob/master/demo/maison-video-1.mp4.mov)]
 
 ## Installation
 
