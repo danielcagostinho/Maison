@@ -20,6 +20,10 @@ pip install foobar
 ## Usage
 
 ```python
+
+https://user-images.githubusercontent.com/14880191/158024828-d5a84dad-e48f-4c79-a6ec-bf466d1af276.mp4
+
+
 import foobar
 
 # returns 'words'
