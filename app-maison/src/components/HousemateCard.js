@@ -169,10 +169,9 @@ const styles = StyleSheet.create({
   },
   selectedCard: {
     borderRadius: 16,
-    height: 176,
-    width: 164,
     padding: 16,
     alignItems: "center",
+    justifyContent: "center",
     backgroundColor: colors.BACKDROP_PURPLE,
   },
   displayPic: {

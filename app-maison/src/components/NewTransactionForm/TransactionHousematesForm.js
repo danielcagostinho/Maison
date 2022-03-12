@@ -6,7 +6,7 @@ import { withNavigation } from "react-navigation";
 import { Context as HousemateContext } from "../../context/HousemateContext";
 
 // Component Imports
-import { Image, View, StyleSheet } from "react-native";
+import { Image, View, StyleSheet, Dimensions } from "react-native";
 import { FlatGrid } from "react-native-super-grid";
 import StyledText from "../StyledText";
 import StyledButton from "../StyledButton";
@@ -16,6 +16,19 @@ import HousemateCard from "../HousemateCard";
 import colors from "../../constants/colors";
 
 const TransactionHousemateForm = ({ navigation, totalAmount, next }) => {
+  const window = Dimensions.get("window");
+  const screen = Dimensions.get("screen");
+  const [dimensions, setDimensions] = useState({ window, screen });
+  let cardWidth = dimensions.window.width * 0.36;
+  useEffect(() => {
+    const subscription = Dimensions.addEventListener(
+      "change",
+      ({ window, screen }) => {
+        setDimensions({ window, screen });
+      }
+    );
+    return () => subscription?.remove();
+  });
   useEffect(() => {
     async function getData() {
       await getHousemates();
@@ -125,6 +138,7 @@ const TransactionHousemateForm = ({ navigation, totalAmount, next }) => {
                   toggleHousemate={toggleHousemate}
                   currentUser={currentUser}
                   shares={housematesS.length}
+                  cardHeight={cardWidth}
                 />
               );
             }}
