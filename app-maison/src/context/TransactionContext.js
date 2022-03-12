@@ -47,7 +47,7 @@ const payTransaction = (dispatch) => async (id) => {
 
 
 const payTransactionsBulk = (dispatch) => async (transactionIds, userId) => {
-  maisonApi.post("/transactions", { transactionIds: transactionIds, userId: userId });
+  maisonApi.post("/transactions/pay", { transactionIds: transactionIds, userId: userId });
 }
 
 

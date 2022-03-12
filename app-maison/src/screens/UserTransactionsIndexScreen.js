@@ -19,6 +19,7 @@ import StickyList from "../components/StickyList";
 
 import colors from "../constants/colors";
 import SettleUpScreen from "./SettleUpScreen";
+import PaymentProcessedScreen from "./PaymentProcessedScreen";
 const purplechevron = require("../../assets/imgs/purplechevron.png");
 
 const UserTransactionsIndexScreen = ({ navigation }) => {
@@ -35,6 +36,7 @@ const UserTransactionsIndexScreen = ({ navigation }) => {
   const titleStyles = [styles.listTitle];
   const [modalVisible, setModalVisible] = useState(false);
   const [dataLoaded, setDataLoaded] = useState(false);
+  const [settledUp, setSettledUp] = useState(false);
 
   const TransactionListHeader = () => {
     return (
@@ -81,7 +83,7 @@ const UserTransactionsIndexScreen = ({ navigation }) => {
         return { ...transaction, header: false };
       });
 
-      console.log(transactions);
+    console.log(transactions);
 
     let pastTransactions = transactions
       .filter((transaction) => transaction.isPaid)
@@ -100,6 +102,10 @@ const UserTransactionsIndexScreen = ({ navigation }) => {
     newData = newData.concat(pastTransactions);
     return newData;
   };
+
+  const processPayment = () => {
+    setSettledUp(true)
+  }
 
   return (
     <>
@@ -150,67 +156,76 @@ const UserTransactionsIndexScreen = ({ navigation }) => {
         </View>
         <View>
           {dataLoaded ? (
-              <View style={{ backgroundColor: "white" }}>
-                <StyledText style={titleStyles}>Pending</StyledText>
-                <FlatList
-                  // style={{paddingBottom: 40}}
-                  data={transactions.filter(
-                    (transaction) => !transaction.isPaid
-                  )}
-                  keyExtractor={(item) => item._id}
-                  renderItem={({ item }) => {
-                    return (
-                      <TouchableOpacity
-                        onPress={() => {
-                          navigation.navigate("ShowTransaction", {
-                            _id: item._id,
-                          });
-                        }}
-                      >
-                        <Transaction
-                          title="Pending"
-                          transaction={item}
-                          otherUserName={otherUser.name.firstName}
-                        />
-                      </TouchableOpacity>
-                    );
-                  }}
-                />
+            <View style={{ backgroundColor: "white" }}>
+              <StyledText style={titleStyles}>Pending</StyledText>
+              <FlatList
+                // style={{paddingBottom: 40}}
+                data={transactions.filter(
+                  (transaction) => !transaction.isPaid
+                )}
+                keyExtractor={(item) => item._id}
+                renderItem={({ item }) => {
+                  return (
+                    <TouchableOpacity
+                      onPress={() => {
+                        navigation.navigate("ShowTransaction", {
+                          _id: item._id,
+                        });
+                      }}
+                    >
+                      <Transaction
+                        title="Pending"
+                        transaction={item}
+                        otherUserName={otherUser.name.firstName}
+                      />
+                    </TouchableOpacity>
+                  );
+                }}
+              />
 
-                <StyledText style={titleStyles}>Past Transactions</StyledText>
-                <FlatList
-                  data={transactions.filter(
-                    (transaction) => transaction.isPaid
-                  )}
-                  keyExtractor={(item) => item._id}
-                  renderItem={({ item }) => {
-                    return (
-                      <TouchableOpacity
-                        onPress={() =>
-                          navigation.navigate("ShowTransaction", {
-                            _id: item._id,
-                          })
-                        }
-                      >
-                        <Transaction
-                          title="Past Transactions"
-                          transaction={item}
-                          otherUserName={otherUser.name.firstName}
-                        />
-                      </TouchableOpacity>
-                    );
-                  }}
-                />
-              </View>
+              <StyledText style={titleStyles}>Past Transactions</StyledText>
+              <FlatList
+                data={transactions.filter(
+                  (transaction) => transaction.isPaid
+                )}
+                keyExtractor={(item) => item._id}
+                renderItem={({ item }) => {
+                  return (
+                    <TouchableOpacity
+                      onPress={() =>
+                        navigation.navigate("ShowTransaction", {
+                          _id: item._id,
+                        })
+                      }
+                    >
+                      <Transaction
+                        title="Past Transactions"
+                        transaction={item}
+                        otherUserName={otherUser.name.firstName}
+                      />
+                    </TouchableOpacity>
+                  );
+                }}
+              />
+            </View>
           ) : null}
         </View>
       </View>
-      <SettleUpScreen
-        modalVisible={modalVisible}
-        setModalVisible={setModalVisible}
-        otherUser={otherUser}
-        otherUserDebt={otherUserDebt}
-      />
+      {!settledUp ?
+        <SettleUpScreen
+          modalVisible={modalVisible}
+          setModalVisible={setModalVisible}
+          otherUser={otherUser}
+          otherUserDebt={otherUserDebt}
+          next={processPayment}
+        /> :
+        <PaymentProcessedScreen
+          modalVisible={modalVisible}
+          setModalVisible={setModalVisible}
+          otherUser={otherUser}
+          otherUserDebt={otherUserDebt}
+          next={processPayment}
+        />}
     </>
   );
 };

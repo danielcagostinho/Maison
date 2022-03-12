@@ -107,4 +107,19 @@ router.put("/transactions", async (req, res) => {
   );
 });
 
+router.post("/transactions/pay", async (req, res) => {
+  const {transactionIds, userId} = req.body;
+  console.log("[transactionRoutes.js] POST /transactions/pay paying these transactions", transactionIds);
+  const serializedIds = transactionIds.map(ti => {
+    return mongoose.Types.ObjectId(ti);
+  });
+  const usersTransactions = await Transaction.find({
+    "_id" : { $in: serializedIds}
+  }, (err, docs) => {
+    // console.log(docs);
+  });
+  console.log(usersTransactions);
+  res.status(200).send(usersTransactions);
+});
+
 module.exports = router;

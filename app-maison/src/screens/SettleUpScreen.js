@@ -22,7 +22,7 @@ import StyledButton from "../components/StyledButton";
 import colors from "../constants/colors";
 const illustration = require("../../assets/imgs/settleup.png");
 
-const SettleUpScreen = ({ navigation, setModalVisible, modalVisible, otherUser, otherUserDebt }) => {
+const SettleUpScreen = ({ navigation, setModalVisible, modalVisible, otherUser, otherUserDebt, next }) => {
   // useState
   const [dataLoaded, setDataLoaded] = useState(false);
 
@@ -200,7 +200,7 @@ const SettleUpScreen = ({ navigation, setModalVisible, modalVisible, otherUser, 
             size="lg"
             variant="dark"
             title={"Pay $" + Number(Math.abs(otherUserDebt)).toFixed(2)}
-            buttonAction={() => alert("Feature not ready")}
+            buttonAction={() => next()}
           />
         </View>
       </View>
@@ -220,7 +220,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     width: "100%",
     backgroundColor: "#F8F5FB",
-    marginTop: 16,
+    marginTop: 40,
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
   },
@@ -246,7 +246,7 @@ const styles = StyleSheet.create({
     marginTop: 12,
   },
   payContainer: {
-    marginBottom: 16,
+    paddingBottom: 40,
   },
   titleText: {
     fontFamily: "ProductSansBold",
@@ -299,7 +299,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     alignSelf: "flex-end",
     height: 600,
-    width: 250,
+    width: 240,
     zIndex: 2,
   },
   payButtonContainer: {

@@ -1,7 +1,7 @@
-import React, { useContext } from "react";
+import React from "react";
 
 import { View, StyleSheet, Image } from "react-native";
-
+import ConfettiCannon from 'react-native-confetti-cannon';
 import StyledText from "../StyledText";
 import StyledButton from "../StyledButton";
 import colors from "../../constants/colors";
@@ -9,14 +9,14 @@ import colors from "../../constants/colors";
 var illustration = require('../../../assets/imgs/complete.png');
 
 const TransactionComplete = ({ closeAction, housemates, currentUser }) => {
-  function getHousemates() {
+  const getHousemates = () => {
     return housemates.map((housemate) => {
       let name =
         currentUser.displayName === housemate.name ? "Me" : housemate.name;
       return (
-        <View style={styles.housemate} key={housemate._id}>
+        <View style={styles.housemate} key={housemate.name}>
           <View>
-          <Image source={{ uri: housemate.avatarURL }} style={styles.image} />
+            <Image source={{ uri: housemate.avatarURL }} style={styles.image} />
           </View>
           <StyledText style={styles.housemateName}>{name}</StyledText>
         </View>
@@ -26,15 +26,22 @@ const TransactionComplete = ({ closeAction, housemates, currentUser }) => {
 
   return (
     <View style={styles.backdrop}>
+      <ConfettiCannon
+        count={120}
+        origin={{ x: 150, y: 40 }}
+        autoStartDelay={600}
+        fadeOut={true}
+        fallSpeed={2000}
+        colors={[colors.PRIMARY]}
+      />
       <View style={styles.content}>
-        <Image style={{height: 260, width: 169}} source={illustration} />
+        <Image style={{ height: 260, width: 169 }} source={illustration} />
         <StyledText style={styles.title}>Bill Split</StyledText>
         <StyledText style={styles.subtitle}>
           Sit back and enjoy a cup of joe!
         </StyledText>
         <StyledText style={styles.housematesTitle}>Split With</StyledText>
-
-        <View style={styles.avatarContainer}>{getHousemates()}</View>
+        <View style={styles.avatarContainer} key={1}>{getHousemates()}</View>
       </View>
       <View style={styles.buttonContainer}>
         <StyledButton

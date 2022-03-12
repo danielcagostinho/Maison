@@ -43,11 +43,14 @@ const switchNavigator = createSwitchNavigator(
         navigationOptions: {
           title: "Home",
           tabBarIcon: (
-            <Image source={HomeTabIcon} style={{ height: 28, width: 28 }} />
+            <Image source={HomeTabIcon} style={{ height: 24, width: 24 }} />
           ),
           tabBarOptions: {
             activeTintColor: colors.PRIMARY,
             inactiveTintColor: colors.LIGHT_GRAY,
+            style: {
+              height: 56,
+            }
           },
         },
       },
@@ -56,7 +59,7 @@ const switchNavigator = createSwitchNavigator(
         navigationOptions: {
           title: "Activity",
           tabBarIcon: (
-            <Image source={ActivityTabIcon} style={{ height: 28, width: 28 }} />
+            <Image source={ActivityTabIcon} style={{ height: 24, width: 24, opacity: 0.5 }} />
           ),
           tabBarOptions: {
             activeTintColor: colors.PRIMARY,
@@ -71,7 +74,7 @@ const switchNavigator = createSwitchNavigator(
           tabBarIcon: (
             <Image
               source={RecurringTabIcon}
-              style={{ height: 28, width: 28 }}
+              style={{ height: 24, width: 24, opacity: 0.5 }}
             />
           ),
           tabBarOptions: {
@@ -85,7 +88,7 @@ const switchNavigator = createSwitchNavigator(
         navigationOptions: {
           title: "Profile",
           tabBarIcon: (
-            <Image source={ProfileTabIcon} style={{ height: 28, width: 28 }} />
+            <Image source={ProfileTabIcon} style={{ height: 24, width: 24 }} />
           ),
           tabBarOptions: {
             activeTintColor: colors.PRIMARY,
