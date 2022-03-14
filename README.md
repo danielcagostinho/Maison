@@ -6,9 +6,8 @@ Maison is a housemate sharing app to split bills, add recurring bills, and simpl
 ![alt text](https://github.com/danielcagostinho/Maison/blob/master/demo/maison-demo-1.webp "Logo Title Text 1")
 
 ## Maison in Action
-
-[![alt text](https://github.com/danielcagostinho/Maison/blob/master/demo/maison-video-1.mp4.mov)]
-
+![alt text](https://github.com/danielcagostinho/Maison/blob/master/demo/NewBill.gif "New Bill")
+![alt text](https://github.com/danielcagostinho/Maison/blob/master/demo/SettleUp.gif "Settling up")
 ## Installation
 
 Use the package manager [pip](https://pip.pypa.io/en/stable/) to install foobar.
