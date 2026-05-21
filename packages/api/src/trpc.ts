@@ -29,17 +29,21 @@ export const protectedProcedure = t.procedure.use(async ({ ctx, next }) => {
     throw new TRPCError({ code: 'UNAUTHORIZED' });
   }
 
-  // First-touch provisioning via upsert — idempotent under concurrent
-  // requests, which happens on first sign-in when the client fires
-  // multiple queries in parallel. The caller is expected to sync
-  // email/name via userRouter.syncFromClerk shortly after.
+  // Upsert is idempotent under concurrent requests (the batched tRPC
+  // call on first sign-in fires queries in parallel) and self-heals
+  // stale profile data on every request when the caller supplies a
+  // fresh profile snapshot.
+  const { profile } = ctx.auth;
   const user = await ctx.prisma.user.upsert({
     where: { clerkId: ctx.auth.clerkUserId },
-    update: {},
+    update: profile
+      ? { email: profile.email, name: profile.name, avatarUrl: profile.avatarUrl }
+      : {},
     create: {
       clerkId: ctx.auth.clerkUserId,
-      email: `${ctx.auth.clerkUserId}@pending.maison`,
-      name: 'New User',
+      email: profile?.email ?? `${ctx.auth.clerkUserId}@pending.maison`,
+      name: profile?.name ?? 'New User',
+      avatarUrl: profile?.avatarUrl,
     },
   });
 
