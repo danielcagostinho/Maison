@@ -26,6 +26,7 @@ model User {
   splitsOwed       BillSplit[]
   paymentsSent     Payment[]         @relation("PaymentSender")
   paymentsReceived Payment[]         @relation("PaymentReceiver")
+  invitesCreated   Invite[]
 }
 
 // A shared household — the unit of grouping. Bills and payments are
@@ -40,6 +41,7 @@ model Household {
   members  HouseholdMember[]
   bills    Bill[]
   payments Payment[]
+  invites  Invite[]
 }
 
 enum HouseholdRole {
@@ -109,6 +111,23 @@ model BillSplit {
 
   @@unique([billId, userId])
   @@index([userId])
+}
+
+// A shareable code that grants membership to a household. Multi-use:
+// anyone with the code can join until revokedAt is set. The OWNER of
+// the household is the one allowed to create them.
+model Invite {
+  id          String    @id @default(cuid())
+  householdId String
+  code        String    @unique
+  createdById String
+  createdAt   DateTime  @default(now())
+  revokedAt   DateTime?
+
+  household Household @relation(fields: [householdId], references: [id], onDelete: Cascade)
+  createdBy User      @relation(fields: [createdById], references: [id])
+
+  @@index([householdId])
 }
 
 // A settle-up transfer between two members of a household. Net balances

@@ -7,6 +7,7 @@ import { use, useState } from 'react';
 
 import { trpc } from '@/trpc/client';
 
+import { InviteDialog } from './invite-dialog';
 import { NewBillDialog } from './new-bill-dialog';
 import { SettleUpDialog } from './settle-up-dialog';
 
@@ -25,6 +26,7 @@ export default function HouseholdDetailPage({ params }: PageProps) {
 
   const [newBillOpen, setNewBillOpen] = useState(false);
   const [settleTransfer, setSettleTransfer] = useState<Transfer | null>(null);
+  const [inviteOpen, setInviteOpen] = useState(false);
 
   const currency = household?.currency ?? 'CAD';
   const myNetCents = settlement?.balances.find((b) => b.user.id === me?.id)?.netCents ?? 0;
@@ -146,9 +148,18 @@ export default function HouseholdDetailPage({ params }: PageProps) {
         {/* Members */}
         {household && (
           <div className="flex flex-col gap-3">
-            <h2 className="text-[13px] font-bold uppercase tracking-[0.16em] text-text-muted">
-              Housemates
-            </h2>
+            <div className="flex items-baseline justify-between">
+              <h2 className="text-[13px] font-bold uppercase tracking-[0.16em] text-text-muted">
+                Housemates
+              </h2>
+              <button
+                type="button"
+                onClick={() => setInviteOpen(true)}
+                className="text-[14px] font-bold text-primary transition-colors hover:opacity-80"
+              >
+                + Invite
+              </button>
+            </div>
             <ul className="flex flex-wrap gap-2">
               {household.members.map((m) => {
                 const balance =
@@ -291,6 +302,17 @@ export default function HouseholdDetailPage({ params }: PageProps) {
           transfer={settleTransfer}
           currentUserId={me.id}
           onClose={() => setSettleTransfer(null)}
+        />
+      ) : null}
+
+      {inviteOpen && household && me ? (
+        <InviteDialog
+          householdId={household.id}
+          householdName={household.name}
+          isOwner={
+            household.members.find((m) => m.userId === me.id)?.role === 'OWNER'
+          }
+          onClose={() => setInviteOpen(false)}
         />
       ) : null}
     </main>
