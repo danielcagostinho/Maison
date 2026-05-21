@@ -1,10 +1,130 @@
 @import "tailwindcss";
 
-/* Design tokens live here; the /frontend-design pass will replace these
-   with the polished palette + typography. */
+/* ────────────────────────────────────────────────────────────────
+   Maison design tokens.
+
+   Aesthetic: a warm household ledger. Linen paper, ink, oxblood
+   stamp. Editorial typography. Tokens are flat values so they
+   translate cleanly to NativeWind in the mobile app.
+   ──────────────────────────────────────────────────────────────── */
 @theme {
-  --font-sans: ui-sans-serif, system-ui, sans-serif;
+  /* Surfaces — warm linen, not white. */
+  --color-paper: #f4ecdb;
+  --color-paper-soft: #faf4e6;
+  --color-paper-deep: #ebe1cb;
+
+  /* Ink — slightly warm near-black. */
+  --color-ink: #1a1814;
+  --color-ink-2: #3a342b;
+  --color-ink-3: #5c544a;
+  --color-ink-4: #847b6e;
+  --color-ink-5: #b5ab98;
+
+  /* The stamp. */
+  --color-stamp: #a23a2c;
+  --color-stamp-hover: #b14536;
+  --color-stamp-soft: #d5a59a;
+
+  /* Ledger semantics. */
+  --color-credit: #4f6b4d;
+  --color-debit: #8b3a1a;
+
+  /* Rules — like ruled paper. */
+  --color-rule: #c9bca0;
+  --color-rule-soft: #ddd1b5;
+
+  /* Typography. The actual font definitions arrive via next/font
+     (see layout.tsx) and land as CSS vars on <html>. */
+  --font-display: var(--font-fraunces), ui-serif, Georgia, serif;
+  --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, "SF Mono", monospace;
+
+  /* Letterspacing for small caps + display. */
+  --tracking-wider-2: 0.18em;
+  --tracking-widest-2: 0.32em;
+
+  /* Restrained radii — this is a ledger, not a pill. */
+  --radius-xs: 1px;
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 6px;
 }
 
+/* ────────────────────────────────────────────────────────────────
+   Base styles. The paper grain is a fixed SVG noise overlay using
+   feTurbulence — soft, multiply-blended, no perf hit.
+   ──────────────────────────────────────────────────────────────── */
 html, body { height: 100%; }
-body { font-family: var(--font-sans); }
+
+body {
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-feature-settings: "ss01", "cv11";
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 100;
+  opacity: 0.06;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 220 220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.1  0 0 0 0 0.094  0 0 0 0 0.08  0 0 0 0.9 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+}
+
+/* Selection — oxblood stamp on linen. */
+::selection {
+  background-color: var(--color-stamp);
+  color: var(--color-paper-soft);
+}
+
+/* Tabular numbers wherever we set font-mono — for monetary alignment. */
+.font-mono, code, kbd, samp, pre {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ────────────────────────────────────────────────────────────────
+   Keyframes — page-load choreography.
+   ──────────────────────────────────────────────────────────────── */
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translate3d(0, 8px, 0); }
+  to   { opacity: 1; transform: translate3d(0, 0,   0); }
+}
+@keyframes fade-in {
+  from { opacity: 0; } to { opacity: 1; }
+}
+@keyframes stamp-in {
+  0%   { opacity: 0; transform: scale(0.94) rotate(-1.5deg); }
+  60%  { opacity: 1; transform: scale(1.02) rotate(-0.4deg); }
+  100% { opacity: 1; transform: scale(1) rotate(-0.6deg); }
+}
+@keyframes rule-draw {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+.reveal { opacity: 0; animation: fade-in-up 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) forwards; }
+.reveal-fade { opacity: 0; animation: fade-in 0.9s ease forwards; }
+.reveal-rule { transform: scaleX(0); transform-origin: left; animation: rule-draw 0.9s cubic-bezier(0.7, 0, 0.3, 1) forwards; }
+.reveal-stamp { opacity: 0; animation: stamp-in 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) forwards; }
+
+/* ────────────────────────────────────────────────────────────────
+   Small typographic helpers that show up in several places.
+   ──────────────────────────────────────────────────────────────── */
+.smallcaps {
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  letter-spacing: var(--tracking-widest-2);
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.rule {
+  display: block;
+  height: 1px;
+  background-color: var(--color-rule);
+}
