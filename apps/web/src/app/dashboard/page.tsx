@@ -13,65 +13,52 @@ export default function DashboardPage() {
 
   const [dialogOpen, setDialogOpen] = useState(false);
 
-  const today = new Intl.DateTimeFormat('en-GB', {
-    weekday: 'long',
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-  }).format(new Date());
+  const firstName = me?.name?.split(' ')[0];
 
   return (
-    <main className="relative min-h-screen text-ink">
-      {/* Vertical hairline binding, matched to landing. */}
-      <div
-        aria-hidden
-        className="pointer-events-none fixed left-[max(2rem,calc(50%-32rem))] top-0 bottom-0 hidden w-px bg-rule/40 md:block"
-      />
-
-      <div className="mx-auto flex min-h-screen max-w-5xl flex-col px-6 py-8 md:px-10 md:py-10">
-        {/* ── Masthead ─────────────────────────────────────────── */}
-        <header className="reveal-fade">
-          <div className="flex items-baseline justify-between gap-4">
-            <h1 className="font-display text-3xl font-medium tracking-tight md:text-4xl">
-              Maison<span className="text-stamp">.</span>
-            </h1>
+    <main className="min-h-screen bg-white">
+      {/* ─── Purple header ────────────────────────────────────── */}
+      <header className="reveal-fade bg-primary text-white">
+        <div className="mx-auto max-w-3xl px-5 py-6 sm:px-8 sm:py-8">
+          <div className="flex items-center justify-between">
+            <p className="text-[13px] font-bold uppercase tracking-[0.16em] text-white/60">
+              Maison
+            </p>
             <UserButton
               appearance={{ elements: { avatarBox: 'h-9 w-9 rounded-full' } }}
             />
           </div>
-          <div className="reveal-rule mt-3 h-px origin-left bg-rule" />
-          <div className="mt-2.5 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 smallcaps text-ink-4">
-            <span>
-              {me?.name ?? '—'}
-              <span aria-hidden className="mx-2 text-ink-5">
-                ·
-              </span>
-              <span className="text-ink-4/80">{me?.email ?? ''}</span>
-            </span>
-            <span className="font-mono">{today}</span>
+
+          <div className="mt-6 sm:mt-8">
+            <h1 className="text-[28px] font-bold leading-tight sm:text-[34px]">
+              {firstName ? `Hey, ${firstName}.` : 'Hey there.'}
+            </h1>
+            {households && households.length > 0 ? (
+              <p className="mt-1 text-[15px] text-white/70">
+                Welcome back. Everything&apos;s up to date.
+              </p>
+            ) : (
+              <p className="mt-1 text-[15px] text-white/70">
+                Let&apos;s get your first house set up.
+              </p>
+            )}
           </div>
-        </header>
+        </div>
+      </header>
 
-        {/* ── Body ─────────────────────────────────────────────── */}
-        <section className="flex flex-1 flex-col py-14 md:py-20">
-          {isLoading ? (
-            <LoadingState />
-          ) : households && households.length > 0 ? (
-            <HouseholdList
-              households={households}
-              onCreateClick={() => setDialogOpen(true)}
-            />
-          ) : (
-            <EmptyState onCreateClick={() => setDialogOpen(true)} />
-          )}
-        </section>
-
-        {/* ── Footer / colophon ────────────────────────────────── */}
-        <footer className="reveal-fade flex items-end justify-between gap-4 border-t border-rule/60 pt-6">
-          <p className="smallcaps text-ink-4">Household ledger</p>
-          <p className="smallcaps font-mono text-ink-4">v0.1</p>
-        </footer>
-      </div>
+      {/* ─── White body ──────────────────────────────────────── */}
+      <section className="mx-auto max-w-3xl px-5 py-8 sm:px-8 sm:py-10">
+        {isLoading ? (
+          <p className="text-[15px] text-text-muted">Loading…</p>
+        ) : households && households.length > 0 ? (
+          <HouseholdGrid
+            households={households}
+            onCreateClick={() => setDialogOpen(true)}
+          />
+        ) : (
+          <EmptyState onCreateClick={() => setDialogOpen(true)} />
+        )}
+      </section>
 
       {dialogOpen ? (
         <CreateHouseholdDialog onClose={() => setDialogOpen(false)} />
@@ -80,61 +67,31 @@ export default function DashboardPage() {
   );
 }
 
-function LoadingState() {
-  return (
-    <div className="reveal-fade">
-      <p className="smallcaps text-ink-4">Loading the ledger…</p>
-    </div>
-  );
-}
-
 function EmptyState({ onCreateClick }: { onCreateClick: () => void }) {
   return (
-    <div className="grid gap-10 md:grid-cols-12">
-      <div className="reveal md:col-span-7">
-        <p className="smallcaps text-ink-4">No house yet</p>
-        <h2 className="mt-4 font-display text-5xl font-medium leading-tight tracking-tight md:text-6xl">
-          It&apos;s quiet
-          <br />
-          in here.
-        </h2>
-        <p
-          className="reveal mt-6 max-w-md font-display text-xl italic leading-snug text-ink-2"
-          style={{ animationDelay: '0.15s' }}
-        >
-          Open a house to start logging rent, groceries, and the rest. Invite
-          your housemates after.
-        </p>
+    <div className="reveal flex flex-col items-center py-10 text-center sm:py-16">
+      <div className="flex h-20 w-20 items-center justify-center rounded-full bg-primary-faint">
+        <HouseIcon className="h-10 w-10 text-primary" />
       </div>
-
-      <div
-        className="reveal flex flex-col gap-4 md:col-span-5 md:items-end md:justify-end"
-        style={{ animationDelay: '0.3s' }}
+      <h2 className="mt-6 max-w-sm text-[22px] font-bold leading-snug text-text">
+        Open your first house to start splitting.
+      </h2>
+      <p className="mt-2 max-w-sm text-[15px] text-text-muted">
+        Add the address or a nickname, then invite your housemates. Bills
+        come next.
+      </p>
+      <button
+        type="button"
+        onClick={onCreateClick}
+        className="mt-7 flex h-[50px] items-center justify-center rounded-button bg-primary px-7 text-[17px] font-bold tracking-[-0.41px] text-white transition-all hover:brightness-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
       >
-        <button
-          type="button"
-          onClick={onCreateClick}
-          className="group inline-flex items-center gap-3 rounded-sm bg-stamp px-7 py-3.5 text-paper-soft transition-all hover:bg-stamp-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-stamp-soft focus-visible:ring-offset-2 focus-visible:ring-offset-paper"
-        >
-          <span className="font-mono text-[0.7rem] uppercase tracking-[0.32em]">
-            Open a house
-          </span>
-          <span
-            aria-hidden
-            className="text-base leading-none transition-transform group-hover:translate-x-0.5"
-          >
-            →
-          </span>
-        </button>
-        <p className="font-mono text-[0.65rem] uppercase tracking-[0.3em] text-ink-4">
-          Takes about ten seconds
-        </p>
-      </div>
+        Open a house
+      </button>
     </div>
   );
 }
 
-function HouseholdList({
+function HouseholdGrid({
   households,
   onCreateClick,
 }: {
@@ -142,80 +99,67 @@ function HouseholdList({
   onCreateClick: () => void;
 }) {
   return (
-    <div>
-      <div className="reveal flex items-baseline justify-between gap-4">
-        <p className="smallcaps text-ink-4">Your houses</p>
+    <div className="reveal">
+      <div className="flex items-baseline justify-between">
+        <h2 className="text-[13px] font-bold uppercase tracking-[0.16em] text-text-muted">
+          Your houses
+        </h2>
         <button
           type="button"
           onClick={onCreateClick}
-          className="smallcaps text-ink-3 underline decoration-rule decoration-dotted underline-offset-4 transition-colors hover:text-stamp"
+          className="text-[14px] font-bold text-primary transition-colors hover:opacity-80"
         >
-          + Open another
+          + New
         </button>
       </div>
 
-      <ul className="reveal mt-6 divide-y divide-rule/60 border-y border-rule/60">
+      <ul className="mt-4 grid gap-3 sm:grid-cols-2">
         {households.map((h, i) => (
           <li
             key={h.id}
-            className="reveal group flex items-baseline justify-between gap-6 py-5"
-            style={{ animationDelay: `${0.15 + i * 0.06}s` }}
+            className="reveal group cursor-pointer rounded-card border border-line bg-primary-faint p-5 transition-all hover:border-primary-soft hover:shadow-sm"
+            style={{ animationDelay: `${0.1 + i * 0.05}s` }}
           >
-            <div className="min-w-0">
-              <p className="font-display text-2xl font-medium tracking-tight transition-colors group-hover:text-stamp">
-                {h.name}
-              </p>
-              <p className="mt-1 font-mono text-xs uppercase tracking-[0.25em] text-ink-4">
+            <div className="flex items-center justify-between">
+              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white">
+                <HouseIcon className="h-5 w-5 text-primary" />
+              </div>
+              <span className="rounded-full bg-white px-2.5 py-0.5 text-[11px] font-bold tracking-wider text-primary-text-soft">
                 {h.currency}
-                <span aria-hidden className="mx-2 text-ink-5">
-                  ·
-                </span>
-                opened {formatOpened(h.createdAt)}
-              </p>
+              </span>
             </div>
-            <span
-              aria-hidden
-              className="font-mono text-[0.7rem] uppercase tracking-[0.32em] text-ink-4 transition-all group-hover:translate-x-0.5 group-hover:text-stamp"
-            >
-              Open →
-            </span>
+            <p className="mt-4 text-[18px] font-bold text-text">{h.name}</p>
+            <p className="mt-1 text-[13px] text-text-muted">
+              Opened {formatOpened(h.createdAt)}
+            </p>
           </li>
         ))}
       </ul>
-
-      {/* Stub for what's coming. */}
-      <div className="reveal mt-14 grid gap-8 md:grid-cols-2" style={{ animationDelay: '0.4s' }}>
-        <ComingSoonCard
-          label="Balances"
-          line="Net positions across the house, rebalanced after every receipt."
-        />
-        <ComingSoonCard
-          label="Recent activity"
-          line="Bills logged, settlements paid, splits adjusted — in order."
-        />
-      </div>
     </div>
   );
 }
 
-function ComingSoonCard({ label, line }: { label: string; line: string }) {
+function HouseIcon({ className }: { className?: string }) {
   return (
-    <div className="border border-rule/70 bg-paper-soft/60 p-5">
-      <div className="flex items-baseline justify-between">
-        <p className="smallcaps text-ink-4">{label}</p>
-        <p className="font-mono text-[0.6rem] uppercase tracking-[0.32em] text-ink-5">
-          Soon
-        </p>
-      </div>
-      <p className="mt-3 font-display text-lg italic leading-snug text-ink-3">
-        {line}
-      </p>
-    </div>
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M3 10.5L12 3l9 7.5" />
+      <path d="M5 9.5V20a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V9.5" />
+      <path d="M10 21v-6h4v6" />
+    </svg>
   );
 }
 
 function formatOpened(d: Date) {
-  return new Intl.DateTimeFormat('en-GB', {
+  return new Intl.DateTimeFormat('en-CA', {
     day: 'numeric',
     month: 'short',
     year: 'numeric',

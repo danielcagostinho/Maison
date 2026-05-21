@@ -17,7 +17,6 @@ export function CreateHouseholdDialog({ onClose }: { onClose: () => void }) {
     },
   });
 
-  // Autofocus the name input on open, and close on Escape.
   useEffect(() => {
     inputRef.current?.focus();
     function onKey(e: KeyboardEvent) {
@@ -35,45 +34,37 @@ export function CreateHouseholdDialog({ onClose }: { onClose: () => void }) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center px-6"
+      className="fixed inset-0 z-50 flex items-end justify-center px-4 pb-4 sm:items-center sm:pb-0"
       role="dialog"
       aria-modal="true"
       aria-labelledby="create-household-title"
     >
-      {/* Backdrop — an ink wash, not a solid black. */}
       <button
         type="button"
         aria-label="Close"
         onClick={() => !createHousehold.isPending && onClose()}
-        className="reveal-fade absolute inset-0 bg-ink/40 backdrop-blur-[2px]"
+        className="reveal-fade absolute inset-0 bg-text/40"
       />
 
       <form
         onSubmit={handleSubmit}
-        className="reveal relative w-full max-w-md border border-rule bg-paper-soft p-8 shadow-[0_30px_60px_-30px_rgba(26,24,20,0.35)]"
-        style={{ animationDuration: '0.45s' }}
+        className="reveal-scale relative w-full max-w-md rounded-card bg-white p-6 shadow-2xl sm:p-7"
       >
-        {/* Small ledger header at the top of the card. */}
-        <div className="flex items-baseline justify-between">
-          <p className="smallcaps text-ink-4">Open a house</p>
-          <p className="font-mono text-[0.65rem] uppercase tracking-[0.3em] text-ink-5">
-            Entry n° 01
-          </p>
-        </div>
-
         <h2
           id="create-household-title"
-          className="mt-4 font-display text-3xl font-medium leading-tight tracking-tight"
+          className="text-[22px] font-bold leading-snug text-text"
         >
-          What do you call it?
+          Open a house
         </h2>
-        <p className="mt-2 font-display italic text-ink-2">
-          The address works. So does a nickname.
+        <p className="mt-1 text-[15px] text-text-muted">
+          Give it a name. The address works, so does a nickname.
         </p>
 
-        <div className="mt-7 space-y-5">
+        <div className="mt-6 space-y-4">
           <label className="block">
-            <span className="smallcaps mb-2 block text-ink-3">House name</span>
+            <span className="mb-1.5 block text-[13px] font-bold text-text">
+              House name
+            </span>
             <input
               ref={inputRef}
               type="text"
@@ -82,16 +73,22 @@ export function CreateHouseholdDialog({ onClose }: { onClose: () => void }) {
               placeholder="e.g. 123 Main St"
               maxLength={80}
               required
-              className="w-full border-b border-ink/60 bg-transparent pb-2 font-display text-2xl tracking-tight text-ink placeholder:text-ink-5/70 focus:border-stamp focus:outline-none"
+              className="w-full rounded-button border border-line bg-primary-faint px-4 py-3 text-[16px] text-text placeholder:text-primary-text-soft focus:border-primary focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary/20"
             />
           </label>
 
           <label className="block">
-            <span className="smallcaps mb-2 block text-ink-3">Currency</span>
+            <span className="mb-1.5 block text-[13px] font-bold text-text">
+              Currency
+            </span>
             <select
               value={currency}
               onChange={(e) => setCurrency(e.target.value)}
-              className="w-full border-b border-ink/60 bg-transparent pb-2 font-mono text-base text-ink focus:border-stamp focus:outline-none"
+              className="w-full appearance-none rounded-button border border-line bg-primary-faint bg-[length:16px] bg-[right_16px_center] bg-no-repeat px-4 py-3 pr-10 text-[16px] text-text focus:border-primary focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary/20"
+              style={{
+                backgroundImage:
+                  "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%234900a7' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>\")",
+              }}
             >
               <option value="CAD">CAD — Canadian Dollar</option>
               <option value="USD">USD — US Dollar</option>
@@ -102,35 +99,26 @@ export function CreateHouseholdDialog({ onClose }: { onClose: () => void }) {
         </div>
 
         {createHousehold.error ? (
-          <p className="mt-5 font-display italic text-debit">
+          <p className="mt-4 text-[14px] text-fail">
             {createHousehold.error.message}
           </p>
         ) : null}
 
-        <div className="mt-9 flex items-center justify-between gap-4">
+        <div className="mt-7 flex items-center justify-end gap-2">
           <button
             type="button"
             onClick={onClose}
             disabled={createHousehold.isPending}
-            className="smallcaps text-ink-3 underline decoration-rule decoration-dotted underline-offset-4 transition-colors hover:text-stamp disabled:opacity-50"
+            className="h-[44px] rounded-button px-5 text-[15px] font-bold text-text-muted transition-colors hover:text-text disabled:opacity-50"
           >
             Cancel
           </button>
-
           <button
             type="submit"
             disabled={!name.trim() || createHousehold.isPending}
-            className="group inline-flex items-center gap-3 rounded-sm bg-stamp px-6 py-3 text-paper-soft transition-all hover:bg-stamp-hover disabled:cursor-not-allowed disabled:opacity-50"
+            className="h-[44px] rounded-button bg-primary px-6 text-[15px] font-bold tracking-[-0.3px] text-white transition-all hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-50"
           >
-            <span className="font-mono text-[0.7rem] uppercase tracking-[0.32em]">
-              {createHousehold.isPending ? 'Opening…' : 'Open house'}
-            </span>
-            <span
-              aria-hidden
-              className="text-base leading-none transition-transform group-hover:translate-x-0.5"
-            >
-              →
-            </span>
+            {createHousehold.isPending ? 'Opening…' : 'Open house'}
           </button>
         </div>
       </form>

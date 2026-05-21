@@ -2,34 +2,25 @@ import './globals.css';
 
 import { ClerkProvider } from '@clerk/nextjs';
 import type { Metadata } from 'next';
-import { Fraunces, Geist, Geist_Mono } from 'next/font/google';
+import localFont from 'next/font/local';
 
 import { TRPCProvider } from '@/trpc/Provider';
 
-const fraunces = Fraunces({
-  subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700', '900'],
-  style: ['normal', 'italic'],
-  variable: '--font-fraunces',
-  display: 'swap',
-});
-
-const geist = Geist({
-  subsets: ['latin'],
-  variable: '--font-geist',
-  display: 'swap',
-});
-
-const geistMono = Geist_Mono({
-  subsets: ['latin'],
-  variable: '--font-geist-mono',
+// Product Sans, pulled verbatim from the legacy Maison app.
+const productSans = localFont({
+  src: [
+    { path: '../fonts/ProductSansRegular.ttf', weight: '400', style: 'normal' },
+    { path: '../fonts/ProductSansItalic.ttf', weight: '400', style: 'italic' },
+    { path: '../fonts/ProductSansBold.ttf', weight: '700', style: 'normal' },
+    { path: '../fonts/ProductSansBoldItalic.ttf', weight: '700', style: 'italic' },
+  ],
+  variable: '--font-product-sans',
   display: 'swap',
 });
 
 export const metadata: Metadata = {
-  title: 'Maison — A household ledger',
-  description:
-    'Roommate bill splitting that feels like writing it down on the fridge. Split bills, settle up, stay friends.',
+  title: 'Maison — Housemate Sharing Made Easier',
+  description: 'Split bills, settle up, stay friends.',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -37,18 +28,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <ClerkProvider
       appearance={{
         variables: {
-          colorPrimary: '#a23a2c',
-          colorBackground: '#faf6ee',
-          colorText: '#1a1814',
-          fontFamily: 'var(--font-geist), ui-sans-serif, system-ui, sans-serif',
-          borderRadius: '0.25rem',
+          colorPrimary: '#4900a7',
+          colorBackground: '#ffffff',
+          colorText: '#1f1135',
+          fontFamily: 'var(--font-product-sans), ui-sans-serif, system-ui, sans-serif',
+          borderRadius: '12px',
         },
       }}
     >
-      <html
-        lang="en"
-        className={`${fraunces.variable} ${geist.variable} ${geistMono.variable}`}
-      >
+      <html lang="en" className={productSans.variable}>
         <body>
           <TRPCProvider>{children}</TRPCProvider>
         </body>
