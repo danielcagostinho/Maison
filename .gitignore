@@ -33,6 +33,9 @@ pnpm-debug.log*
 *.mobileprovision
 *.orig.*
 
+# Deploy
+.vercel/
+
 # OS
 .DS_Store
 Thumbs.db
@@ -44,3 +47,5 @@ Thumbs.db
 !.vscode/settings.json
 
 # Legacy carve-out — its own gitignore applies inside
+.vercel
+.env*.local

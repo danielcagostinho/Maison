@@ -9,10 +9,10 @@
   },
   "scripts": {
     "generate": "prisma generate",
-    "migrate": "prisma migrate dev",
-    "migrate:deploy": "prisma migrate deploy",
-    "studio": "prisma studio",
-    "seed": "tsx prisma/seed.ts",
+    "migrate": "dotenv -e ../../.env.local -- prisma migrate dev",
+    "migrate:deploy": "dotenv -e ../../.env.local -- prisma migrate deploy",
+    "studio": "dotenv -e ../../.env.local -- prisma studio",
+    "seed": "dotenv -e ../../.env.local -- tsx prisma/seed.ts",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
