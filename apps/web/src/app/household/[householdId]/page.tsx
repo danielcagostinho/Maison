@@ -31,7 +31,7 @@ export default function HouseholdDetailPage({ params }: PageProps) {
     <main className="min-h-screen bg-white">
       {/* ── Purple masthead ──────────────────────────────────── */}
       <header className="bg-primary text-white">
-        <div className="mx-auto max-w-3xl px-5 py-6 sm:px-8 sm:py-8">
+        <div className="mx-auto flex max-w-3xl flex-col gap-7 px-5 py-6 sm:px-8 sm:py-8">
           <div className="flex items-center justify-between">
             <Link
               href="/dashboard"
@@ -45,7 +45,7 @@ export default function HouseholdDetailPage({ params }: PageProps) {
             />
           </div>
 
-          <div className="mt-7 flex flex-col gap-1">
+          <div className="flex flex-col gap-1">
             <h1 className="text-[28px] font-bold leading-tight sm:text-[34px]">
               {household?.name ?? '…'}
             </h1>
@@ -63,7 +63,7 @@ export default function HouseholdDetailPage({ params }: PageProps) {
             </p>
           </div>
 
-          <div className="mt-7 flex flex-col gap-1">
+          <div className="flex flex-col gap-1">
             <p className="text-[12px] font-bold uppercase tracking-[0.2em] text-white/60">
               {balanceLabel}
             </p>
@@ -80,11 +80,11 @@ export default function HouseholdDetailPage({ params }: PageProps) {
       <section className="mx-auto flex max-w-3xl flex-col gap-12 px-5 py-8 sm:px-8 sm:py-10">
         {/* Suggested settle-up */}
         {settlement && settlement.transfers.length > 0 && (
-          <div>
+          <div className="flex flex-col gap-3">
             <h2 className="text-[13px] font-bold uppercase tracking-[0.16em] text-text-muted">
               Settle up
             </h2>
-            <ul className="mt-3 divide-y divide-line rounded-card border border-line bg-primary-faint/40">
+            <ul className="divide-y divide-line rounded-card border border-line bg-primary-faint/40">
               {settlement.transfers.map((t) => {
                 const from = settlement.balances.find((b) => b.user.id === t.fromUserId)?.user;
                 const to = settlement.balances.find((b) => b.user.id === t.toUserId)?.user;
@@ -114,11 +114,11 @@ export default function HouseholdDetailPage({ params }: PageProps) {
 
         {/* Members */}
         {household && (
-          <div>
+          <div className="flex flex-col gap-3">
             <h2 className="text-[13px] font-bold uppercase tracking-[0.16em] text-text-muted">
               Housemates
             </h2>
-            <ul className="mt-3 flex flex-wrap gap-2">
+            <ul className="flex flex-wrap gap-2">
               {household.members.map((m) => {
                 const balance =
                   settlement?.balances.find((b) => b.user.id === m.user.id)?.netCents ?? 0;
@@ -152,7 +152,7 @@ export default function HouseholdDetailPage({ params }: PageProps) {
         )}
 
         {/* Bills */}
-        <div>
+        <div className="flex flex-col gap-3">
           <div className="flex items-baseline justify-between">
             <h2 className="text-[13px] font-bold uppercase tracking-[0.16em] text-text-muted">
               Bills
@@ -167,7 +167,7 @@ export default function HouseholdDetailPage({ params }: PageProps) {
             </button>
           </div>
           {bills && bills.length > 0 ? (
-            <ul className="mt-3 divide-y divide-line rounded-card border border-line">
+            <ul className="divide-y divide-line rounded-card border border-line">
               {bills.map((b) => (
                 <li key={b.id} className="flex items-start justify-between gap-4 px-5 py-4">
                   <div className="flex min-w-0 flex-col gap-1">
@@ -196,17 +196,17 @@ export default function HouseholdDetailPage({ params }: PageProps) {
               ))}
             </ul>
           ) : (
-            <p className="mt-3 text-[14px] text-text-muted">No bills yet.</p>
+            <p className="text-[14px] text-text-muted">No bills yet.</p>
           )}
         </div>
 
         {/* Payments */}
-        <div>
+        <div className="flex flex-col gap-3">
           <h2 className="text-[13px] font-bold uppercase tracking-[0.16em] text-text-muted">
             Payments
           </h2>
           {payments && payments.length > 0 ? (
-            <ul className="mt-3 divide-y divide-line rounded-card border border-line">
+            <ul className="divide-y divide-line rounded-card border border-line">
               {payments.map((p) => (
                 <li key={p.id} className="flex items-start justify-between gap-4 px-5 py-4">
                   <div className="flex min-w-0 flex-col gap-1">
@@ -235,7 +235,7 @@ export default function HouseholdDetailPage({ params }: PageProps) {
               ))}
             </ul>
           ) : (
-            <p className="mt-3 text-[14px] text-text-muted">No payments yet.</p>
+            <p className="text-[14px] text-text-muted">No payments yet.</p>
           )}
         </div>
       </section>

@@ -18,9 +18,8 @@ export default function DashboardPage() {
 
   return (
     <main className="min-h-screen bg-white">
-      {/* ─── Purple header ────────────────────────────────────── */}
       <header className="reveal-fade bg-primary text-white">
-        <div className="mx-auto max-w-3xl px-5 py-6 sm:px-8 sm:py-8">
+        <div className="mx-auto flex max-w-3xl flex-col gap-6 px-5 py-6 sm:gap-8 sm:px-8 sm:py-8">
           <div className="flex items-center justify-between">
             <p className="text-[13px] font-bold uppercase tracking-[0.16em] text-white/60">
               Maison
@@ -30,24 +29,19 @@ export default function DashboardPage() {
             />
           </div>
 
-          <div className="mt-6 sm:mt-8">
+          <div className="flex flex-col gap-1">
             <h1 className="text-[28px] font-bold leading-tight sm:text-[34px]">
               {firstName ? `Hey, ${firstName}.` : 'Hey there.'}
             </h1>
-            {households && households.length > 0 ? (
-              <p className="mt-1 text-[15px] text-white/70">
-                Welcome back. Everything&apos;s up to date.
-              </p>
-            ) : (
-              <p className="mt-1 text-[15px] text-white/70">
-                Let&apos;s get your first house set up.
-              </p>
-            )}
+            <p className="text-[15px] text-white/70">
+              {households && households.length > 0
+                ? "Welcome back. Everything's up to date."
+                : "Let's get your first house set up."}
+            </p>
           </div>
         </div>
       </header>
 
-      {/* ─── White body ──────────────────────────────────────── */}
       <section className="mx-auto max-w-3xl px-5 py-8 sm:px-8 sm:py-10">
         {isLoading ? (
           <p className="text-[15px] text-text-muted">Loading…</p>
@@ -70,21 +64,23 @@ export default function DashboardPage() {
 
 function EmptyState({ onCreateClick }: { onCreateClick: () => void }) {
   return (
-    <div className="reveal flex flex-col items-center py-10 text-center sm:py-16">
+    <div className="reveal flex flex-col items-center gap-7 py-10 text-center sm:py-16">
       <div className="flex h-20 w-20 items-center justify-center rounded-full bg-primary-faint">
         <HouseIcon className="h-10 w-10 text-primary" />
       </div>
-      <h2 className="mt-6 max-w-sm text-[22px] font-bold leading-snug text-text">
-        Open your first house to start splitting.
-      </h2>
-      <p className="mt-2 max-w-sm text-[15px] text-text-muted">
-        Add the address or a nickname, then invite your housemates. Bills
-        come next.
-      </p>
+      <div className="flex max-w-sm flex-col items-center gap-2">
+        <h2 className="text-[22px] font-bold leading-snug text-text">
+          Open your first house to start splitting.
+        </h2>
+        <p className="text-[15px] text-text-muted">
+          Add the address or a nickname, then invite your housemates. Bills come
+          next.
+        </p>
+      </div>
       <button
         type="button"
         onClick={onCreateClick}
-        className="mt-7 flex h-[50px] items-center justify-center rounded-button bg-primary px-7 text-[17px] font-bold tracking-[-0.41px] text-white transition-all hover:brightness-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+        className="flex h-[50px] items-center justify-center rounded-button bg-primary px-7 text-[17px] font-bold tracking-[-0.41px] text-white transition-all hover:brightness-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
       >
         Open a house
       </button>
@@ -100,7 +96,7 @@ function HouseholdGrid({
   onCreateClick: () => void;
 }) {
   return (
-    <div className="reveal">
+    <div className="reveal flex flex-col gap-4">
       <div className="flex items-baseline justify-between">
         <h2 className="text-[13px] font-bold uppercase tracking-[0.16em] text-text-muted">
           Your houses
@@ -114,7 +110,7 @@ function HouseholdGrid({
         </button>
       </div>
 
-      <ul className="mt-4 grid gap-3 sm:grid-cols-2">
+      <ul className="grid gap-3 sm:grid-cols-2">
         {households.map((h, i) => (
           <li
             key={h.id}
@@ -123,7 +119,7 @@ function HouseholdGrid({
           >
             <Link
               href={`/household/${h.id}`}
-              className="group block rounded-card border border-line bg-primary-faint p-5 transition-all hover:border-primary-soft hover:shadow-sm"
+              className="group flex flex-col gap-4 rounded-card border border-line bg-primary-faint p-5 transition-all hover:border-primary-soft hover:shadow-sm"
             >
               <div className="flex items-center justify-between">
                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white">
@@ -133,10 +129,12 @@ function HouseholdGrid({
                   {h.currency}
                 </span>
               </div>
-              <p className="mt-4 text-[18px] font-bold text-text">{h.name}</p>
-              <p className="mt-1 text-[13px] text-text-muted">
-                Opened {formatOpened(h.createdAt)}
-              </p>
+              <div className="flex flex-col gap-1">
+                <p className="text-[18px] font-bold text-text">{h.name}</p>
+                <p className="text-[13px] text-text-muted">
+                  Opened {formatOpened(h.createdAt)}
+                </p>
+              </div>
             </Link>
           </li>
         ))}

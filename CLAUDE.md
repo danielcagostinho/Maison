@@ -122,21 +122,42 @@ holds React-Query / tRPC hook wrappers, not server handlers.
 
 ### Tailwind
 
-- **Never use `mt-*` / `mb-*` / `ml-*` / `mr-*` when `gap-*` on a parent
-  flex/grid achieves the same spacing.** Margin couples siblings; gap is
-  owned by the container.
+- **Never use margin or padding to space siblings.** Spacing between
+  siblings is *exclusively* the parent's job, via `gap-*` on a flex or
+  grid container. If different groups of siblings need different
+  spacing, **nest them in their own flex container** with its own gap —
+  don't reach for `mt-*` / `mb-*` / `ml-*` / `mr-*` on individual
+  children. Padding belongs to a box's *internal chrome* (the gap
+  between the box's edge and its own content), not as spacing between
+  separate elements.
 
   ```tsx
-  // ❌ Bad
+  // ❌ Bad — margin doing flex spacing
   <div>
     <h2>Title</h2>
     <p className="mt-2">Description</p>
+    <p className="mt-8">A different group, far below</p>
   </div>
 
-  // ✅ Good
+  // ❌ Also bad — padding doing flex spacing
+  <div>
+    <h2>Title</h2>
+    <p className="pt-2">Description</p>
+  </div>
+
+  // ✅ Good — single flex column, single gap
   <div className="flex flex-col gap-2">
     <h2>Title</h2>
     <p>Description</p>
+  </div>
+
+  // ✅ Good — nested containers when groups need different spacing
+  <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-2">
+      <h2>Title</h2>
+      <p>Description</p>
+    </div>
+    <p>A different group, far below</p>
   </div>
   ```
 
