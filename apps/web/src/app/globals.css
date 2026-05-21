@@ -1,0 +1,10 @@
+@import "tailwindcss";
+
+/* Design tokens live here; the /frontend-design pass will replace these
+   with the polished palette + typography. */
+@theme {
+  --font-sans: ui-sans-serif, system-ui, sans-serif;
+}
+
+html, body { height: 100%; }
+body { font-family: var(--font-sans); }
