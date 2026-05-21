@@ -189,31 +189,37 @@ export default function HouseholdDetailPage({ params }: PageProps) {
             </button>
           </div>
           {bills && bills.length > 0 ? (
-            <ul className="divide-y divide-line rounded-card border border-line">
+            <ul className="divide-y divide-line overflow-hidden rounded-card border border-line">
               {bills.map((b) => (
-                <li key={b.id} className="flex items-start justify-between gap-4 px-5 py-4">
-                  <div className="flex min-w-0 flex-col gap-1">
-                    <p className="text-[16px] font-bold text-text">{b.title}</p>
-                    <p className="text-[13px] text-text-muted">
-                      Paid by <span className="font-bold">{nameFor(b.payerId, b.payer.name)}</span>
-                      <span aria-hidden className="mx-1.5 text-text-muted/50">·</span>
-                      {new Intl.DateTimeFormat('en-CA', {
-                        day: 'numeric',
-                        month: 'short',
-                      }).format(new Date(b.occurredAt))}
-                      {b.recurrence !== 'NONE' && (
-                        <>
-                          <span aria-hidden className="mx-1.5 text-text-muted/50">·</span>
-                          <span className="font-bold uppercase tracking-wider text-primary-text-soft">
-                            {b.recurrence.toLowerCase()}
-                          </span>
-                        </>
-                      )}
-                    </p>
-                  </div>
-                  <span className="shrink-0 text-[16px] font-bold tabular-nums text-text">
-                    {formatMoney(b.amountCents, currency)}
-                  </span>
+                <li key={b.id}>
+                  <Link
+                    href={`/household/${householdId}/bill/${b.id}`}
+                    className="flex items-start justify-between gap-4 px-5 py-4 transition-colors hover:bg-primary-faint"
+                  >
+                    <div className="flex min-w-0 flex-col gap-1">
+                      <p className="text-[16px] font-bold text-text">{b.title}</p>
+                      <p className="text-[13px] text-text-muted">
+                        Paid by{' '}
+                        <span className="font-bold">{nameFor(b.payerId, b.payer.name)}</span>
+                        <span aria-hidden className="mx-1.5 text-text-muted/50">·</span>
+                        {new Intl.DateTimeFormat('en-CA', {
+                          day: 'numeric',
+                          month: 'short',
+                        }).format(new Date(b.occurredAt))}
+                        {b.recurrence !== 'NONE' && (
+                          <>
+                            <span aria-hidden className="mx-1.5 text-text-muted/50">·</span>
+                            <span className="font-bold uppercase tracking-wider text-primary-text-soft">
+                              {b.recurrence.toLowerCase()}
+                            </span>
+                          </>
+                        )}
+                      </p>
+                    </div>
+                    <span className="shrink-0 text-[16px] font-bold tabular-nums text-text">
+                      {formatMoney(b.amountCents, currency)}
+                    </span>
+                  </Link>
                 </li>
               ))}
             </ul>

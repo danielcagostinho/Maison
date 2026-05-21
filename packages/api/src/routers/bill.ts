@@ -35,4 +35,19 @@ export const billRouter = router({
       include: { splits: true },
     }),
   ),
+
+  delete: householdProcedure
+    .input(z.object({ billId: z.string().min(1) }))
+    .mutation(async ({ ctx, input }) => {
+      // findFirst+delete guards against deleting a bill that belongs to a
+      // different household — the householdProcedure already verified
+      // membership, but the input billId is client-supplied.
+      const bill = await ctx.prisma.bill.findFirst({
+        where: { id: input.billId, householdId: input.householdId },
+        select: { id: true },
+      });
+      if (!bill) throw new Error('Bill not found in this household');
+      await ctx.prisma.bill.delete({ where: { id: bill.id } });
+      return { id: bill.id };
+    }),
 });
