@@ -15,6 +15,7 @@
     "@maison/db": "workspace:*",
     "@maison/shared": "workspace:*",
     "@tanstack/react-query": "^5.62.11",
+    "canvas-confetti": "^1.9.3",
     "@trpc/client": "^11.0.0-rc.660",
     "@trpc/react-query": "^11.0.0-rc.660",
     "@trpc/server": "^11.0.0-rc.660",
@@ -26,6 +27,7 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.0.0",
+    "@types/canvas-confetti": "^1.9.0",
     "@types/node": "^22.10.0",
     "@types/react": "^19.0.2",
     "@types/react-dom": "^19.0.2",
