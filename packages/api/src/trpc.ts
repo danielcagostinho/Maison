@@ -2,7 +2,7 @@ import { initTRPC, TRPCError } from '@trpc/server';
 import superjson from 'superjson';
 import { z } from 'zod';
 
-import type { Context } from './context.js';
+import type { Context } from './context';
 
 const t = initTRPC.context<Context>().create({
   transformer: superjson,
@@ -29,22 +29,19 @@ export const protectedProcedure = t.procedure.use(async ({ ctx, next }) => {
     throw new TRPCError({ code: 'UNAUTHORIZED' });
   }
 
-  let user = await ctx.prisma.user.findUnique({
+  // First-touch provisioning via upsert — idempotent under concurrent
+  // requests, which happens on first sign-in when the client fires
+  // multiple queries in parallel. The caller is expected to sync
+  // email/name via userRouter.syncFromClerk shortly after.
+  const user = await ctx.prisma.user.upsert({
     where: { clerkId: ctx.auth.clerkUserId },
+    update: {},
+    create: {
+      clerkId: ctx.auth.clerkUserId,
+      email: `${ctx.auth.clerkUserId}@pending.maison`,
+      name: 'New User',
+    },
   });
-
-  // First-touch provisioning. Caller is expected to have already synced
-  // email/name via the userRouter.syncFromClerk mutation, but we tolerate
-  // bare auth here so reads don't 500 on a brand-new session.
-  if (!user) {
-    user = await ctx.prisma.user.create({
-      data: {
-        clerkId: ctx.auth.clerkUserId,
-        email: `${ctx.auth.clerkUserId}@pending.maison`,
-        name: 'New User',
-      },
-    });
-  }
 
   return next({ ctx: { ...ctx, user } });
 });

@@ -1,6 +1,6 @@
 import { CreatePaymentInput } from '@maison/shared';
 
-import { householdProcedure, router } from '../trpc.js';
+import { householdProcedure, router } from '../trpc';
 
 export const paymentRouter = router({
   list: householdProcedure.query(({ ctx, input }) =>

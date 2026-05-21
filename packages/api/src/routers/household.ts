@@ -1,6 +1,6 @@
 import { CreateHouseholdInput } from '@maison/shared';
 
-import { householdProcedure, protectedProcedure, router } from '../trpc.js';
+import { householdProcedure, protectedProcedure, router } from '../trpc';
 
 export const householdRouter = router({
   // All households the current user belongs to.

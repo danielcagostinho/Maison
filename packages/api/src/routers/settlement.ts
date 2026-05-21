@@ -1,6 +1,6 @@
 import { computeBalances, suggestSettlements } from '@maison/shared';
 
-import { householdProcedure, router } from '../trpc.js';
+import { householdProcedure, router } from '../trpc';
 
 export const settlementRouter = router({
   // Net balance per member + suggested settle-up transfers.

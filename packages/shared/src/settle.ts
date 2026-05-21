@@ -1,4 +1,4 @@
-import type { Cents } from './money.js';
+import type { Cents } from './money';
 
 export interface BillLike {
   payerId: string;

@@ -1,9 +1,9 @@
-import { router } from './trpc.js';
-import { billRouter } from './routers/bill.js';
-import { householdRouter } from './routers/household.js';
-import { paymentRouter } from './routers/payment.js';
-import { settlementRouter } from './routers/settlement.js';
-import { userRouter } from './routers/user.js';
+import { router } from './trpc';
+import { billRouter } from './routers/bill';
+import { householdRouter } from './routers/household';
+import { paymentRouter } from './routers/payment';
+import { settlementRouter } from './routers/settlement';
+import { userRouter } from './routers/user';
 
 export const appRouter = router({
   user: userRouter,
@@ -15,5 +15,5 @@ export const appRouter = router({
 
 export type AppRouter = typeof appRouter;
 
-export type { Context, CreateContextOptions, AuthContext } from './context.js';
-export { createContext } from './context.js';
+export type { Context, CreateContextOptions, AuthContext } from './context';
+export { createContext } from './context';

@@ -1,3 +1,3 @@
-export * from './money.js';
-export * from './schemas.js';
-export * from './settle.js';
+export * from './money';
+export * from './schemas';
+export * from './settle';

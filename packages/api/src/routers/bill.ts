@@ -1,7 +1,7 @@
 import { CreateBillInput } from '@maison/shared';
 import { z } from 'zod';
 
-import { householdProcedure, router } from '../trpc.js';
+import { householdProcedure, router } from '../trpc';
 
 export const billRouter = router({
   list: householdProcedure.query(({ ctx, input }) =>
