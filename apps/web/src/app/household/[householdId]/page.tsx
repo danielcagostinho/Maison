@@ -8,6 +8,9 @@ import { use, useState } from 'react';
 import { trpc } from '@/trpc/client';
 
 import { NewBillDialog } from './new-bill-dialog';
+import { SettleUpDialog } from './settle-up-dialog';
+
+type Transfer = { fromUserId: string; toUserId: string; amountCents: number };
 
 type PageProps = { params: Promise<{ householdId: string }> };
 
@@ -21,6 +24,7 @@ export default function HouseholdDetailPage({ params }: PageProps) {
   const { data: settlement } = trpc.settlement.forHousehold.useQuery({ householdId });
 
   const [newBillOpen, setNewBillOpen] = useState(false);
+  const [settleTransfer, setSettleTransfer] = useState<Transfer | null>(null);
 
   const currency = household?.currency ?? 'CAD';
   const myNetCents = settlement?.balances.find((b) => b.user.id === me?.id)?.netCents ?? 0;
@@ -88,27 +92,41 @@ export default function HouseholdDetailPage({ params }: PageProps) {
             <h2 className="text-[13px] font-bold uppercase tracking-[0.16em] text-text-muted">
               Settle up
             </h2>
-            <ul className="divide-y divide-line rounded-card border border-line bg-primary-faint/40">
+            <ul className="divide-y divide-line overflow-hidden rounded-card border border-line bg-primary-faint/40">
               {settlement.transfers.map((t) => {
                 const from = settlement.balances.find((b) => b.user.id === t.fromUserId)?.user;
                 const to = settlement.balances.find((b) => b.user.id === t.toUserId)?.user;
                 return (
-                  <li
-                    key={`${t.fromUserId}-${t.toUserId}`}
-                    className="flex items-center justify-between gap-4 px-5 py-4"
-                  >
-                    <div className="flex items-baseline gap-3 text-[15px]">
-                      <span className="font-bold text-text">
-                        {nameFor(t.fromUserId, from?.name ?? '—')}
-                      </span>
-                      <span aria-hidden className="text-text-muted">→</span>
-                      <span className="font-bold text-text">
-                        {nameFor(t.toUserId, to?.name ?? '—')}
-                      </span>
-                    </div>
-                    <span className="font-bold tabular-nums text-text">
-                      {formatMoney(t.amountCents, currency)}
-                    </span>
+                  <li key={`${t.fromUserId}-${t.toUserId}`}>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setSettleTransfer({
+                          fromUserId: t.fromUserId,
+                          toUserId: t.toUserId,
+                          amountCents: t.amountCents,
+                        })
+                      }
+                      className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left transition-colors hover:bg-primary-faint/80"
+                    >
+                      <div className="flex items-baseline gap-3 text-[15px]">
+                        <span className="font-bold text-text">
+                          {nameFor(t.fromUserId, from?.name ?? '—')}
+                        </span>
+                        <span aria-hidden className="text-text-muted">→</span>
+                        <span className="font-bold text-text">
+                          {nameFor(t.toUserId, to?.name ?? '—')}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <span className="font-bold tabular-nums text-text">
+                          {formatMoney(t.amountCents, currency)}
+                        </span>
+                        <span aria-hidden className="text-[13px] font-bold text-primary">
+                          Mark paid →
+                        </span>
+                      </div>
+                    </button>
                   </li>
                 );
               })}
@@ -249,6 +267,15 @@ export default function HouseholdDetailPage({ params }: PageProps) {
           household={household}
           defaultPayerId={me.id}
           onClose={() => setNewBillOpen(false)}
+        />
+      ) : null}
+
+      {settleTransfer && household && me ? (
+        <SettleUpDialog
+          household={household}
+          transfer={settleTransfer}
+          currentUserId={me.id}
+          onClose={() => setSettleTransfer(null)}
         />
       ) : null}
     </main>
