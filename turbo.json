@@ -3,9 +3,8 @@
   "globalDependencies": [".env.example", "tsconfig.base.json"],
   "globalEnv": [
     "NODE_ENV",
-    "DATABASE_URL",
-    "DIRECT_URL",
-    "CLERK_PUBLISHABLE_KEY",
+    "POSTGRES_PRISMA_URL",
+    "POSTGRES_URL_NON_POOLING",
     "CLERK_SECRET_KEY",
     "NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY",
     "EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY",

@@ -4,8 +4,10 @@ generator client {
 
 datasource db {
   provider  = "postgresql"
-  url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
+  // Names match what Vercel's Neon Postgres integration injects.
+  // Pooled URL (pgbouncer) for the app at runtime; direct URL for migrations.
+  url       = env("POSTGRES_PRISMA_URL")
+  directUrl = env("POSTGRES_URL_NON_POOLING")
 }
 
 // A registered user. Identity is owned by Clerk; we store a thin profile
