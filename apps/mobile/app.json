@@ -1,0 +1,25 @@
+{
+  "expo": {
+    "name": "Maison",
+    "slug": "maison",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "scheme": "maison",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.danielagostinho.maison"
+    },
+    "android": {
+      "package": "com.danielagostinho.maison",
+      "adaptiveIcon": {
+        "backgroundColor": "#F8F5FB"
+      }
+    },
+    "plugins": ["expo-router", "expo-secure-store"],
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}
