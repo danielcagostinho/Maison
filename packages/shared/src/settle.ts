@@ -1,15 +1,15 @@
 import type { Cents } from './money';
 
-export interface BillLike {
+export type BillLike = {
   payerId: string;
   splits: Array<{ userId: string; shareCents: Cents }>;
-}
+};
 
-export interface PaymentLike {
+export type PaymentLike = {
   fromUserId: string;
   toUserId: string;
   amountCents: Cents;
-}
+};
 
 // Net balance per user across a household.
 // > 0  = they are owed money
@@ -41,11 +41,11 @@ export function computeBalances(
   return balances;
 }
 
-export interface SettlementTransfer {
+export type SettlementTransfer = {
   fromUserId: string;
   toUserId: string;
   amountCents: Cents;
-}
+};
 
 // Given net balances, produce a minimal-ish list of transfers that
 // settles everyone to zero. Uses a greedy match: largest debtor pays
