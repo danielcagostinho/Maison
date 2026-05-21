@@ -28,7 +28,7 @@ importers:
     dependencies:
       '@clerk/clerk-expo':
         specifier: ^2.4.6
-        version: 2.19.31(6e5a1aa371fad7426c1430c870ae6d9d)
+        version: 2.19.31(2ce213ca91c591deb150bc4ba0843f17)
       '@maison/api':
         specifier: workspace:*
         version: link:../../packages/api
@@ -222,7 +222,7 @@ importers:
         version: 5.9.3
       vitest:
         specifier: ^2.1.8
-        version: 2.1.9(@types/node@22.19.19)(lightningcss@1.32.0)(terser@5.47.1)
+        version: 2.1.9(@types/node@25.9.1)(lightningcss@1.32.0)(terser@5.47.1)
 
 packages:
 
@@ -2474,6 +2474,9 @@ packages:
   '@types/node@22.19.19':
     resolution: {integrity: sha512-dyh/xO2Fh5bYrfWaaqGrRQQGkNdmYw6AmaAUvYeUMNTWQtvb796ikLdmTchRmOlOiIJ1TDXfWgVx1QkUlQ6Hew==}
 
+  '@types/node@25.9.1':
+    resolution: {integrity: sha512-xfrlY7UD5rMJk3ZVJP8BNzS28J36YJg+xp+LPXV1TdWxr8uMH5A860QNxYDGQe/ylDSgjxE52Q9VnO7p75tJxg==}
+
   '@types/parse-json@4.0.2':
     resolution: {integrity: sha512-dISoDXWWQwUquiKsyZ4Ng+HX2KsPL7LyHKHQwgGFEA3IaKac4Obd+h2a/a6waisAoepJlBcx9paWqjA8/HVjCw==}
 
@@ -3568,12 +3571,6 @@ packages:
     resolution: {integrity: sha512-AkIPX7jWHRPp83UBZ1iXtVvyr0g+DgBVvIXTtlmPtmUsm8Vq9Bb5IGj86PW8osuFlgoTVAg7HI/+Ok7yEYwiRg==}
     peerDependencies:
       react: '*'
-      react-native: '*'
-
-  expo-web-browser@55.0.16:
-    resolution: {integrity: sha512-eeGs3439ewO/Q56Pzg3qbAVZSE0oH/R7XW9VCXI59k0m78ZIYbBtPT4PMFL/+sBgRkXm546Lq/DFcJQPTOfXJg==}
-    peerDependencies:
-      expo: '*'
       react-native: '*'
 
   expo-web-browser@56.0.5:
@@ -5657,6 +5654,9 @@ packages:
   undici-types@6.21.0:
     resolution: {integrity: sha512-iwDZqg0QAGrg9Rav5H4n0M64c3mkR59cJ6wQp+7C4nI0gsmExaedaYLNO44eT4AtBBwjbTiGPMlt2Md0T9H9JQ==}
 
+  undici-types@7.24.6:
+    resolution: {integrity: sha512-WRNW+sJgj5OBN4/0JpHFqtqzhpbnV0GuB+OozA9gCL7a993SmU+1JBZCzLNxYsbMfIeDL+lTsphD5jN5N+n0zg==}
+
   undici@6.25.0:
     resolution: {integrity: sha512-ZgpWDC5gmNiuY9CnLVXEH8rl50xhRCuLNA97fAUnKi8RRuV4E6KG31pDTsLVUKnohJE0I3XDrTeEydAXRw47xg==}
     engines: {node: '>=18.17'}
@@ -6967,7 +6967,7 @@ snapshots:
       - react
       - react-dom
 
-  '@clerk/clerk-expo@2.19.31(6e5a1aa371fad7426c1430c870ae6d9d)':
+  '@clerk/clerk-expo@2.19.31(2ce213ca91c591deb150bc4ba0843f17)':
     dependencies:
       '@clerk/clerk-js': 5.125.10(@solana/web3.js@1.98.4(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@6.0.6))(@types/react@18.3.29)(bs58@6.0.0)(bufferutil@4.1.0)(react-dom@18.3.1(react@18.3.1))(react-native@0.76.5(@babel/core@7.29.0)(@babel/preset-env@7.29.5(@babel/core@7.29.0))(@types/react@18.3.29)(bufferutil@4.1.0)(react@18.3.1)(utf-8-validate@6.0.6))(react@18.3.1)(typescript@5.9.3)(use-sync-external-store@1.6.0(react@18.3.1))(utf-8-validate@6.0.6)(zod@3.25.76)
       '@clerk/clerk-react': 5.61.6(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -6975,7 +6975,7 @@ snapshots:
       '@clerk/types': 4.101.23(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       base-64: 1.0.0
       expo-auth-session: 56.0.11(expo@52.0.49(@babel/core@7.29.0)(@babel/preset-env@7.29.5(@babel/core@7.29.0))(@expo/metro-runtime@4.0.1(react-native@0.76.5(@babel/core@7.29.0)(@babel/preset-env@7.29.5(@babel/core@7.29.0))(@types/react@18.3.29)(bufferutil@4.1.0)(react@18.3.1)(utf-8-validate@6.0.6)))(bufferutil@4.1.0)(react-native@0.76.5(@babel/core@7.29.0)(@babel/preset-env@7.29.5(@babel/core@7.29.0))(@types/react@18.3.29)(bufferutil@4.1.0)(react@18.3.1)(utf-8-validate@6.0.6))(react@18.3.1)(utf-8-validate@6.0.6))(react-native@0.76.5(@babel/core@7.29.0)(@babel/preset-env@7.29.5(@babel/core@7.29.0))(@types/react@18.3.29)(bufferutil@4.1.0)(react@18.3.1)(utf-8-validate@6.0.6))(react@18.3.1)
-      expo-web-browser: 55.0.16(expo@52.0.49(@babel/core@7.29.0)(@babel/preset-env@7.29.5(@babel/core@7.29.0))(@expo/metro-runtime@4.0.1(react-native@0.76.5(@babel/core@7.29.0)(@babel/preset-env@7.29.5(@babel/core@7.29.0))(@types/react@18.3.29)(bufferutil@4.1.0)(react@18.3.1)(utf-8-validate@6.0.6)))(bufferutil@4.1.0)(react-native@0.76.5(@babel/core@7.29.0)(@babel/preset-env@7.29.5(@babel/core@7.29.0))(@types/react@18.3.29)(bufferutil@4.1.0)(react@18.3.1)(utf-8-validate@6.0.6))(react@18.3.1)(utf-8-validate@6.0.6))(react-native@0.76.5(@babel/core@7.29.0)(@babel/preset-env@7.29.5(@babel/core@7.29.0))(@types/react@18.3.29)(bufferutil@4.1.0)(react@18.3.1)(utf-8-validate@6.0.6))
+      expo-web-browser: 56.0.5(expo@52.0.49(@babel/core@7.29.0)(@babel/preset-env@7.29.5(@babel/core@7.29.0))(@expo/metro-runtime@4.0.1(react-native@0.76.5(@babel/core@7.29.0)(@babel/preset-env@7.29.5(@babel/core@7.29.0))(@types/react@18.3.29)(bufferutil@4.1.0)(react@18.3.1)(utf-8-validate@6.0.6)))(bufferutil@4.1.0)(react-native@0.76.5(@babel/core@7.29.0)(@babel/preset-env@7.29.5(@babel/core@7.29.0))(@types/react@18.3.29)(bufferutil@4.1.0)(react@18.3.1)(utf-8-validate@6.0.6))(react@18.3.1)(utf-8-validate@6.0.6))(react-native@0.76.5(@babel/core@7.29.0)(@babel/preset-env@7.29.5(@babel/core@7.29.0))(@types/react@18.3.29)(bufferutil@4.1.0)(react@18.3.1)(utf-8-validate@6.0.6))
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
       react-native: 0.76.5(@babel/core@7.29.0)(@babel/preset-env@7.29.5(@babel/core@7.29.0))(@types/react@18.3.29)(bufferutil@4.1.0)(react@18.3.1)(utf-8-validate@6.0.6)
@@ -8758,7 +8758,7 @@ snapshots:
 
   '@types/connect@3.4.38':
     dependencies:
-      '@types/node': 22.19.19
+      '@types/node': 12.20.55
 
   '@types/estree@1.0.8': {}
 
@@ -8792,6 +8792,10 @@ snapshots:
     dependencies:
       undici-types: 6.21.0
 
+  '@types/node@25.9.1':
+    dependencies:
+      undici-types: 7.24.6
+
   '@types/parse-json@4.0.2': {}
 
   '@types/prop-types@15.7.15': {}
@@ -8815,11 +8819,11 @@ snapshots:
 
   '@types/ws@7.4.7':
     dependencies:
-      '@types/node': 22.19.19
+      '@types/node': 12.20.55
 
   '@types/ws@8.18.1':
     dependencies:
-      '@types/node': 22.19.19
+      '@types/node': 25.9.1
 
   '@types/yargs-parser@21.0.3': {}
 
@@ -8846,13 +8850,13 @@ snapshots:
       chai: 5.3.3
       tinyrainbow: 1.2.0
 
-  '@vitest/mocker@2.1.9(vite@5.4.21(@types/node@22.19.19)(lightningcss@1.32.0)(terser@5.47.1))':
+  '@vitest/mocker@2.1.9(vite@5.4.21(@types/node@25.9.1)(lightningcss@1.32.0)(terser@5.47.1))':
     dependencies:
       '@vitest/spy': 2.1.9
       estree-walker: 3.0.3
       magic-string: 0.30.21
     optionalDependencies:
-      vite: 5.4.21(@types/node@22.19.19)(lightningcss@1.32.0)(terser@5.47.1)
+      vite: 5.4.21(@types/node@25.9.1)(lightningcss@1.32.0)(terser@5.47.1)
 
   '@vitest/pretty-format@2.1.9':
     dependencies:
@@ -9977,11 +9981,6 @@ snapshots:
   expo-status-bar@2.0.1(react-native@0.76.5(@babel/core@7.29.0)(@babel/preset-env@7.29.5(@babel/core@7.29.0))(@types/react@18.3.29)(bufferutil@4.1.0)(react@18.3.1)(utf-8-validate@6.0.6))(react@18.3.1):
     dependencies:
       react: 18.3.1
-      react-native: 0.76.5(@babel/core@7.29.0)(@babel/preset-env@7.29.5(@babel/core@7.29.0))(@types/react@18.3.29)(bufferutil@4.1.0)(react@18.3.1)(utf-8-validate@6.0.6)
-
-  expo-web-browser@55.0.16(expo@52.0.49(@babel/core@7.29.0)(@babel/preset-env@7.29.5(@babel/core@7.29.0))(@expo/metro-runtime@4.0.1(react-native@0.76.5(@babel/core@7.29.0)(@babel/preset-env@7.29.5(@babel/core@7.29.0))(@types/react@18.3.29)(bufferutil@4.1.0)(react@18.3.1)(utf-8-validate@6.0.6)))(bufferutil@4.1.0)(react-native@0.76.5(@babel/core@7.29.0)(@babel/preset-env@7.29.5(@babel/core@7.29.0))(@types/react@18.3.29)(bufferutil@4.1.0)(react@18.3.1)(utf-8-validate@6.0.6))(react@18.3.1)(utf-8-validate@6.0.6))(react-native@0.76.5(@babel/core@7.29.0)(@babel/preset-env@7.29.5(@babel/core@7.29.0))(@types/react@18.3.29)(bufferutil@4.1.0)(react@18.3.1)(utf-8-validate@6.0.6)):
-    dependencies:
-      expo: 52.0.49(@babel/core@7.29.0)(@babel/preset-env@7.29.5(@babel/core@7.29.0))(@expo/metro-runtime@4.0.1(react-native@0.76.5(@babel/core@7.29.0)(@babel/preset-env@7.29.5(@babel/core@7.29.0))(@types/react@18.3.29)(bufferutil@4.1.0)(react@18.3.1)(utf-8-validate@6.0.6)))(bufferutil@4.1.0)(react-native@0.76.5(@babel/core@7.29.0)(@babel/preset-env@7.29.5(@babel/core@7.29.0))(@types/react@18.3.29)(bufferutil@4.1.0)(react@18.3.1)(utf-8-validate@6.0.6))(react@18.3.1)(utf-8-validate@6.0.6)
       react-native: 0.76.5(@babel/core@7.29.0)(@babel/preset-env@7.29.5(@babel/core@7.29.0))(@types/react@18.3.29)(bufferutil@4.1.0)(react@18.3.1)(utf-8-validate@6.0.6)
 
   expo-web-browser@56.0.5(expo@52.0.49(@babel/core@7.29.0)(@babel/preset-env@7.29.5(@babel/core@7.29.0))(@expo/metro-runtime@4.0.1(react-native@0.76.5(@babel/core@7.29.0)(@babel/preset-env@7.29.5(@babel/core@7.29.0))(@types/react@18.3.29)(bufferutil@4.1.0)(react@18.3.1)(utf-8-validate@6.0.6)))(bufferutil@4.1.0)(react-native@0.76.5(@babel/core@7.29.0)(@babel/preset-env@7.29.5(@babel/core@7.29.0))(@types/react@18.3.29)(bufferutil@4.1.0)(react@18.3.1)(utf-8-validate@6.0.6))(react@18.3.1)(utf-8-validate@6.0.6))(react-native@0.76.5(@babel/core@7.29.0)(@babel/preset-env@7.29.5(@babel/core@7.29.0))(@types/react@18.3.29)(bufferutil@4.1.0)(react@18.3.1)(utf-8-validate@6.0.6)):
@@ -11771,7 +11770,7 @@ snapshots:
 
   rpc-websockets@9.3.9:
     dependencies:
-      '@swc/helpers': 0.5.15
+      '@swc/helpers': 0.5.21
       '@types/uuid': 10.0.0
       '@types/ws': 8.18.1
       buffer: 6.0.3
@@ -12230,6 +12229,8 @@ snapshots:
 
   undici-types@6.21.0: {}
 
+  undici-types@7.24.6: {}
+
   undici@6.25.0: {}
 
   unicode-canonical-property-names-ecmascript@2.0.1: {}
@@ -12317,13 +12318,13 @@ snapshots:
       - utf-8-validate
       - zod
 
-  vite-node@2.1.9(@types/node@22.19.19)(lightningcss@1.32.0)(terser@5.47.1):
+  vite-node@2.1.9(@types/node@25.9.1)(lightningcss@1.32.0)(terser@5.47.1):
     dependencies:
       cac: 6.7.14
       debug: 4.4.3
       es-module-lexer: 1.7.0
       pathe: 1.1.2
-      vite: 5.4.21(@types/node@22.19.19)(lightningcss@1.32.0)(terser@5.47.1)
+      vite: 5.4.21(@types/node@25.9.1)(lightningcss@1.32.0)(terser@5.47.1)
     transitivePeerDependencies:
       - '@types/node'
       - less
@@ -12335,21 +12336,21 @@ snapshots:
       - supports-color
       - terser
 
-  vite@5.4.21(@types/node@22.19.19)(lightningcss@1.32.0)(terser@5.47.1):
+  vite@5.4.21(@types/node@25.9.1)(lightningcss@1.32.0)(terser@5.47.1):
     dependencies:
       esbuild: 0.21.5
       postcss: 8.5.15
       rollup: 4.60.4
     optionalDependencies:
-      '@types/node': 22.19.19
+      '@types/node': 25.9.1
       fsevents: 2.3.3
       lightningcss: 1.32.0
       terser: 5.47.1
 
-  vitest@2.1.9(@types/node@22.19.19)(lightningcss@1.32.0)(terser@5.47.1):
+  vitest@2.1.9(@types/node@25.9.1)(lightningcss@1.32.0)(terser@5.47.1):
     dependencies:
       '@vitest/expect': 2.1.9
-      '@vitest/mocker': 2.1.9(vite@5.4.21(@types/node@22.19.19)(lightningcss@1.32.0)(terser@5.47.1))
+      '@vitest/mocker': 2.1.9(vite@5.4.21(@types/node@25.9.1)(lightningcss@1.32.0)(terser@5.47.1))
       '@vitest/pretty-format': 2.1.9
       '@vitest/runner': 2.1.9
       '@vitest/snapshot': 2.1.9
@@ -12365,11 +12366,11 @@ snapshots:
       tinyexec: 0.3.2
       tinypool: 1.1.1
       tinyrainbow: 1.2.0
-      vite: 5.4.21(@types/node@22.19.19)(lightningcss@1.32.0)(terser@5.47.1)
-      vite-node: 2.1.9(@types/node@22.19.19)(lightningcss@1.32.0)(terser@5.47.1)
+      vite: 5.4.21(@types/node@25.9.1)(lightningcss@1.32.0)(terser@5.47.1)
+      vite-node: 2.1.9(@types/node@25.9.1)(lightningcss@1.32.0)(terser@5.47.1)
       why-is-node-running: 2.3.0
     optionalDependencies:
-      '@types/node': 22.19.19
+      '@types/node': 25.9.1
     transitivePeerDependencies:
       - less
       - lightningcss
