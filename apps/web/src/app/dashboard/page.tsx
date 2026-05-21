@@ -5,7 +5,7 @@ import { useState } from 'react';
 
 import { trpc } from '@/trpc/client';
 
-import { CreateHouseholdDialog } from './CreateHouseholdDialog';
+import { CreateHouseholdDialog } from './create-household-dialog';
 
 export default function DashboardPage() {
   const { data: me } = trpc.user.me.useQuery();

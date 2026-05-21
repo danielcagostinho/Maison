@@ -4,7 +4,7 @@ import { ClerkProvider } from '@clerk/nextjs';
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 
-import { TRPCProvider } from '@/trpc/Provider';
+import { TRPCProvider } from '@/trpc/provider';
 
 // Product Sans, pulled verbatim from the legacy Maison app.
 const productSans = localFont({
