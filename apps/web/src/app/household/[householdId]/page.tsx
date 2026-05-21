@@ -71,15 +71,24 @@ export default function HouseholdDetailPage({ params }: PageProps) {
             </p>
           </div>
 
-          <div className="flex flex-col gap-1">
-            <p className="text-[12px] font-bold uppercase tracking-[0.2em] text-white/60">
-              {balanceLabel}
-            </p>
-            {myNetCents !== 0 && (
-              <p className="text-[42px] font-bold tabular-nums leading-none">
-                {formatMoney(Math.abs(myNetCents), currency)}
+          <div className="flex items-end justify-between gap-4">
+            <div className="flex flex-col gap-1">
+              <p className="text-[12px] font-bold uppercase tracking-[0.2em] text-white/60">
+                {balanceLabel}
               </p>
-            )}
+              {myNetCents !== 0 && (
+                <p className="text-[42px] font-bold tabular-nums leading-none">
+                  {formatMoney(Math.abs(myNetCents), currency)}
+                </p>
+              )}
+            </div>
+            <Link
+              href={`/household/${householdId}/activity`}
+              className="flex items-center gap-1 text-[13px] font-bold uppercase tracking-[0.16em] text-white/70 transition-colors hover:text-white"
+            >
+              <span>Activity</span>
+              <span aria-hidden>→</span>
+            </Link>
           </div>
         </div>
       </header>
