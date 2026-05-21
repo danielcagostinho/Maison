@@ -3,9 +3,11 @@
 import { UserButton } from '@clerk/nextjs';
 import { formatMoney } from '@maison/shared';
 import Link from 'next/link';
-import { use } from 'react';
+import { use, useState } from 'react';
 
 import { trpc } from '@/trpc/client';
+
+import { NewBillDialog } from './new-bill-dialog';
 
 type PageProps = { params: Promise<{ householdId: string }> };
 
@@ -17,6 +19,8 @@ export default function HouseholdDetailPage({ params }: PageProps) {
   const { data: bills } = trpc.bill.list.useQuery({ householdId });
   const { data: payments } = trpc.payment.list.useQuery({ householdId });
   const { data: settlement } = trpc.settlement.forHousehold.useQuery({ householdId });
+
+  const [newBillOpen, setNewBillOpen] = useState(false);
 
   const currency = household?.currency ?? 'CAD';
   const myNetCents = settlement?.balances.find((b) => b.user.id === me?.id)?.netCents ?? 0;
@@ -159,9 +163,9 @@ export default function HouseholdDetailPage({ params }: PageProps) {
             </h2>
             <button
               type="button"
-              disabled
-              className="text-[14px] font-bold text-primary-text-soft"
-              title="Bill creation UI not built yet"
+              onClick={() => setNewBillOpen(true)}
+              disabled={!household || !me}
+              className="text-[14px] font-bold text-primary transition-colors hover:opacity-80 disabled:opacity-40"
             >
               + New
             </button>
@@ -239,6 +243,14 @@ export default function HouseholdDetailPage({ params }: PageProps) {
           )}
         </div>
       </section>
+
+      {newBillOpen && household && me ? (
+        <NewBillDialog
+          household={household}
+          defaultPayerId={me.id}
+          onClose={() => setNewBillOpen(false)}
+        />
+      ) : null}
     </main>
   );
 }
