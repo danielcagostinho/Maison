@@ -1,0 +1,131 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// A registered user. Identity is owned by Clerk; we store a thin profile
+// keyed by Clerk's stable user id.
+model User {
+  id        String   @id @default(cuid())
+  clerkId   String   @unique
+  email     String   @unique
+  name      String
+  avatarUrl String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  memberships      HouseholdMember[]
+  billsPaid        Bill[]            @relation("BillPayer")
+  splitsOwed       BillSplit[]
+  paymentsSent     Payment[]         @relation("PaymentSender")
+  paymentsReceived Payment[]         @relation("PaymentReceiver")
+}
+
+// A shared household — the unit of grouping. Bills and payments are
+// always scoped to a household.
+model Household {
+  id        String   @id @default(cuid())
+  name      String
+  currency  String   @default("CAD") // ISO 4217
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  members  HouseholdMember[]
+  bills    Bill[]
+  payments Payment[]
+}
+
+enum HouseholdRole {
+  OWNER
+  MEMBER
+}
+
+// Join table: which users belong to which household, with role.
+model HouseholdMember {
+  householdId String
+  userId      String
+  role        HouseholdRole @default(MEMBER)
+  joinedAt    DateTime      @default(now())
+
+  household Household @relation(fields: [householdId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([householdId, userId])
+  @@index([userId])
+}
+
+enum Recurrence {
+  NONE
+  WEEKLY
+  MONTHLY
+}
+
+// A charge to be split among household members. The payer is the user who
+// fronted the money; splits describe who owes how much of it.
+//
+// Recurring bills: a "template" Bill has recurrence != NONE and no
+// parentBillId. Each generated instance has parentBillId pointing at the
+// template.
+model Bill {
+  id           String     @id @default(cuid())
+  householdId  String
+  payerId      String
+  title        String
+  amountCents  Int
+  occurredAt   DateTime
+  recurrence   Recurrence @default(NONE)
+  parentBillId String?
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  household  Household   @relation(fields: [householdId], references: [id], onDelete: Cascade)
+  payer      User        @relation("BillPayer", fields: [payerId], references: [id])
+  parentBill Bill?       @relation("RecurringInstances", fields: [parentBillId], references: [id], onDelete: SetNull)
+  instances  Bill[]      @relation("RecurringInstances")
+  splits     BillSplit[]
+
+  @@index([householdId, occurredAt])
+  @@index([payerId])
+  @@index([parentBillId])
+}
+
+// One row per user who owes a share of a bill. Sum of shareCents across a
+// bill must equal the bill's amountCents (enforced in app layer).
+model BillSplit {
+  id          String @id @default(cuid())
+  billId      String
+  userId      String
+  shareCents  Int
+
+  bill Bill @relation(fields: [billId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id])
+
+  @@unique([billId, userId])
+  @@index([userId])
+}
+
+// A settle-up transfer between two members of a household. Net balances
+// are derived from Bills + BillSplits + Payments.
+model Payment {
+  id           String   @id @default(cuid())
+  householdId  String
+  fromUserId   String
+  toUserId     String
+  amountCents  Int
+  occurredAt   DateTime
+  note         String?
+  createdAt    DateTime @default(now())
+
+  household Household @relation(fields: [householdId], references: [id], onDelete: Cascade)
+  from      User      @relation("PaymentSender", fields: [fromUserId], references: [id])
+  to        User      @relation("PaymentReceiver", fields: [toUserId], references: [id])
+
+  @@index([householdId, occurredAt])
+  @@index([fromUserId])
+  @@index([toUserId])
+}

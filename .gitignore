@@ -43,7 +43,4 @@ Thumbs.db
 !.vscode/extensions.json
 !.vscode/settings.json
 
-# Prisma
-prisma/migrations/dev/
-
 # Legacy carve-out — its own gitignore applies inside
