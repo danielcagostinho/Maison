@@ -16,7 +16,8 @@
     "db:generate": "pnpm --filter @maison/db generate",
     "db:migrate": "pnpm --filter @maison/db migrate",
     "db:studio": "pnpm --filter @maison/db studio",
-    "db:seed": "pnpm --filter @maison/db seed"
+    "db:seed": "pnpm --filter @maison/db seed",
+    "db:seed:me": "pnpm --filter @maison/db seed:me"
   },
   "devDependencies": {
     "@types/node": "^22.10.0",
