@@ -1,6 +1,7 @@
 'use client';
 
 import { UserButton } from '@clerk/nextjs';
+import Link from 'next/link';
 import { useState } from 'react';
 
 import { trpc } from '@/trpc/client';
@@ -117,21 +118,26 @@ function HouseholdGrid({
         {households.map((h, i) => (
           <li
             key={h.id}
-            className="reveal group cursor-pointer rounded-card border border-line bg-primary-faint p-5 transition-all hover:border-primary-soft hover:shadow-sm"
+            className="reveal"
             style={{ animationDelay: `${0.1 + i * 0.05}s` }}
           >
-            <div className="flex items-center justify-between">
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white">
-                <HouseIcon className="h-5 w-5 text-primary" />
+            <Link
+              href={`/household/${h.id}`}
+              className="group block rounded-card border border-line bg-primary-faint p-5 transition-all hover:border-primary-soft hover:shadow-sm"
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white">
+                  <HouseIcon className="h-5 w-5 text-primary" />
+                </div>
+                <span className="rounded-full bg-white px-2.5 py-0.5 text-[11px] font-bold tracking-wider text-primary-text-soft">
+                  {h.currency}
+                </span>
               </div>
-              <span className="rounded-full bg-white px-2.5 py-0.5 text-[11px] font-bold tracking-wider text-primary-text-soft">
-                {h.currency}
-              </span>
-            </div>
-            <p className="mt-4 text-[18px] font-bold text-text">{h.name}</p>
-            <p className="mt-1 text-[13px] text-text-muted">
-              Opened {formatOpened(h.createdAt)}
-            </p>
+              <p className="mt-4 text-[18px] font-bold text-text">{h.name}</p>
+              <p className="mt-1 text-[13px] text-text-muted">
+                Opened {formatOpened(h.createdAt)}
+              </p>
+            </Link>
           </li>
         ))}
       </ul>
