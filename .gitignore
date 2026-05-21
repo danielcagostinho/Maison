@@ -1,15 +1,49 @@
-node_modules
-.expo/*
-.expo-shared/*
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build output
+dist/
+build/
+.next/
+.turbo/
+.expo/
+.expo-shared/
+web-build/
+web-report/
+*.tsbuildinfo
+
+# Env
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# Logs
 npm-debug.*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Native build artifacts
 *.jks
 *.p8
 *.p12
 *.key
 *.mobileprovision
 *.orig.*
-web-build/
-web-report/
 
-# macOS
+# OS
 .DS_Store
+Thumbs.db
+
+# Editors
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+
+# Prisma
+prisma/migrations/dev/
+
+# Legacy carve-out — its own gitignore applies inside

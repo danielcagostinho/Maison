@@ -1,0 +1,27 @@
+{
+  "name": "maison",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Roommate bill splitting — monorepo (web + mobile + shared API)",
+  "packageManager": "pnpm@10.23.0",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\" --ignore-path .gitignore",
+    "db:generate": "pnpm --filter @maison/db generate",
+    "db:migrate": "pnpm --filter @maison/db migrate",
+    "db:studio": "pnpm --filter @maison/db studio",
+    "db:seed": "pnpm --filter @maison/db seed"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "prettier": "^3.4.2",
+    "turbo": "^2.3.3",
+    "typescript": "^5.7.2"
+  }
+}
